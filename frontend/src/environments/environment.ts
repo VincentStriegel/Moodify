@@ -2,5 +2,5 @@
 
 export const environment = {
     production: false,
-    apiServerURL: '/api'
+    apiServerURL: 'https://backend-3ela.onrender.com'
 }
