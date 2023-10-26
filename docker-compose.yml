@@ -1,0 +1,22 @@
+version: "3.4"
+
+services:
+  frontend:
+      build:
+         context: ./frontend  
+         dockerfile: Dockerfile  
+         args:
+           buildType: build-dc
+      ports:
+        - "80:80"
+      restart: unless-stopped 
+
+  backend:
+    build:
+        context: ./backend  
+        dockerfile: Dockerfile  
+    ports:
+          - "8080:8080"
+    restart: unless-stopped 
+    env_file:
+      - .env.dev
