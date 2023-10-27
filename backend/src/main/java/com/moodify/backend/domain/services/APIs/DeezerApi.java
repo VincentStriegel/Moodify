@@ -1,8 +1,9 @@
-package com.moodify.backend.domain.services;
+package com.moodify.backend.domain.services.APIs;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.moodify.backend.api.transferobjects.TrackTO;
+import com.moodify.backend.domain.services.apiInterfaces.ApiServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -11,30 +12,35 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 
 @Component
-public class ApiService {
+public class DeezerApi implements ApiServices {
 
-    private final String deezerApiUrl = "https://deezerdevs-deezer.p.rapidapi.com/track/";
+    private final String deezerApiSingleTrackSearchURL = "https://deezerdevs-deezer.p.rapidapi.com/track/";
+
     private final String rapidApiHost = "deezerdevs-deezer.p.rapidapi.com";
     
     private final String rapidDeezerApiKey;
 
     @Autowired
-    public ApiService(@Value("${deezerApiKey}") String rapidDeezerApiKey){
+    public DeezerApi(@Value("${deezerApiKey}") String rapidDeezerApiKey){
         this.rapidDeezerApiKey = rapidDeezerApiKey;
     }
 
+
+
     public TrackTO getTrack (int id) {
         RestTemplate restTemplate = new RestTemplate();
-        String url = deezerApiUrl + id;
+        String url = deezerApiSingleTrackSearchURL + id;
 
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         headers.add("X-RapidAPI-Key", rapidDeezerApiKey);
         headers.add("X-RapidAPI-Host", rapidApiHost);
+
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
         ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
@@ -53,4 +59,11 @@ public class ApiService {
             return null; // Handle the exception appropriately
         }
     }
+
+    //TODO
+    @Override
+    public List<TrackTO> getTracks(String name) {
+        return null;
+    }
+
 }

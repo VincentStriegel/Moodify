@@ -1,7 +1,8 @@
 package com.moodify.backend.api.controllers;
 
 import com.moodify.backend.api.transferobjects.TrackTO;
-import com.moodify.backend.domain.services.ApiService;
+import com.moodify.backend.domain.services.APIs.DeezerApi;
+import com.moodify.backend.domain.services.apiInterfaces.ApiServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -10,10 +11,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/music")
 public class MusicController {
 
-    private final ApiService apiService;
+    private final ApiServices apiService;
 
+    //Check for Autowired
     @Autowired
-    public MusicController(ApiService apiService){
+    public MusicController(DeezerApi apiService){
         this.apiService = apiService;
     }
 
