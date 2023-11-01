@@ -1,0 +1,7 @@
+input[type=range][orient=vertical] {
+    appearance: slider-vertical;
+    accent-color: #ffffff;
+}
+input{
+    color: blueviolet;
+}

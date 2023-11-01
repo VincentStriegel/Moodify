@@ -8,14 +8,9 @@ import { TrackTO } from '../types/trackTO';
   styleUrls: ['./landing-page.component.css']
 })
 export class LandingPageComponent {
-  testVar?: TrackTO ;
+  testVar!: TrackTO ;
+  testVar2!: TrackTO ;
   constructor (private backendCommunicationService: BackendCommunicationService) {
 
-  }
-  ngOnInit(){
-    this.backendCommunicationService.getSong(3135556).subscribe((data) => this.testVar = data);
-  }
-  ngAfterViewInit(){
-    console.log(this.testVar)
   }
 }

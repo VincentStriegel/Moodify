@@ -1,0 +1,20 @@
+<div class="grid grid-cols-6 md:w-[50em] w-[30em] p-2">
+    <div class="justify-self-end mr-1">
+        <img (click)="togglePlay()"  class="w-20 h-20" src="{{ track.album.cover_big ? track.album.cover_big : 'assets/placeholder.jpg' }}" alt="Track cover">
+    </div>
+    <div class="col-span-5 text-white grid md:grid-cols-10 grid-cols-9 gap-2 items-center">
+        <div class="justify-self-center hidden md:block">
+            <button (click)="togglePlay()" class="justify-self-center">
+                <span class="material-icons-outlined scale-150">{{ isPlaying ? 'pause' : 'play_circle' }}</span>
+            </button>
+        </div>
+        <div class="justify-self-start col-span-6">
+            <button class="font-bold">{{track.artist.name}}</button>
+            <p>{{track.title}}</p>
+        </div>
+        <div class="col-span-3 text-right">
+            <p>{{track.release_date}}</p>
+            <p>{{Math.floor(this.track.duration / 60) + ':' + (this.track.duration % 60).toString().padStart(2, '0')}}</p>
+        </div>
+    </div>
+</div>
