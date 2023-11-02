@@ -1,6 +1,6 @@
 package com.moodify.backend.api.transferobjects;
 
-public class ArtistTO {
+public class UserTO {
     private int id;
 
     private String name;
@@ -8,8 +8,6 @@ public class ArtistTO {
     private String picture_small;
 
     private String picture_big;
-
-
 
     public int getId() {
         return id;

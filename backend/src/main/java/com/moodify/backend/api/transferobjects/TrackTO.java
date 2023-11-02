@@ -1,7 +1,7 @@
 package com.moodify.backend.api.transferobjects;
 
 public class TrackTO {
-    private int id;
+    private long id;
 
     private String title;
 
@@ -24,11 +24,11 @@ public class TrackTO {
 
     private AlbumTO album;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
