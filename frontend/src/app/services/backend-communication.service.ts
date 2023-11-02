@@ -17,4 +17,10 @@ export class BackendCommunicationService {
     .get<TrackTO>(`${this.apiServerURL}/music/track/${songId}`)
     .pipe(shareReplay(1));
   }
+
+  getSearchResults(searchQuery: string): Observable<TrackTO[]>{ 
+    return this.http
+    .get<TrackTO[]>(`${this.apiServerURL}/music/search/${searchQuery}`)
+    .pipe(shareReplay(1));
+  }
 }

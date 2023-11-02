@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/music")
 public class MusicController {
@@ -19,8 +21,14 @@ public class MusicController {
 
     @GetMapping({"track/{trackId}"})
     @ResponseStatus(HttpStatus.OK)
-    public TrackTO getTrack(@PathVariable("trackId") int trackId){
+    public TrackTO getTrack(@PathVariable("trackId") long trackId){
         return apiService.getTrack(trackId);
+    }
+
+    @GetMapping({"search/{searchQuery}"})
+    @ResponseStatus(HttpStatus.OK)
+    public List<TrackTO> search(@PathVariable ("searchQuery") String query){
+        return apiService.getTrackSearch(query);
     }
 
 }
