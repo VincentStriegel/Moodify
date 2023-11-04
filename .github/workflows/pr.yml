@@ -58,9 +58,4 @@ jobs:
       - name: Build with Maven
         run: |
           cd backend
-          mvn clean 
-      
-      - name: Verify with Maven
-        run: |
-          cd backend
-          mvn verify
+          mvn clean verify
