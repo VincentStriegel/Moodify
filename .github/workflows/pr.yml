@@ -23,6 +23,7 @@ jobs:
 
       - name: Install dependencies, test, and lint
         run: |
+          cd frontend
           npm ci
           npm test
           npm run lint-ci
