@@ -4,12 +4,12 @@ import { LandingPageComponent } from './landing-page/landing-page.component';
 import { SearchResultComponent } from './search-result/search-result.component';
 
 const routes: Routes = [
-  {path: '', pathMatch: 'full', component: LandingPageComponent},
-  {path: 'search/:query', pathMatch: 'full', component: SearchResultComponent}
+    { path: '', pathMatch: 'full', component: LandingPageComponent },
+    { path: 'search/:query', pathMatch: 'full', component: SearchResultComponent },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forRoot(routes)],
+    exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
