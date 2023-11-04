@@ -15,19 +15,19 @@ public class MusicController {
     private final ApiService apiService;
 
     @Autowired
-    public MusicController(ApiService apiService){
+    public MusicController(ApiService apiService) {
         this.apiService = apiService;
     }
 
     @GetMapping({"track/{trackId}"})
     @ResponseStatus(HttpStatus.OK)
-    public TrackTO getTrack(@PathVariable("trackId") long trackId){
+    public TrackTO getTrack(@PathVariable("trackId") long trackId) {
         return apiService.getTrack(trackId);
     }
 
     @GetMapping({"search/{searchQuery}"})
     @ResponseStatus(HttpStatus.OK)
-    public List<TrackTO> search(@PathVariable ("searchQuery") String query){
+    public List<TrackTO> search(@PathVariable ("searchQuery") String query) {
         return apiService.getTrackSearch(query);
     }
 

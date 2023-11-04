@@ -82,14 +82,14 @@ public class TrackTO {
 
     @Override
     public String toString() {
-        return "TrackTO{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", duration=" + duration +
-                ", preview='" + preview + '\'' +
-                ", release_date='" + release_date + '\'' +
-                ", artist=" + artist +
-                ", album=" + album +
-                '}';
+        return "TrackTO{"
+                + "id=" + id
+                + ", title='" + title + '\''
+                + ", duration=" + duration
+                + ", preview='" + preview + '\''
+                + ", release_date='" + release_date + '\''
+                + ", artist=" + artist
+                + ", album=" + album
+                + '}';
     }
 }

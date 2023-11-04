@@ -17,7 +17,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-
 @Component
 public class ApiService {
     private final String DEEZER_API_URL = "https://deezerdevs-deezer.p.rapidapi.com/";
@@ -26,17 +25,17 @@ public class ApiService {
     private final String RAPID_DEEZER_API_KEY;
 
     @Autowired
-    public ApiService(@Value("${deezerApiKey}") String RAPID_DEEZER_API_KEY){
+    public ApiService(@Value("${deezerApiKey}") String RAPID_DEEZER_API_KEY) {
         this.RAPID_DEEZER_API_KEY = RAPID_DEEZER_API_KEY;
     }
 
-    public TrackTO getTrack (long id) {
+    public TrackTO getTrack(long id) {
         String url = DEEZER_API_URL + "track/" + id;
 
         ResponseEntity<String> responseEntity = makeApiRequest(url);
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            Map<String, Object> jsonMap = objectMapper.readValue(responseEntity.getBody(), new TypeReference<Map<String, Object>>() {});
+            Map<String, Object> jsonMap = objectMapper.readValue(responseEntity.getBody(), new TypeReference<Map<String, Object>>() { });
             TrackTO trackTO = mapToTrackTO(jsonMap);
             return trackTO;
         } catch (IOException e) {
@@ -45,14 +44,14 @@ public class ApiService {
         }
     }
 
-    public List<TrackTO> getTrackSearch (String query) {
-        String url = DEEZER_API_URL + "search?q=" + query ;
+    public List<TrackTO> getTrackSearch(String query) {
+        String url = DEEZER_API_URL + "search?q=" + query;
 
         ResponseEntity<String> responseEntity = makeApiRequest(url);
         ObjectMapper objectMapper = new ObjectMapper();
 
         try {
-            Map<String, Object> jsonMap = objectMapper.readValue(responseEntity.getBody(), new TypeReference<Map<String, Object>>() {});
+            Map<String, Object> jsonMap = objectMapper.readValue(responseEntity.getBody(), new TypeReference<Map<String, Object>>() { });
             List<Map<String, Object>> tracksList = (List<Map<String, Object>>) jsonMap.get("data");
             List<TrackTO> trackTOs = new ArrayList<>();
 
@@ -68,8 +67,7 @@ public class ApiService {
         }
     }
 
-
-    private ResponseEntity<String> makeApiRequest(String url){
+    private ResponseEntity<String> makeApiRequest(String url) {
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
