@@ -24,147 +24,144 @@ public class DeezerApi implements ApiService {
         this.DEEZER_API_REQUESTER = DEEZER_API_REQUESTER;
     }
 
+    public PlaylistTO getPlaylist(long id) {
+        String url = DEEZER_API_URL + "playlist/" + id;
+
+        ResponseEntity<String> responsePlaylist = this.DEEZER_API_REQUESTER.makeApiRequest(url);
+        Map<String, Object> playlistMap = getMapFrom(responsePlaylist);
+
+        String trackListURL = (String) playlistMap.get("tracklist");
+        ResponseEntity<String> responseTrackList = this.DEEZER_API_REQUESTER.makeApiRequest(trackListURL);
+        Map<String, Object> trackListMap = getMapFrom(responseTrackList);
+        List<Map<String, Object>> tracksList = (List<Map<String, Object>>) trackListMap.get("data");
+
+
+        PlaylistTO playlistTO = Mapper.toPlaylistTO(playlistMap, tracksList);
+
+        return playlistTO;
+    }
+
+    public AlbumTO getAlbum(long id) {
+        String url = DEEZER_API_URL + "album/" + id;
+
+        ResponseEntity<String> responseAlbum = this.DEEZER_API_REQUESTER.makeApiRequest(url);
+        Map<String, Object> albumMap = getMapFrom(responseAlbum);
+
+        String trackListURL = (String) albumMap.get("tracklist");
+        ResponseEntity<String> responseTrackList = this.DEEZER_API_REQUESTER.makeApiRequest(trackListURL);
+        Map<String, Object> trackListMap = getMapFrom(responseTrackList);
+        List<Map<String, Object>> tracksList = (List<Map<String, Object>>) trackListMap.get("data");
+
+
+        AlbumTO albumTO = Mapper.toAlbumTO(albumMap, tracksList);
+
+        return albumTO;
+    }
+
+    public ArtistTO getArtist(long id) {
+        String url = DEEZER_API_URL + "artist/" + id;
+
+        ResponseEntity<String> responseArtist = this.DEEZER_API_REQUESTER.makeApiRequest(url);
+        Map<String, Object> artistMap = getMapFrom(responseArtist);
+
+        String trackListURL = (String) artistMap.get("tracklist");
+        ResponseEntity<String> responseTrackList = this.DEEZER_API_REQUESTER.makeApiRequest(trackListURL);
+        Map<String, Object> trackListMap = getMapFrom(responseTrackList);
+        List<Map<String, Object>> tracksList = (List<Map<String, Object>>) trackListMap.get("data");
+
+
+        ArtistTO artistTO = Mapper.toArtistTO(artistMap, tracksList);
+
+        return artistTO;
+
+
+    }
+
     public TrackTO getTrack(long id) {
         String url = DEEZER_API_URL + "track/" + id;
 
-        ResponseEntity<String> responseEntity = this.DEEZER_API_REQUESTER.makeApiRequest(url);
-        ObjectMapper objectMapper = new ObjectMapper();
+        ResponseEntity<String> responseArtist = this.DEEZER_API_REQUESTER.makeApiRequest(url);
+        Map<String, Object> trackMap = getMapFrom(responseArtist);
+        TrackTO trackTO = Mapper.toTrackTO(trackMap);
 
-        try {
-            Map<String, Object> trackMap = objectMapper.readValue(responseEntity.getBody(), new TypeReference<Map<String, Object>>() {
-            });
-            TrackTO trackTO = Mapper.toTrackTO(trackMap);
-            return trackTO;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null; // Handle the exception appropriately
-        }
+        return trackTO;
     }
 
     public List<TrackTO> getTrackSearch(String query) {
         String url = DEEZER_API_URL + "search?q=" + query;
 
-        ResponseEntity<String> responseEntity = this.DEEZER_API_REQUESTER.makeApiRequest(url);
-        ObjectMapper objectMapper = new ObjectMapper();
+        ResponseEntity<String> responseTracks = this.DEEZER_API_REQUESTER.makeApiRequest(url);
+        Map<String, Object> jsonMap = getMapFrom(responseTracks);
 
+        List<Map<String, Object>> tracksList = (List<Map<String, Object>>) jsonMap.get("data");
+        List<TrackTO> trackTOs = new ArrayList<>();
 
-        try {
-            Map<String, Object> jsonMap = objectMapper.readValue(responseEntity.getBody(), new TypeReference<Map<String, Object>>() {
-            });
-            List<Map<String, Object>> tracksList = (List<Map<String, Object>>) jsonMap.get("data");
-            List<TrackTO> trackTOs = new ArrayList<>();
-
-            for (Map<String, Object> trackMap : tracksList) {
-                TrackTO trackTO = Mapper.toTrackTO(trackMap);
-                trackTOs.add(trackTO);
-            }
-
-            return trackTOs;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return Collections.emptyList(); // Handle the exception appropriately
+        for (Map<String, Object> trackMap : tracksList) {
+            TrackTO trackTO = Mapper.toTrackTO(trackMap);
+            trackTOs.add(trackTO);
         }
+
+        return trackTOs;
     }
 
     public List<ArtistTO> getArtists(String query) {
         String url = DEEZER_API_URL + "search/artist?q=" + query;
 
-        ResponseEntity<String> responseEntity = this.DEEZER_API_REQUESTER.makeApiRequest(url);
-        ObjectMapper objectMapper = new ObjectMapper();
+        ResponseEntity<String> responseArtists = this.DEEZER_API_REQUESTER.makeApiRequest(url);
+        Map<String, Object> jsonMap = getMapFrom(responseArtists);
 
-        try {
-            Map<String, Object> jsonMap = objectMapper.readValue(responseEntity.getBody(), new TypeReference<Map<String, Object>>() {
-            });
-            List<Map<String, Object>> artistList = (List<Map<String, Object>>) jsonMap.get("data");
-            List<ArtistTO> artistTOs = new ArrayList<>();
+        List<Map<String, Object>> artistList = (List<Map<String, Object>>) jsonMap.get("data");
+        List<ArtistTO> artistTOs = new ArrayList<>();
 
-            for (Map<String, Object> artistMap : artistList) {
-                ArtistTO artistTO = Mapper.toArtistTO(artistMap);
-                artistTOs.add(artistTO);
-            }
-
-            return artistTOs;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return Collections.emptyList(); // Handle the exception appropriately
+        for (Map<String, Object> artistMap : artistList) {
+            ArtistTO artistTO = Mapper.toArtistTO(artistMap);
+            artistTOs.add(artistTO);
         }
 
+        return artistTOs;
     }
 
     public List<PlaylistTO> getPlaylists(String query) {
         String url = DEEZER_API_URL + "search/playlist?q=" + query;
 
-        ResponseEntity<String> responseEntity = this.DEEZER_API_REQUESTER.makeApiRequest(url);
-        ObjectMapper objectMapper = new ObjectMapper();
+        ResponseEntity<String> responsePlaylist = this.DEEZER_API_REQUESTER.makeApiRequest(url);
+        Map<String, Object> playlistMap = getMapFrom(responsePlaylist);
 
-        try {
-            Map<String, Object> jsonMap = objectMapper.readValue(responseEntity.getBody(), new TypeReference<Map<String, Object>>() {
-            });
-            List<Map<String, Object>> playlistList = (List<Map<String, Object>>) jsonMap.get("data");
-            List<PlaylistTO> playlistTOs = new ArrayList<>();
+        List<Map<String, Object>> playlistList = (List<Map<String, Object>>) playlistMap.get("data");
+        List<PlaylistTO> playlistTOs = new ArrayList<>();
 
-            for (Map<String, Object> playlistMap : playlistList) {
-                PlaylistTO playlistTO = Mapper.toPlaylistTO(playlistMap);
-                playlistTOs.add(playlistTO);
-            }
-
-            return playlistTOs;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return Collections.emptyList(); // Handle the exception appropriately
+        for (Map<String, Object> playlist : playlistList) {
+            PlaylistTO playlistTO = Mapper.toPlaylistTO(playlist);
+            playlistTOs.add(playlistTO);
         }
+
+        return playlistTOs;
     }
 
     public List<AlbumTO> getAlbums(String query) {
         String url = DEEZER_API_URL + "search/album?q=" + query;
 
-        ResponseEntity<String> responseEntity = this.DEEZER_API_REQUESTER.makeApiRequest(url);
-        ObjectMapper objectMapper = new ObjectMapper();
+        ResponseEntity<String> responseAlbums = this.DEEZER_API_REQUESTER.makeApiRequest(url);
+        Map<String, Object> jsonMap = getMapFrom(responseAlbums);
+        List<Map<String, Object>> albumList = (List<Map<String, Object>>) jsonMap.get("data");
+        List<AlbumTO> albumTOs = new ArrayList<>();
 
-        try {
-            Map<String, Object> jsonMap = objectMapper.readValue(responseEntity.getBody(), new TypeReference<Map<String, Object>>() {
-            });
-            List<Map<String, Object>> albumList = (List<Map<String, Object>>) jsonMap.get("data");
-            List<AlbumTO> albumTOs = new ArrayList<>();
-
-            for (Map<String, Object> albumMap : albumList) {
-                AlbumTO albumTO = Mapper.toAlbumTO(albumMap);
-                albumTOs.add(albumTO);
-            }
-
-            return albumTOs;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return Collections.emptyList(); // Handle the exception appropriately
+        for (Map<String, Object> albumMap : albumList) {
+            AlbumTO albumTO = Mapper.toAlbumTO(albumMap);
+            albumTOs.add(albumTO);
         }
 
+        return albumTOs;
     }
 
-    public List<UserTO> getUsers(String query) {
-        String url = DEEZER_API_URL + "search/user?q=" + query;
-
-        ResponseEntity<String> responseEntity = this.DEEZER_API_REQUESTER.makeApiRequest(url);
-        ObjectMapper objectMapper = new ObjectMapper();
-
+    private Map<String, Object> getMapFrom(ResponseEntity<String> responseEntity) {
         try {
-            Map<String, Object> jsonMap = objectMapper.readValue(responseEntity.getBody(), new TypeReference<Map<String, Object>>() {
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.readValue(responseEntity.getBody(), new TypeReference<Map<String, Object>>() {
             });
-            List<Map<String, Object>> userList = (List<Map<String, Object>>) jsonMap.get("data");
-            List<UserTO> userTOs = new ArrayList<>();
-
-            for (Map<String, Object> userMap : userList) {
-                UserTO userTOTO = Mapper.toUserTO(userMap);
-                userTOs.add(userTOTO);
-            }
-
-            return userTOs;
         } catch (IOException e) {
             e.printStackTrace();
-            return Collections.emptyList(); // Handle the exception appropriately
+            return null;
         }
     }
-
-    //TODO
-    //public List<TrackTO> getTracksFromPlaylist()
-
 }

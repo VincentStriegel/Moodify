@@ -25,6 +25,24 @@ public class MusicController {
         return apiService.getTrack(trackId);
     }
 
+    @GetMapping({"artist/{artistId}"})
+    @ResponseStatus(HttpStatus.OK)
+    public ArtistTO getArtist(@PathVariable("artistId") long artistId){
+        return apiService.getArtist(artistId);
+    }
+
+    @GetMapping({"artist/{playlistId}"})
+    @ResponseStatus(HttpStatus.OK)
+    public PlaylistTO getPlaylist(@PathVariable("playlistId") long playlistId){
+        return apiService.getPlaylist(playlistId);
+    }
+
+    @GetMapping({"album/{albumId}"})
+    @ResponseStatus(HttpStatus.OK)
+    public AlbumTO getAlbum(@PathVariable("albumId") long albumId){
+        return apiService.getAlbum(albumId);
+    }
+
     @GetMapping({"search/{searchQuery}"})
     @ResponseStatus(HttpStatus.OK)
     public List<TrackTO> search(@PathVariable ("searchQuery") String query){
@@ -48,13 +66,5 @@ public class MusicController {
     public List<PlaylistTO> searchPlaylist(@PathVariable ("searchQuery") String query){
         return apiService.getPlaylists(query);
     }
-
-    @GetMapping({"user/{searchQuery}"})
-    @ResponseStatus(HttpStatus.OK)
-    public List<UserTO> searchUser(@PathVariable ("searchQuery") String query){
-        return apiService.getUsers(query);
-    }
-
-
 
 }

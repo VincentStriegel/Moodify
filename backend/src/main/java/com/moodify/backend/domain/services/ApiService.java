@@ -15,7 +15,4 @@ public interface ApiService {
 
     List<PlaylistTO> getPlaylists(String query);
 
-    List<UserTO> getUsers(String query);
-
-
 }

@@ -1,6 +1,14 @@
 package com.moodify.backend.api.transferobjects;
 
-public class PlaylistTO {
+import java.util.ArrayList;
+import java.util.List;
+
+public class PlaylistTO implements Cloneable {
+
+    public PlaylistTO() {
+        this.trackTOList = new ArrayList<TrackTO>();
+    }
+
     private int id;
     private String title;
 
@@ -12,7 +20,7 @@ public class PlaylistTO {
 
     private int number_of_songs;
 
-    private String track_list;
+    private List<TrackTO> trackTOList;
 
     public int getId() {
         return id;
@@ -62,14 +70,37 @@ public class PlaylistTO {
         this.number_of_songs = number_of_songs;
     }
 
-    public String getTrack_list() {
-        return track_list;
+    public List<TrackTO> getTrack_list() {
+        List<TrackTO> copy = new ArrayList<TrackTO>();
+        for(TrackTO trackTO: this.trackTOList){
+            copy.add(trackTO.clone());
+        }
+        return copy;
     }
 
-    public void setTrack_list(String track_list) {
-        this.track_list = track_list;
+    public void setTrackTOList(List<TrackTO> track_list) {
+        this.trackTOList = track_list;
     }
 
+    @Override
+    public PlaylistTO clone() {
+        try {
+            PlaylistTO clone = (PlaylistTO) super.clone();
+            clone.id = this.id;
+            clone.title = this.title;
+            clone.picture_small = this.picture_small;
+            clone.picture_medium = this.picture_medium;
+            clone.picture_big = this.picture_big;
+            clone.number_of_songs = this.number_of_songs;
+            clone.trackTOList = new ArrayList<TrackTO>();
+            for(TrackTO trackTO: this.trackTOList){
+                clone.trackTOList.add(trackTO.clone());
+            }
 
-
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace(); // Handle the exception appropriately
+            return null;
+        }
+    }
 }

@@ -2,6 +2,8 @@ package com.moodify.backend.domain.services;
 
 import com.moodify.backend.api.transferobjects.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class Mapper {
@@ -19,15 +21,16 @@ public class Mapper {
         return trackTO;
     }
 
-    public static AlbumTO toAlbumTO(Map<String, Object> albumMap) {
-        AlbumTO albumTO = new AlbumTO();
-        albumTO.setId(((Number) albumMap.get("id")).intValue());
-        albumTO.setTitle((String) albumMap.get("title"));
-        albumTO.setCover_small((String) albumMap.get("cover_small"));
-        albumTO.setCover_big((String) albumMap.get("cover_big"));
-        albumTO.setRelease_date((String) albumMap.get("release_date"));
+    public static ArtistTO toArtistTO(Map<String, Object> artistMap, List<Map<String, Object>> tracksList) {
+        ArtistTO artistTO = toArtistTO(artistMap);
+        List<TrackTO> artistTracklist = new ArrayList<TrackTO>();
+        for (Map<String, Object> track : tracksList) {
+            TrackTO trackTO = Mapper.toTrackTO(track);
+            artistTracklist.add(trackTO);
+        }
+        artistTO.setTrackTOList(artistTracklist);
 
-        return albumTO;
+        return artistTO;
     }
 
     public static ArtistTO toArtistTO(Map<String, Object> artistMap) {
@@ -41,6 +44,31 @@ public class Mapper {
         return artistTO;
     }
 
+    public static AlbumTO toAlbumTO(Map<String, Object> albumMap) {
+        AlbumTO albumTO = new AlbumTO();
+        albumTO.setId(((Number) albumMap.get("id")).intValue());
+        albumTO.setTitle((String) albumMap.get("title"));
+        albumTO.setCover_small((String) albumMap.get("cover_small"));
+        albumTO.setCover_big((String) albumMap.get("cover_big"));
+        albumTO.setRelease_date((String) albumMap.get("release_date"));
+
+        return albumTO;
+    }
+
+    public static AlbumTO toAlbumTO(Map<String, Object> albumMap, List<Map<String, Object>> trackList) {
+        AlbumTO albumTO = toAlbumTO(albumMap);
+
+        List<TrackTO> albumTracklist = new ArrayList<TrackTO>();
+        for (Map<String, Object> track : trackList) {
+            TrackTO trackTO = Mapper.toTrackTO(track);
+            albumTracklist.add(trackTO);
+        }
+        albumTO.setTrackTOList(albumTracklist);
+
+        return albumTO;
+    }
+
+
     public static PlaylistTO toPlaylistTO(Map<String, Object> playlistMap) {
         PlaylistTO playlistTO = new PlaylistTO();
 
@@ -50,19 +78,22 @@ public class Mapper {
         playlistTO.setPicture_medium((String) playlistMap.get("picture_medium"));
         playlistTO.setPicture_big((String) playlistMap.get("picture_big"));
         playlistTO.setNumber_of_songs(((Number) playlistMap.get("nb_tracks")).intValue());
-        playlistTO.setTrack_list((String) playlistMap.get("tracklist"));
+
 
         return playlistTO;
     }
 
-    public static UserTO toUserTO(Map<String, Object> artistMap) {
-        UserTO userTO = new UserTO();
-        userTO.setId(((Number) artistMap.get("id")).intValue());
-        userTO.setName((String) artistMap.get("name"));
-        userTO.setPicture_small((String) artistMap.get("picture_small"));
-        userTO.setPicture_big((String) artistMap.get("picture_big"));
+    public static PlaylistTO toPlaylistTO(Map<String, Object> playlistMap, List<Map<String, Object>> tracklist) {
+        PlaylistTO playlistTO = toPlaylistTO(playlistMap);
 
+        List<TrackTO> playlistTracklist = new ArrayList<TrackTO>();
+        for (Map<String, Object> track : tracklist) {
+            TrackTO trackTO = Mapper.toTrackTO(track);
+            playlistTracklist.add(trackTO);
+        }
+        playlistTO.setTrackTOList(playlistTracklist);
 
-        return userTO;
+        return playlistTO;
     }
+
 }
