@@ -10,7 +10,7 @@ describe('LandingPageComponent', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             declarations: [LandingPageComponent],
-            imports: [HttpClientModule]
+            imports: [HttpClientModule],
         });
         fixture = TestBed.createComponent(LandingPageComponent);
         component = fixture.componentInstance;

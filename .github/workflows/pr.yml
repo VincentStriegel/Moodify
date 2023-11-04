@@ -1,4 +1,4 @@
-name: Tests
+name: Checks
 
 on:
   pull_request:
@@ -9,7 +9,7 @@ on:
       - ready_for_review
 
 jobs:
-  test-frontend:
+  Check-frontend:
     runs-on: ubuntu-latest
 
     steps:
@@ -27,8 +27,8 @@ jobs:
           npm ci
           npm test
           npm run lint-ci
-          
-  test-backend:
+
+  Check-backend:
     runs-on: ubuntu-latest
 
     steps:

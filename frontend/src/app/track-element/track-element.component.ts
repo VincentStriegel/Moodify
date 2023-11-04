@@ -15,9 +15,7 @@ export class TrackElementComponent {
 
     constructor(private musicPlayerService: MusicPlayerService) {}
 
-    ngOnInit(): void {
-        
-    }
+    ngOnInit(): void {}
 
     togglePlay() {
         //this.isPlaying = !this.isPlaying;
