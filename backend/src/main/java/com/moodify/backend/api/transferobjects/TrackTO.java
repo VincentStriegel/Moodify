@@ -1,6 +1,8 @@
 package com.moodify.backend.api.transferobjects;
 
+
 public class TrackTO implements Cloneable {
+
     private long id;
 
     private String title;
@@ -84,15 +86,15 @@ public class TrackTO implements Cloneable {
 
     @Override
     public String toString() {
-        return "TrackTO{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", duration=" + duration +
-                ", preview='" + preview + '\'' +
-                ", release_date='" + release_date + '\'' +
-                ", artist=" + artist +
-                ", album=" + album +
-                '}';
+        return "TrackTO{"
+                + "id=" + id
+                + ", title='" + title + '\''
+                + ", duration=" + duration
+                + ", preview='" + preview + '\''
+                + ", release_date='" + release_date + '\''
+                + ", artist=" + artist
+                + ", album=" + album
+                + '}';
     }
 
     @Override

@@ -2,5 +2,5 @@
 
 export const environment = {
     production: false,
-    apiServerURL: '/api'
-}
+    apiServerURL: '/api',
+};

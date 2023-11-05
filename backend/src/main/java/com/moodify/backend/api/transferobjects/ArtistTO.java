@@ -47,7 +47,6 @@ public class ArtistTO implements Cloneable {
         this.albumTOList = albumTOList;
     }
 
-
     public int getId() {
         return id;
     }
@@ -79,7 +78,7 @@ public class ArtistTO implements Cloneable {
     public void setPicture_big(String picture_big) {
         this.picture_big = picture_big;
     }
-
+  
     @Override
     public ArtistTO clone() {
         try {

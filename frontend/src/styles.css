@@ -1,1 +1,23 @@
-/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import 'material-icons/iconfont/material-icons.css';
+
+mat-slider {
+    width: 100% !important;
+    margin: 0 !important;
+}
+mat-slider-visual-thumb {
+    visibility: hidden;
+    width: 10px;
+}
+
+mat-slider:hover mat-slider-visual-thumb {
+    visibility: visible;
+}
+mat-slider input {
+    width: 100% !important;
+    left: 0 !important; 
+}
+

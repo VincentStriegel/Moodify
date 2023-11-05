@@ -66,5 +66,4 @@ public class MusicController {
     public List<PlaylistTO> searchPlaylist(@PathVariable ("searchQuery") String query){
         return apiService.getPlaylists(query);
     }
-
 }

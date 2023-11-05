@@ -1,5 +1,5 @@
-import { AlbumTO } from "./albumTO";
-import { ArtistTO } from "./artistTO";
+import { AlbumTO } from './albumTO';
+import { ArtistTO } from './artistTO';
 
 export type TrackTO = {
     id: number;
@@ -20,4 +20,4 @@ export type TrackTO = {
     artist: ArtistTO;
 
     album: AlbumTO;
-}
+};
