@@ -1,4 +1,4 @@
-<div *ngIf="track" class="grid grid-cols-6 md:w-[50em] w-[30em] p-2">
+<div *ngIf="track" class="grid grid-cols-6 md:w-[45em] w-[30em] p-2">
     <div class="justify-self-end mr-1">
         <img (click)="togglePlay()"  class="w-20 h-20" src="{{ track.album.cover_big ? track.album.cover_big : 'assets/placeholder.jpg' }}" alt="Track cover">
     </div>
