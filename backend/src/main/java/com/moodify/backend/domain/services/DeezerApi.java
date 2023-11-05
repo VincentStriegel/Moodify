@@ -17,7 +17,7 @@ import java.util.Map;
 @Component
 public class DeezerApi implements ApiService {
     private final DeezerApiRequester DEEZER_API_REQUESTER;
-    private final String DEEZER_API_URL = "https://deezerdevs-deezer.p.rapidapi.com/";
+    private final String DEEZER_API_URL = "https://api.deezer.com/";
 
     @Autowired
     public DeezerApi(DeezerApiRequester DEEZER_API_REQUESTER) {
@@ -45,7 +45,9 @@ public class DeezerApi implements ApiService {
         String url = DEEZER_API_URL + "album/" + id;
 
         ResponseEntity<String> responseAlbum = this.DEEZER_API_REQUESTER.makeApiRequest(url);
+
         Map<String, Object> albumMap = getMapFrom(responseAlbum);
+
 
         String trackListURL = (String) albumMap.get("tracklist");
         ResponseEntity<String> responseTrackList = this.DEEZER_API_REQUESTER.makeApiRequest(trackListURL);
@@ -69,8 +71,14 @@ public class DeezerApi implements ApiService {
         Map<String, Object> trackListMap = getMapFrom(responseTrackList);
         List<Map<String, Object>> tracksList = (List<Map<String, Object>>) trackListMap.get("data");
 
+        String albumListURL = url + "/albums";
+        ResponseEntity<String> responseAlbumList = this.DEEZER_API_REQUESTER.makeApiRequest(albumListURL);
+        Map<String, Object> albumListMap = getMapFrom(responseAlbumList);
+        List<Map<String, Object>> albumList = (List<Map<String, Object>>) albumListMap.get("data");
 
-        ArtistTO artistTO = Mapper.toArtistTO(artistMap, tracksList);
+
+        ArtistTO artistTO = Mapper.toArtistTO(artistMap, tracksList, albumList);
+
 
         return artistTO;
 

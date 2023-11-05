@@ -14,8 +14,13 @@ public class ArtistTO implements Cloneable {
 
     private List<TrackTO> trackTOList;
 
+    private List<AlbumTO> albumTOList;
+
+
     public ArtistTO() {
         this.trackTOList = new ArrayList<TrackTO>();
+        this.albumTOList = new ArrayList<AlbumTO>();
+
     }
 
     public List<TrackTO> getTrackTOList() {
@@ -29,6 +34,19 @@ public class ArtistTO implements Cloneable {
     public void setTrackTOList(List<TrackTO> trackTOList) {
         this.trackTOList = trackTOList;
     }
+
+    public List<AlbumTO> getAlbumTOList() {
+        List<AlbumTO> copy = new ArrayList<AlbumTO>();
+        for(AlbumTO albumTO: this.albumTOList){
+            copy.add(albumTO.clone());
+        }
+        return copy;
+    }
+
+    public void setAlbumTOList(List<AlbumTO> albumTOList) {
+        this.albumTOList = albumTOList;
+    }
+
 
     public int getId() {
         return id;
