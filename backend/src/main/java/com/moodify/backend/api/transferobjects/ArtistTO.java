@@ -25,7 +25,7 @@ public class ArtistTO implements Cloneable {
 
     public List<TrackTO> getTrackTOList() {
         List<TrackTO> copy = new ArrayList<TrackTO>();
-        for(TrackTO trackTO: this.trackTOList){
+        for (TrackTO trackTO: this.trackTOList) {
             copy.add(trackTO.clone());
         }
         return copy;
@@ -37,7 +37,7 @@ public class ArtistTO implements Cloneable {
 
     public List<AlbumTO> getAlbumTOList() {
         List<AlbumTO> copy = new ArrayList<AlbumTO>();
-        for(AlbumTO albumTO: this.albumTOList){
+        for (AlbumTO albumTO: this.albumTOList) {
             copy.add(albumTO.clone());
         }
         return copy;
@@ -78,7 +78,7 @@ public class ArtistTO implements Cloneable {
     public void setPicture_big(String picture_big) {
         this.picture_big = picture_big;
     }
-  
+
     @Override
     public ArtistTO clone() {
         try {

@@ -15,55 +15,55 @@ public class MusicController {
     private final DeezerApi apiService;
 
     @Autowired
-    public MusicController(DeezerApi apiService){
+    public MusicController(DeezerApi apiService) {
         this.apiService = apiService;
     }
 
     @GetMapping({"track/{trackId}"})
     @ResponseStatus(HttpStatus.OK)
-    public TrackTO getTrack(@PathVariable("trackId") long trackId){
+    public TrackTO getTrack(@PathVariable("trackId") long trackId) {
         return apiService.getTrack(trackId);
     }
 
     @GetMapping({"artist/{artistId}"})
     @ResponseStatus(HttpStatus.OK)
-    public ArtistTO getArtist(@PathVariable("artistId") long artistId){
+    public ArtistTO getArtist(@PathVariable("artistId") long artistId) {
         return apiService.getArtist(artistId);
     }
 
     @GetMapping({"playlist/{playlistId}"})
     @ResponseStatus(HttpStatus.OK)
-    public PlaylistTO getPlaylist(@PathVariable("playlistId") long playlistId){
+    public PlaylistTO getPlaylist(@PathVariable("playlistId") long playlistId) {
         return apiService.getPlaylist(playlistId);
     }
 
     @GetMapping({"album/{albumId}"})
     @ResponseStatus(HttpStatus.OK)
-    public AlbumTO getAlbum(@PathVariable("albumId") long albumId){
+    public AlbumTO getAlbum(@PathVariable("albumId") long albumId) {
         return apiService.getAlbum(albumId);
     }
 
     @GetMapping({"search/{searchQuery}"})
     @ResponseStatus(HttpStatus.OK)
-    public List<TrackTO> search(@PathVariable ("searchQuery") String query){
+    public List<TrackTO> search(@PathVariable ("searchQuery") String query) {
         return apiService.getTrackSearch(query);
     }
 
     @GetMapping({"albums/{searchQuery}"})
     @ResponseStatus(HttpStatus.OK)
-    public List<AlbumTO> searchAlbum(@PathVariable ("searchQuery") String query){
+    public List<AlbumTO> searchAlbum(@PathVariable ("searchQuery") String query) {
         return apiService.getAlbums(query);
     }
 
     @GetMapping({"artists/{searchQuery}"})
     @ResponseStatus(HttpStatus.OK)
-    public List<ArtistTO> searchArtist(@PathVariable ("searchQuery") String query){
+    public List<ArtistTO> searchArtist(@PathVariable ("searchQuery") String query) {
         return apiService.getArtists(query);
     }
 
     @GetMapping({"playlists/{searchQuery}"})
     @ResponseStatus(HttpStatus.OK)
-    public List<PlaylistTO> searchPlaylist(@PathVariable ("searchQuery") String query){
+    public List<PlaylistTO> searchPlaylist(@PathVariable ("searchQuery") String query) {
         return apiService.getPlaylists(query);
     }
 }

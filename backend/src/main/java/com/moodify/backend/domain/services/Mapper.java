@@ -39,6 +39,7 @@ public class Mapper {
 
         return artistTO;
     }
+
     public static ArtistTO toArtistTO(Map<String, Object> artistMap, List<Map<String, Object>> tracksList) {
         ArtistTO artistTO = toArtistTO(artistMap);
         List<TrackTO> artistTracklist = new ArrayList<TrackTO>();
@@ -88,7 +89,6 @@ public class Mapper {
 
         return albumTO;
     }
-
 
     public static PlaylistTO toPlaylistTO(Map<String, Object> playlistMap) {
         PlaylistTO playlistTO = new PlaylistTO();

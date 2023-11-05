@@ -1,6 +1,5 @@
 package com.moodify.backend.api.transferobjects;
 
-
 public class TrackTO implements Cloneable {
 
     private long id;
@@ -82,8 +81,6 @@ public class TrackTO implements Cloneable {
         this.album = album;
     }
 
-
-
     @Override
     public String toString() {
         return "TrackTO{"
@@ -102,7 +99,7 @@ public class TrackTO implements Cloneable {
         try {
             TrackTO clone = (TrackTO) super.clone();
             clone.id = this.id;
-            clone.title =this.title;
+            clone.title = this.title;
             clone.duration = this.duration;
             clone.preview = this.preview;
             clone.release_date = this.release_date;

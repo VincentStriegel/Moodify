@@ -72,7 +72,7 @@ public class PlaylistTO implements Cloneable {
 
     public List<TrackTO> getTrack_list() {
         List<TrackTO> copy = new ArrayList<TrackTO>();
-        for(TrackTO trackTO: this.trackTOList){
+        for (TrackTO trackTO: this.trackTOList) {
             copy.add(trackTO.clone());
         }
         return copy;
@@ -93,7 +93,7 @@ public class PlaylistTO implements Cloneable {
             clone.picture_big = this.picture_big;
             clone.number_of_songs = this.number_of_songs;
             clone.trackTOList = new ArrayList<TrackTO>();
-            for(TrackTO trackTO: this.trackTOList){
+            for (TrackTO trackTO: this.trackTOList) {
                 clone.trackTOList.add(trackTO.clone());
             }
 

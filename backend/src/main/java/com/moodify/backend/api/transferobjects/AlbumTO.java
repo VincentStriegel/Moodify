@@ -62,9 +62,11 @@ public class AlbumTO implements Cloneable {
 
     public List<TrackTO> getTrackTOList() {
         List<TrackTO> copy = new ArrayList<TrackTO>();
-        for(TrackTO trackTO: this.trackTOList){
+
+        for (TrackTO trackTO: this.trackTOList) {
             copy.add(trackTO.clone());
         }
+
         return copy;
     }
 
@@ -76,7 +78,7 @@ public class AlbumTO implements Cloneable {
     public AlbumTO clone() {
         try {
             AlbumTO clone = (AlbumTO) super.clone();
-            clone.id =this.id;
+            clone.id = this.id;
             clone.title = this.title;
             clone.cover_small = this.cover_small;
             clone.cover_big = this.cover_big;
