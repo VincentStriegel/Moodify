@@ -1,6 +1,7 @@
 package com.moodify.backend.api.transferobjects;
 
-public class TrackTO {
+public class TrackTO implements Cloneable {
+
     private long id;
 
     private String title;
@@ -91,5 +92,24 @@ public class TrackTO {
                 + ", artist=" + artist
                 + ", album=" + album
                 + '}';
+    }
+
+    @Override
+    public TrackTO clone() {
+        try {
+            TrackTO clone = (TrackTO) super.clone();
+            clone.id = this.id;
+            clone.title = this.title;
+            clone.duration = this.duration;
+            clone.preview = this.preview;
+            clone.release_date = this.release_date;
+            clone.artist = this.artist;
+            clone.album = this.album;
+
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace(); // Handle the exception appropriately
+            return null;
+        }
     }
 }
