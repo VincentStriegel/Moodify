@@ -19,6 +19,8 @@ export class MusicPlayerComponent {
     volumeSymbol = 'volume_up';
     volumeMute = false;
     currentVolume = 1;
+    repeat = false;
+    isFavorite = false;
 
     constructor(private musicPlayerService: MusicPlayerService) {
         this.musicPlayerService.nextTrack$.subscribe((track) => {
@@ -35,7 +37,12 @@ export class MusicPlayerComponent {
                 this.audio.addEventListener('timeupdate', () => {
                     this.progress = (this.audio.currentTime / this.audio.duration) * 100;
                     if (this.progress === 100) {
-                        this.isPlaying = false;
+                        if (this.repeat) {
+                            this.audio.currentTime = 0;
+                            this.audio.play();
+                        } else {
+                            this.isPlaying = false;
+                        }
                     }
                 });
                 this.togglePlay();
@@ -50,7 +57,10 @@ export class MusicPlayerComponent {
 
     toggleShuffle() {
         this.isShuffle = !this.isShuffle;
-        // Implement shuffle logic here.
+    }
+
+    toggleRepeat() {
+        this.repeat = !this.repeat;
     }
 
     skip() {

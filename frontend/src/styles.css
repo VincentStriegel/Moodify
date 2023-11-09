@@ -21,3 +21,16 @@ mat-slider input {
     left: 0 !important; 
 }
 
+.overflow-y-auto::-webkit-scrollbar , .flex::-webkit-scrollbar {
+    background: #333; /* scrollbar track background */
+    height: 8px; /* height for horizontal scrollbars */
+    width: 8px; /* width for vertical scrollbars */
+  }
+  
+  /* This will style the scrollbar thumb (the part that you drag) */
+  .overflow-y-auto::-webkit-scrollbar-thumb, .flex::-webkit-scrollbar-thumb {
+    background: #663dff; /* scrollbar thumb color */
+    border-radius: 20px;
+  }
+  
+

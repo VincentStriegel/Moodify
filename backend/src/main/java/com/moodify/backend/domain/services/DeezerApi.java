@@ -64,7 +64,7 @@ public class DeezerApi implements ApiService {
         Map<String, Object> artistMap = getMapFrom(responseArtist);
 
         String trackListURL = (String) artistMap.get("tracklist");
-        ResponseEntity<String> responseTrackList = this.DEEZER_API_REQUESTER.makeApiRequest(trackListURL);
+        ResponseEntity<String> responseTrackList = this.DEEZER_API_REQUESTER.makeApiRequest(trackListURL + "0");
         Map<String, Object> trackListMap = getMapFrom(responseTrackList);
         List<Map<String, Object>> tracksList = (List<Map<String, Object>>) trackListMap.get("data");
 
