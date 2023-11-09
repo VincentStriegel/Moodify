@@ -61,3 +61,15 @@ First set an environment variable of deezerApiKey with the value being the API k
 Use Maven to install the dependencies 
 
 Then Run the BackendApplication, if the application successfully starts the backend will be available at: http://localhost:8080/
+
+### Database
+
+---
+
+First set an environment variable of deezerApiKey with the value being the API key.
+Second set an environment variable of:
+databaseUser = moodify
+databasePassword = moodify
+databaseName=moodifyDb
+
+Then Run the BackendApplication, if the application successfully starts the backend will be available at: http://localhost:/5432/

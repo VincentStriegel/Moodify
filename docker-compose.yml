@@ -20,3 +20,18 @@ services:
     restart: unless-stopped 
     env_file:
       - .env.dev
+
+  database:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: moodify
+      POSTGRES_PASSWORD: moodify
+      POSTGRES_DB: moodifyDb
+    volumes:
+       - ./database/data:/var/lib/postgresql/data
+    ports:
+        - "5432:5432"
+    env_file:
+      - .env.dev
+    restart: unless-stopped 
+      
