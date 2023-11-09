@@ -17,12 +17,13 @@ public class BackendApplication {
 
 	@Bean
 	public WebMvcConfigurer corsConfigurer() {
-		String[] allowDomains = new String[5];
+		String[] allowDomains = new String[6];
 		allowDomains[0] = "http://localhost:80";
 		allowDomains[1] = "http://localhost:8080";
 		allowDomains[2] = "http://localhost";
 		allowDomains[3] = "http://localhost:4200";
 		allowDomains[4] = "https://moodify-srse.onrender.com";
+		allowDomains[5] = "http://localhost:5432";
 
 		System.out.println("CORS configuration....");
 		return new WebMvcConfigurer() {
