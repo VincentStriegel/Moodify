@@ -69,4 +69,4 @@ Then Run the BackendApplication, if the application successfully starts the back
 First set an environment variable of deezerApiKey with the value being the API key.
 Second set an environment variable of databaseUser = moodify, databasePassword = moodify, databaseName=moodifyDb
 
-Then Run the BackendApplication, if the application successfully starts the backend will be available at: http://localhost:/5432/
+Then Run the BackendApplication, if the application successfully starts the database will be available at: http://localhost:/5432/
