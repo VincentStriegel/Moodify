@@ -12,6 +12,8 @@ import { MatSliderModule } from '@angular/material/slider';
 import { FormsModule } from '@angular/forms';
 import { TrackElementComponent } from './track-element/track-element.component';
 import { SearchResultComponent } from './search-result/search-result.component';
+import { MatChipsModule } from '@angular/material/chips';
+import { ArtistProfileComponent } from './artist-profile/artist-profile.component';
 
 @NgModule({
     declarations: [
@@ -21,8 +23,17 @@ import { SearchResultComponent } from './search-result/search-result.component';
         MusicPlayerComponent,
         TrackElementComponent,
         SearchResultComponent,
+        ArtistProfileComponent,
     ],
-    imports: [BrowserModule, AppRoutingModule, HttpClientModule, MatProgressBarModule, MatSliderModule, FormsModule],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        MatProgressBarModule,
+        MatSliderModule,
+        FormsModule,
+        MatChipsModule,
+    ],
     providers: [],
     bootstrap: [AppComponent],
 })

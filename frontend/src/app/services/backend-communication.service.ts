@@ -3,6 +3,9 @@ import { Injectable } from '@angular/core';
 import { Observable, shareReplay } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { TrackTO } from '../types/trackTO';
+import { AlbumTO } from '../types/albumTO';
+import { ArtistTO } from '../types/artistTO';
+import { PlaylistTO } from '../types/playlistTO';
 
 @Injectable({
     providedIn: 'root',
@@ -15,7 +18,27 @@ export class BackendCommunicationService {
         return this.http.get<TrackTO>(`${this.apiServerURL}/music/track/${songId}`).pipe(shareReplay(1));
     }
 
-    getSearchResults(searchQuery: string): Observable<TrackTO[]> {
-        return this.http.get<TrackTO[]>(`${this.apiServerURL}/music/search/${searchQuery}`).pipe(shareReplay(1));
+    getArtist(artistId: number): Observable<ArtistTO> {
+        return this.http.get<ArtistTO>(`${this.apiServerURL}/music/artist/${artistId}`).pipe(shareReplay(1));
+    }
+
+    getSearchResultsTracks(searchQuery: string): Observable<TrackTO[]> {
+        return this.http.get<TrackTO[]>(`${this.apiServerURL}/music/search/tracks/${searchQuery}`).pipe(shareReplay(1));
+    }
+
+    getSearchResultsAlbums(searchQuery: string): Observable<AlbumTO[]> {
+        return this.http.get<AlbumTO[]>(`${this.apiServerURL}/music/search/albums/${searchQuery}`).pipe(shareReplay(1));
+    }
+
+    getSearchResultsArtists(searchQuery: string): Observable<ArtistTO[]> {
+        return this.http
+            .get<ArtistTO[]>(`${this.apiServerURL}/music/search/artists/${searchQuery}`)
+            .pipe(shareReplay(1));
+    }
+
+    getSearchResultsPlaylists(searchQuery: string): Observable<PlaylistTO[]> {
+        return this.http
+            .get<PlaylistTO[]>(`${this.apiServerURL}/music/search/playlists/${searchQuery}`)
+            .pipe(shareReplay(1));
     }
 }

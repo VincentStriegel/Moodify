@@ -37,11 +37,11 @@ export class MusicPlayerComponent {
                 this.audio.addEventListener('timeupdate', () => {
                     this.progress = (this.audio.currentTime / this.audio.duration) * 100;
                     if (this.progress === 100) {
-                        if(this.repeat){
+                        if (this.repeat) {
                             this.audio.currentTime = 0;
                             this.audio.play();
                         } else {
-                           this.isPlaying = false
+                            this.isPlaying = false;
                         }
                     }
                 });
