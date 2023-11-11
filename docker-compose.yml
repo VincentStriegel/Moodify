@@ -24,8 +24,8 @@ services:
   database:
     image: postgres
     environment:
-      POSTGRES_USER: databaseUser
-      POSTGRES_PASSWORD: databasePassword
+      POSTGRES_USER: moodify
+      POSTGRES_PASSWORD: moodify
       POSTGRES_DB: moodifyDb
     volumes:
        - ./database/data:/var/lib/postgresql/data
