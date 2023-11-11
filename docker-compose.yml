@@ -22,10 +22,10 @@ services:
       - .env.dev
 
   database:
-    image: postgres:latest
+    image: postgres
     environment:
-      POSTGRES_USER: moodify
-      POSTGRES_PASSWORD: moodify
+      POSTGRES_USER: databaseUser
+      POSTGRES_PASSWORD: databasePassword
       POSTGRES_DB: moodifyDb
     volumes:
        - ./database/data:/var/lib/postgresql/data
