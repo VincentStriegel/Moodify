@@ -6,6 +6,8 @@ import java.util.List;
 public class AlbumTO implements Cloneable {
     private int id;
 
+    private int number_of_songs;
+
     private String title;
 
     private String cover_small;
@@ -44,6 +46,14 @@ public class AlbumTO implements Cloneable {
         this.cover_small = cover_small;
     }
 
+    public int getNumber_of_songs() {
+        return number_of_songs;
+    }
+
+    public void setNumber_of_songs(int number_of_songs) {
+        this.number_of_songs = number_of_songs;
+    }
+
     public String getCover_big() {
         return cover_big;
     }
@@ -79,6 +89,7 @@ public class AlbumTO implements Cloneable {
         try {
             AlbumTO clone = (AlbumTO) super.clone();
             clone.id = this.id;
+            clone.number_of_songs = this.number_of_songs;
             clone.title = this.title;
             clone.cover_small = this.cover_small;
             clone.cover_big = this.cover_big;

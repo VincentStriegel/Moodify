@@ -1,6 +1,7 @@
 <div class="pb-10 bg-zinc-800 min-h-[100vh]">
     <div class="flex justify-center mb-12 w-[100%]">
-        <div class="mx-auto fixed flex flex-wrap gap-2 z-50 bg-zinc-900 overflow-hidden p-2 justify-center w-full pl-4 pr-4">
+        <div
+            class="mx-auto fixed flex flex-wrap gap-2 z-50 bg-zinc-900 overflow-hidden p-2 justify-center w-full pl-4 pr-4">
 
             <button
                 [ngClass]="showArtists && showSongs ? 'rounded-lg text-black bg-white h-8 px-3' : 'rounded-lg text-white bg-black h-8 px-3'"
@@ -34,13 +35,8 @@
             <h2 class="text-white font-bold h-16 text-2xl text-left">Artists</h2>
             <div
                 [ngClass]="showArtists && !showSongs ? 'flex flex-wrap justify-center' : 'flex flex-nowrap overflow-x-auto overflow-y-hidden'">
-                <div class="flex-shrink-0 hover:scale-110 hover:grayscale hover:shadow-inner"
-                    *ngFor="let artist of artists">
-                    <button class="w-40 h-[220px] p-4 m-4 bg-zinc-900" (click)="goToArtistProfile(artist.id)"
-                        *ngIf="artist.picture_big != 'https://e-cdns-images.dzcdn.net/images/artist//500x500-000000-80-0-0.jpg'">
-                        <img class="w-30 h-30 object-cover rounded-lg" src="{{artist.picture_big}}" alt="Artist">
-                        <div class="w-30 text-white">{{artist.name}}</div>
-                    </button>
+                <div *ngFor="let artist of artists">
+                    <app-collection-element [artist]="artist"></app-collection-element>
                 </div>
             </div>
         </div>
@@ -49,20 +45,15 @@
             <h2 class="text-white font-bold h-16 text-2xl text-left">Albums</h2>
             <div
                 [ngClass]="showAlbums && !showSongs ? 'flex flex-wrap justify-center' : 'flex flex-nowrap overflow-x-auto overflow-y-hidden'">
-                <div class="flex-shrink-0 hover:scale-110 hover:grayscale hover:shadow-inner"
-                    *ngFor="let album of albums">
-                    <div class="w-40 h-[250px] p-4 m-4 bg-zinc-900 flex flex-col justify-between">
-                        <img class="w-30 h-30 object-cover mb-2" src="{{album.cover_big}}" alt="Artist">
-                        <div class="w-30 text-white text-ellipsis overflow-hidden h-[20%]">{{album.title}}</div>
-                    </div>
+                <div *ngFor="let album of albums">
+                    <app-collection-element [album]="album"></app-collection-element>
                 </div>
             </div>
         </div>
 
         <div *ngIf="showSongs" class="w-[100%] mt-5 col-span-3">
             <h2 class="text-white font-bold h-16 text-left text-2xl">Songs</h2>
-            <div 
-            [ngClass]="showSongs && showPlaylists ? 'overflow-y-auto h-[50vh]' : ''">
+            <div [ngClass]="showSongs && showPlaylists ? 'overflow-y-auto h-[50vh]' : ''">
                 <div *ngFor="let track of tracks">
                     <app-track-element [track]="track"></app-track-element>
                 </div>
@@ -73,12 +64,9 @@
             <h2 class="text-white font-bold h-16 text-2xl text-left">Playlists</h2>
             <div
                 [ngClass]="showPlaylists && !showSongs ? 'flex flex-wrap justify-center' : 'flex flex-nowrap overflow-x-auto overflow-y-hidden'">
-                <div class="flex-shrink-0 hover:scale-110 hover:grayscale hover:shadow-inner"
+                <div
                     *ngFor="let playlist of playlists">
-                    <div class="w-40 h-[250px] p-4 m-4 bg-zinc-900 flex flex-col justify-between">
-                        <img class="w-30 h-30 object-cover mb-2" src="{{playlist.picture_big}}" alt="Artist">
-                        <div class="w-30 text-white text-ellipsis overflow-hidden h-[20%]">{{playlist.title}}</div>
-                    </div>
+                    <app-collection-element [playlist]="playlist"></app-collection-element>
                 </div>
             </div>
         </div>

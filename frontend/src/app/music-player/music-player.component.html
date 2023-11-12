@@ -14,6 +14,10 @@
             <button class="text-white" (click)="toggleRepeat()">
                 <span class="material-icons-outlined">{{ repeat ? 'repeat_one_on' : 'repeat' }}</span>
             </button>
+            <button class="text-white justify-self-end" (click)="toggleShuffle()">
+                <span class="material-icons-outlined">{{ isShuffle ? 'shuffle_on' : 'shuffle' }}</span>
+            </button>
+            
         </div>
 
         <!-- Progress Bar -->
@@ -27,7 +31,7 @@
         <div class="row-start-1 md:col-span-2 md:col-start-6 gap-2 justify-center">
             <div class="row-start-1 grid grid-cols-6 items-center col-span-4 gap-3 col-start-0">
                 <div class="w-8 h-8 bg-white col-span-1 justify-self-center">
-                    <img src="{{ currentTrack.album.cover_small ? currentTrack.album.cover_small : 'assets/placeholder.jpg' }}"
+                    <img src="{{imageSrc}}"
                         alt="Track cover">
                 </div>
 

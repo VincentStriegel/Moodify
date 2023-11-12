@@ -9,7 +9,7 @@ public class PlaylistTO implements Cloneable {
         this.trackTOList = new ArrayList<TrackTO>();
     }
 
-    private int id;
+    private long id;
     private String title;
 
     private String picture_small;
@@ -22,11 +22,11 @@ public class PlaylistTO implements Cloneable {
 
     private List<TrackTO> trackTOList;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -70,7 +70,7 @@ public class PlaylistTO implements Cloneable {
         this.number_of_songs = number_of_songs;
     }
 
-    public List<TrackTO> getTrack_list() {
+    public List<TrackTO> gettrackTOList() {
         List<TrackTO> copy = new ArrayList<TrackTO>();
         for (TrackTO trackTO: this.trackTOList) {
             copy.add(trackTO.clone());
@@ -78,8 +78,8 @@ public class PlaylistTO implements Cloneable {
         return copy;
     }
 
-    public void setTrackTOList(List<TrackTO> track_list) {
-        this.trackTOList = track_list;
+    public void setTrackTOList(List<TrackTO> trackTOList) {
+        this.trackTOList = trackTOList;
     }
 
     @Override

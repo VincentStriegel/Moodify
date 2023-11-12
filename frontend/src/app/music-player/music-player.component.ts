@@ -21,11 +21,17 @@ export class MusicPlayerComponent {
     currentVolume = 1;
     repeat = false;
     isFavorite = false;
+    imageSrc?: string;
 
     constructor(private musicPlayerService: MusicPlayerService) {
         this.musicPlayerService.nextTrack$.subscribe((track) => {
             if (track) {
                 this.currentTrack = track;
+                if(this.currentTrack.album?.cover_small){
+                    this.imageSrc = this.currentTrack.album.cover_small;
+                } else{
+                    this.imageSrc = this.musicPlayerService.imageSrc;
+                }
                 if (this.audio) {
                     this.audio.src = this.currentTrack.preview;
                     this.audio.removeEventListener('timeupdate', () => {});
@@ -41,7 +47,7 @@ export class MusicPlayerComponent {
                             this.audio.currentTime = 0;
                             this.audio.play();
                         } else {
-                            this.isPlaying = false;
+                            this.musicPlayerService.getNextTrack();
                         }
                     }
                 });
@@ -57,6 +63,7 @@ export class MusicPlayerComponent {
 
     toggleShuffle() {
         this.isShuffle = !this.isShuffle;
+        this.musicPlayerService.toggleShuffle();
     }
 
     toggleRepeat() {
@@ -64,11 +71,11 @@ export class MusicPlayerComponent {
     }
 
     skip() {
-        // Implement skip logic.
+        this.musicPlayerService.getNextTrack();
     }
 
     previous() {
-        // Implement previous track logic.
+        this.musicPlayerService.getPreviousTrack();
     }
 
     toggleVolumeSlider() {
@@ -87,4 +94,5 @@ export class MusicPlayerComponent {
         this.volumeMute ? (this.audio.volume = this.currentVolume) : (this.audio.volume = 0);
         this.volumeMute = !this.volumeMute;
     }
+
 }

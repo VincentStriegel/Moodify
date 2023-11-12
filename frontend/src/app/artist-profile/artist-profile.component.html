@@ -1,9 +1,10 @@
-<div *ngIf="artist" class="grid grid-cols-3 lg:grid-cols-6 bg-zinc-800 p-3 max-w-[1800px] justify-center mx-auto min-h-[100vh]">
-    <div class="col-span-3 justify-self-center lg:justify-self-start">
+<div *ngIf="artist"
+    class="grid grid-cols-3 lg:grid-cols-6 bg-zinc-800 p-3 max-w-[1800px] justify-center mx-auto min-h-[100vh]">
+    <div class="col-span-3 justify-self-center lg:justify-self-start p-3">
         <img class="rounded-full border-solid border-2 border-white" src="{{artist.picture_big}}" alt="Artist">
         <h1 class="text-white text-2xl">{{artist.name}}</h1>
     </div>
-    <div class="w-[100%] mt-5 col-span-3">
+    <div *ngIf= "artist.trackTOList.length > 0" class="w-[100%] mt-5 col-span-3">
         <h2 class="text-white font-bold h-16 text-left text-2xl">Songs</h2>
         <div class="overflow-y-auto h-[40vh]">
             <div *ngFor="let track of artist.trackTOList">
@@ -11,16 +12,11 @@
             </div>
         </div>
     </div>
-    <div  class="flex flex-col w-[100%] mt-5 col-span-3 lg:col-span-6 p-3">
+    <div *ngIf= "artist.albumTOList" class="flex flex-col w-[100%] mt-5 col-span-3 lg:col-span-6 p-3">
         <h2 class="text-white font-bold h-16 text-2xl text-left">Albums</h2>
-        <div
-          class= "flex flex-nowrap overflow-x-auto overflow-y-hidden">
-            <div class="flex-shrink-0 hover:scale-110 hover:grayscale hover:shadow-inner" *ngFor="let album of artist.albumTOList">
-                <div class="w-40 h-[250px] p-4 m-4 bg-zinc-900 flex flex-col justify-between">
-                    <img class="w-30 h-30 object-cover mb-2" src="{{album.cover_big}}" alt="Artist">
-                    <div class="w-30 text-white text-ellipsis overflow-hidden h-[20%]">{{album.title}}</div>
-                    <div class="w-30 text-xs text-white self-end">{{album.release_date}}</div>
-                  </div>
+        <div class="flex flex-nowrap overflow-x-auto overflow-y-hidden">
+            <div *ngFor="let album of artist.albumTOList">
+                <app-collection-element [album]="album"></app-collection-element>
             </div>
         </div>
     </div>

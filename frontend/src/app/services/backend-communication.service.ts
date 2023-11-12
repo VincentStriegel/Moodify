@@ -22,6 +22,14 @@ export class BackendCommunicationService {
         return this.http.get<ArtistTO>(`${this.apiServerURL}/music/artist/${artistId}`).pipe(shareReplay(1));
     }
 
+    getAlbum(albumId: number): Observable<AlbumTO> {
+        return this.http.get<AlbumTO>(`${this.apiServerURL}/music/album/${albumId}`).pipe(shareReplay(1));
+    }
+
+    getPlaylist(playlistId: number): Observable<PlaylistTO> {
+        return this.http.get<PlaylistTO>(`${this.apiServerURL}/music/playlist/${playlistId}`).pipe(shareReplay(1));
+    }
+
     getSearchResultsTracks(searchQuery: string): Observable<TrackTO[]> {
         return this.http.get<TrackTO[]>(`${this.apiServerURL}/music/search/tracks/${searchQuery}`).pipe(shareReplay(1));
     }

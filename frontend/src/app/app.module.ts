@@ -14,6 +14,8 @@ import { TrackElementComponent } from './track-element/track-element.component';
 import { SearchResultComponent } from './search-result/search-result.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { ArtistProfileComponent } from './artist-profile/artist-profile.component';
+import { CollectionElementComponent } from './collection/collection-element/collection-element.component';
+import { CollectionComponent } from './collection/collection.component';
 
 @NgModule({
     declarations: [
@@ -24,6 +26,8 @@ import { ArtistProfileComponent } from './artist-profile/artist-profile.componen
         TrackElementComponent,
         SearchResultComponent,
         ArtistProfileComponent,
+        CollectionElementComponent,
+        CollectionComponent,
     ],
     imports: [
         BrowserModule,
