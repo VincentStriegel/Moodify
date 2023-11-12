@@ -12,6 +12,8 @@ Example:
 
 ```
 deezerApiKey=3435h34deezerNotaRealapikey4324234
+databaseUser=moodify
+databasePassword=moodify
 ```
 
 Now to start the docker containers run the command:
@@ -65,8 +67,6 @@ Then Run the BackendApplication, if the application successfully starts the back
 ### Database
 
 ---
-
-First set an environment variable of deezerApiKey with the value being the API key.
-Second set an environment variable of databaseUser = moodify, databasePassword = moodify, databaseName=moodifyDb
+In order to connect to database use databaseUser = moodify, databasePassword = moodify
 
 Then Run the BackendApplication, if the application successfully starts the database will be available at: http://localhost:/5432/
