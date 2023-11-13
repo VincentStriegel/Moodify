@@ -6,6 +6,8 @@ import java.util.List;
 public class ArtistTO implements Cloneable {
     private int id;
 
+    private int nb_fans;
+
     private String name;
 
     private String picture_small;
@@ -21,6 +23,14 @@ public class ArtistTO implements Cloneable {
         this.trackTOList = new ArrayList<TrackTO>();
         this.albumTOList = new ArrayList<AlbumTO>();
 
+    }
+
+    public int getNb_fans() {
+        return nb_fans;
+    }
+
+    public void setNb_fans(int nb_fans) {
+        this.nb_fans = nb_fans;
     }
 
     public List<TrackTO> getTrackTOList() {
@@ -84,6 +94,7 @@ public class ArtistTO implements Cloneable {
         try {
             ArtistTO clone = (ArtistTO) super.clone();
             clone.id = this.id;
+            clone.nb_fans = this.nb_fans;
             clone.name = this.name;
             clone.picture_small = this.picture_small;
             clone.picture_big = this.picture_big;

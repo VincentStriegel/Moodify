@@ -13,6 +13,7 @@ export class TrackElementComponent {
     isPlaying = false;
     Math = Math;
     @Input({ required: true }) track!: TrackTO;
+    @Input() imageSrc?: string;
 
     constructor(
         private musicPlayerService: MusicPlayerService,
@@ -22,8 +23,7 @@ export class TrackElementComponent {
     ngOnInit(): void {}
 
     togglePlay() {
-        //this.isPlaying = !this.isPlaying;
-        this.musicPlayerService.playTrack(this.track);
+        this.musicPlayerService.playTrack(this.track, this.imageSrc);
     }
 
     goToArtistProfile(artistId: number) {
