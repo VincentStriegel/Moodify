@@ -15,7 +15,7 @@ export class MusicPlayerService {
     originalTrackArr: TrackTO[] = [];
     imageSrc?: string;
 
-    constructor() { }
+    constructor() {}
 
     addTrack(track: TrackTO) {
         this.trackArr.push(track);
@@ -26,24 +26,21 @@ export class MusicPlayerService {
     }
 
     playTracks(tracks: TrackTO[], imageSrc?: string) {
-        this.imageSrc = imageSrc;
-        this.resetPlayer();
+        this.resetPlayer(imageSrc);
         this.trackArr.push(...tracks);
         this.getNextTrack();
     }
 
     playTrack(track: TrackTO, imageSrc?: string) {
-        this.imageSrc = imageSrc;
-        this.resetPlayer();
+        this.resetPlayer(imageSrc);
         this.trackArr.push(track);
         this.getNextTrack();
-     
     }
 
     getNextTrack() {
         if (this.trackArr && this.trackArr.length >= 0 && this.index < this.trackArr.length - 1) {
             this.index++;
-            const next = this.trackArr[this.index]
+            const next = this.trackArr[this.index];
             this.nextTrackSubject.next(next); // Push the new track to all subscribers
             return next;
         } else {
@@ -55,7 +52,7 @@ export class MusicPlayerService {
     getPreviousTrack() {
         if (this.trackArr && this.trackArr.length >= 0 && this.index > 0) {
             this.index--;
-            const next = this.trackArr[this.index]
+            const next = this.trackArr[this.index];
             this.nextTrackSubject.next(next); // Push the new track to all subscribers
             return next;
         } else {
@@ -65,11 +62,10 @@ export class MusicPlayerService {
     }
 
     toggleShuffle() {
-        this.originalTrackArr.length > 0 ? null : this.originalTrackArr = [...this.trackArr];
+        this.originalTrackArr.length > 0 ? null : (this.originalTrackArr = [...this.trackArr]);
         if (this.isShuffled) {
             this.trackArr = [...this.originalTrackArr];
-        }
-        else {
+        } else {
             for (let i = this.trackArr.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [this.trackArr[i], this.trackArr[j]] = [this.trackArr[j], this.trackArr[i]];
@@ -78,7 +74,10 @@ export class MusicPlayerService {
         this.isShuffled = !this.isShuffled;
     }
 
-    resetPlayer() {
+    resetPlayer(imageSrc?: string) {
+        this.originalTrackArr = [];
+        this.imageSrc = imageSrc;
+        this.isShuffled = false;
         this.index = -1;
         this.trackArr = [];
     }

@@ -25,35 +25,44 @@ export class MusicPlayerComponent {
 
     constructor(private musicPlayerService: MusicPlayerService) {
         this.musicPlayerService.nextTrack$.subscribe((track) => {
-            if (track) {
-                this.currentTrack = track;
-                if(this.currentTrack.album?.cover_small){
-                    this.imageSrc = this.currentTrack.album.cover_small;
-                } else{
-                    this.imageSrc = this.musicPlayerService.imageSrc;
-                }
-                if (this.audio) {
-                    this.audio.src = this.currentTrack.preview;
-                    this.audio.removeEventListener('timeupdate', () => {});
-                    this.audio.pause();
-                    this.isPlaying = false;
-                } else {
-                    this.audio = new Audio(this.currentTrack.preview);
-                }
-                this.audio.addEventListener('timeupdate', () => {
-                    this.progress = (this.audio.currentTime / this.audio.duration) * 100;
-                    if (this.progress === 100) {
-                        if (this.repeat) {
-                            this.audio.currentTime = 0;
-                            this.audio.play();
-                        } else {
-                            this.musicPlayerService.getNextTrack();
-                        }
-                    }
-                });
-                this.togglePlay();
-            }
+            if (!track) return;
+
+            this.isShuffle = this.musicPlayerService.isShuffled;
+            this.currentTrack = track;
+            this.imageSrc = this.currentTrack.album?.cover_small || this.musicPlayerService.imageSrc;
+            this.setupAudioPlayer();
+            this.togglePlay();
         });
+    }
+
+    setupAudioPlayer(): void {
+        if (this.audio) {
+            this.resetAudioPlayer();
+        } else {
+            this.audio = new Audio(this.currentTrack.preview);
+        }
+
+        this.audio.addEventListener('timeupdate', this.updateProgress.bind(this));
+    }
+
+    resetAudioPlayer(): void {
+        this.audio.src = this.currentTrack.preview;
+        this.audio.removeEventListener('timeupdate', this.updateProgress.bind(this));
+        this.audio.pause();
+        this.isPlaying = false;
+    }
+
+    updateProgress(): void {
+        this.progress = (this.audio.currentTime / this.audio.duration) * 100;
+
+        if (this.progress === 100) {
+            this.repeat ? this.repeatTrack() : this.musicPlayerService.getNextTrack();
+        }
+    }
+
+    repeatTrack(): void {
+        this.audio.currentTime = 0;
+        this.audio.play();
     }
 
     togglePlay() {
@@ -94,5 +103,4 @@ export class MusicPlayerComponent {
         this.volumeMute ? (this.audio.volume = this.currentVolume) : (this.audio.volume = 0);
         this.volumeMute = !this.volumeMute;
     }
-
 }
