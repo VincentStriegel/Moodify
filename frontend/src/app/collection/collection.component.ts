@@ -25,7 +25,7 @@ export class CollectionComponent {
         private musicPlayerService: MusicPlayerService,
     ) {
         this.query = this.route.snapshot.paramMap.get('collectionType')!;
-        this.query ? this.query.includes('album') ? (this.type = 'album') : (this.type = 'playlist') : null;
+        this.query ? (this.query.includes('album') ? (this.type = 'album') : (this.type = 'playlist')) : null;
         this.id = parseInt(this.route.snapshot.paramMap.get('id')!);
         this.type == 'album'
             ? this.backendCommunicationService.getAlbum(this.id).subscribe((data) => (this.album = data))
