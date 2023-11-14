@@ -58,7 +58,10 @@ public class Mapper {
         artistTO.setName((String) artistMap.get("name"));
         artistTO.setPicture_small((String) artistMap.get("picture_small"));
         artistTO.setPicture_big((String) artistMap.get("picture_big"));
-
+        // TODO
+        if (artistMap.get("nb_fan") != null) {
+            artistTO.setNb_fans(((Number) artistMap.get("nb_fan")).intValue());
+        }
 
         return artistTO;
     }
@@ -71,6 +74,9 @@ public class Mapper {
         albumTO.setCover_small((String) albumMap.get("cover_small"));
         albumTO.setCover_big((String) albumMap.get("cover_big"));
         albumTO.setRelease_date((String) albumMap.get("release_date"));
+        if (albumMap.get("nb_tracks") != null) {
+            albumTO.setNumber_of_songs(((Number) albumMap.get("nb_tracks")).intValue());
+        }
 
         return albumTO;
     }
@@ -92,8 +98,7 @@ public class Mapper {
 
     public static PlaylistTO toPlaylistTO(Map<String, Object> playlistMap) {
         PlaylistTO playlistTO = new PlaylistTO();
-
-        playlistTO.setId(((Number) playlistMap.get("id")).intValue());
+        playlistTO.setId(((Number) playlistMap.get("id")).longValue());
         playlistTO.setTitle((String) playlistMap.get("title"));
         playlistTO.setPicture_small((String) playlistMap.get("picture_small"));
         playlistTO.setPicture_medium((String) playlistMap.get("picture_medium"));

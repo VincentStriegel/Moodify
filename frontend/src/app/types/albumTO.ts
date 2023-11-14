@@ -7,4 +7,5 @@ export type AlbumTO = {
     cover_big: string;
     release_date: string;
     trackTOList: TrackTO[];
+    number_of_songs: number;
 };

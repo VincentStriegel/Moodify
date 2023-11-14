@@ -15,6 +15,11 @@ import { SearchResultComponent } from './search-result/search-result.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { ArtistProfileComponent } from './artist-profile/artist-profile.component';
 import { PartyRoomComponent } from './party-room/party-room.component';
+import { CollectionElementComponent } from './collection/collection-element/collection-element.component';
+import { CollectionComponent } from './collection/collection.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @NgModule({
     declarations: [
@@ -26,6 +31,8 @@ import { PartyRoomComponent } from './party-room/party-room.component';
         SearchResultComponent,
         ArtistProfileComponent,
         PartyRoomComponent,
+        CollectionElementComponent,
+        CollectionComponent,
     ],
     imports: [
         BrowserModule,
@@ -35,6 +42,9 @@ import { PartyRoomComponent } from './party-room/party-room.component';
         MatSliderModule,
         FormsModule,
         MatChipsModule,
+        MatToolbarModule,
+        MatIconModule,
+        MatButtonModule,
     ],
     providers: [],
     bootstrap: [AppComponent],

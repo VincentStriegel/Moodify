@@ -60,8 +60,4 @@ export class SearchResultComponent {
             this.showPlaylists = selectedFilter.showPlaylists;
         }
     }
-
-    goToArtistProfile(artistId: number) {
-        this.router.navigateByUrl(`/artist/${artistId}`);
-    }
 }

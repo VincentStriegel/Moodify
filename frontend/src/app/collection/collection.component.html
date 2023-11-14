@@ -1,0 +1,33 @@
+<div class="max-w-[1800px] justify-center mx-auto p-3 min-h-[100vh]">
+    <div class="flex flex-wrap bg-zinc-900 rounded-lg">
+        <div class="p-4 relative grid-cols-3">
+            <img class="h-52" [src]="album ? album.cover_big : playlist?.picture_big"
+                [alt]="album ? 'Album' : 'Playlist'">
+            <div
+                class="absolute inset-0 flex justify-center items-center bg-black bg-opacity-50 opacity-0 hover:opacity-100 transition-opacity duration-100 cursor-pointer">
+                <span (click)="onPlay()"
+                    class="material-icons-outlined text-white text-8xl hover:scale-110">play_circle</span>
+            </div>
+        </div>
+        <div class="text-white justify-end p-2 align-bottom flex flex-col justify-end text-left">
+            <h2 class="text-6xl font-bold">
+                {{album ? album.title : playlist?.title}}
+            </h2>
+            <p class="capitalize">{{type}} | Songs: {{album ? album.number_of_songs : playlist?.number_of_songs}}</p>
+        </div>
+    </div>
+    <div class="flex flex-wrap items-center p-2">
+        <button (click)="onPlay()">
+            <span class="material-icons-outlined text-white text-6xl hover:scale-110">play_circle</span>
+        </button>
+    </div>
+    <div *ngIf="album || playlist" class="w-[100%] mt-5 col-span-3">
+        <h2 class="text-white font-bold text-left text-2xl pb-3">Songs</h2>
+        <hr class="py-3">
+        <div>
+            <div *ngFor="let track of (album?.trackTOList || playlist?.trackTOList)">
+                <app-track-element [track]="track" [imageSrc]="album?.cover_small"></app-track-element>
+            </div>
+        </div>
+    </div>
+</div>
