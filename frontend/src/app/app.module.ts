@@ -9,7 +9,7 @@ import { HeaderComponent } from './header/header.component';
 import { MusicPlayerComponent } from './music-player/music-player.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSliderModule } from '@angular/material/slider';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TrackElementComponent } from './track-element/track-element.component';
 import { SearchResultComponent } from './search-result/search-result.component';
 import { MatChipsModule } from '@angular/material/chips';
@@ -19,6 +19,7 @@ import { CollectionComponent } from './collection/collection.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { LoginRegisterComponent } from './login-register/login-register.component';
 
 @NgModule({
     declarations: [
@@ -31,6 +32,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
         ArtistProfileComponent,
         CollectionElementComponent,
         CollectionComponent,
+        LoginRegisterComponent,
     ],
     imports: [
         BrowserModule,
@@ -43,6 +45,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
         MatToolbarModule,
         MatIconModule,
         MatButtonModule,
+        ReactiveFormsModule
     ],
     providers: [],
     bootstrap: [AppComponent],

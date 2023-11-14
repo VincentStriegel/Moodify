@@ -49,4 +49,15 @@ export class BackendCommunicationService {
             .get<PlaylistTO[]>(`${this.apiServerURL}/music/search/playlists/${searchQuery}`)
             .pipe(shareReplay(1));
     }
+
+
+    // Login
+    login(username: string, password: string): Observable<any> {
+        return this.http.post<any>(`${this.apiServerURL}/login`, { username, password });
+    }
+
+    // Register
+    register(username: string, password: string , email: string): Observable<any> {
+        return this.http.post<any>(`${this.apiServerURL}/register/submit`, { username, password, email });
+    }
 }
