@@ -38,7 +38,7 @@ export class LoginRegisterComponent implements OnInit {
       email: this.registerForm.get('email')?.value
     };
 
-    this.backendCommunicationService.register(registerData.username, registerData.password, registerData.username).subscribe((data) => {
+    this.backendCommunicationService.register(registerData.email, registerData.password, registerData.username).subscribe((data) => {
     });
   }
 }
