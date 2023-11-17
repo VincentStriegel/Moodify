@@ -4,7 +4,7 @@ Is an upcoming Music streaming platform
 
 ## Running App using Docker-Compose
 
-First a file called .env.dev needs be to created.
+First a file called .env needs be to created.
 
 Within the file a env var called deezerApiKey needs to bet set, the value being the API key.
 
