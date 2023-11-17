@@ -1,7 +1,6 @@
 package com.moodify.backend.domain.services.security;
 
 import com.moodify.backend.domain.services.exceptions.InvalidPasswordException;
-import com.moodify.backend.domain.services.exceptions.InvalidUsernameException;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

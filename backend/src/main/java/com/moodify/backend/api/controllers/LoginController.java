@@ -1,8 +1,8 @@
 package com.moodify.backend.api.controllers;
 
+import com.moodify.backend.domain.services.database.DatabaseService;
 import com.moodify.backend.domain.services.database.LoginUser;
 import com.moodify.backend.domain.services.database.User;
-import com.moodify.backend.domain.services.database.DatabaseService;
 import com.moodify.backend.domain.services.exceptions.UserCredentialsException;
 import com.moodify.backend.domain.services.exceptions.WrongPasswordException;
 import org.springframework.beans.factory.annotation.Autowired;

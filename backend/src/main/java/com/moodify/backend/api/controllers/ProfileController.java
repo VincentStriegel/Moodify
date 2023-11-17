@@ -1,7 +1,5 @@
 package com.moodify.backend.api.controllers;
 
-
-import com.moodify.backend.api.transferobjects.TrackTO;
 import com.moodify.backend.api.transferobjects.UserTO;
 import com.moodify.backend.domain.services.database.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +21,5 @@ public class ProfileController {
     public UserTO getUser(@PathVariable("profileId") long profileId) {
         return USER_SERVICE.getUser(profileId);
     }
-
 
 }

@@ -2,9 +2,6 @@ package com.moodify.backend.domain.services.database;
 
 import jakarta.persistence.*;
 
-import java.util.Objects;
-
-
 @Entity
 @Table(name = "users")
 public class User {
@@ -22,8 +19,6 @@ public class User {
 
     @Column (nullable = false, unique = true, length = 20)
     private String username;
-
-
     public String getEmail() {
         return email;
     }

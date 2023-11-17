@@ -4,14 +4,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PersonalLibraryTO implements Serializable {
-    List<TrackTO> likedTracks;
-    List<ArtistTO> likedArtists;
-    List<AlbumTO> likedAlbums;
-    List<PlaylistTO> likedPlaylists;
-    List<PlaylistTO> customPlaylists;
+public class PersonalLibraryTO implements Serializable, Cloneable {
+    private List<TrackTO>  likedTracks;
+    private List<ArtistTO>  likedArtists;
+    private List<AlbumTO> likedAlbums;
+    private List<PlaylistTO> likedPlaylists;
+    private List<PlaylistTO> customPlaylists;
 
-    public PersonalLibraryTO(){
+    public PersonalLibraryTO() {
         this.likedTracks = new ArrayList<TrackTO>();
         this.likedArtists = new ArrayList<ArtistTO>();
         this.likedAlbums = new ArrayList<AlbumTO>();
@@ -58,5 +58,28 @@ public class PersonalLibraryTO implements Serializable {
         this.customPlaylists = customPlaylists;
     }
 
-
+    @Override
+    public PersonalLibraryTO clone() {
+        try {
+            PersonalLibraryTO clone = (PersonalLibraryTO) super.clone();
+            for (TrackTO trackTO: this.likedTracks) {
+                clone.likedTracks.add(trackTO.clone());
+            }
+            for (ArtistTO artistTO: this.likedArtists) {
+                clone.likedArtists.add(artistTO.clone());
+            }
+            for (PlaylistTO playlistTO: this.likedPlaylists) {
+                clone.likedPlaylists.add(playlistTO.clone());
+            }
+            for (AlbumTO albumTO: this.likedAlbums) {
+                clone.likedAlbums.add(albumTO.clone());
+            }
+            for (PlaylistTO playlistTO: this.customPlaylists) {
+                clone.customPlaylists.add(playlistTO.clone());
+            }
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
+    }
 }
