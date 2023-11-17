@@ -20,6 +20,7 @@ import { CollectionComponent } from './collection/collection.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { PartyRoomMenuComponent } from './party-room-menu/party-room-menu.component';
 
 @NgModule({
     declarations: [
@@ -33,6 +34,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
         PartyRoomComponent,
         CollectionElementComponent,
         CollectionComponent,
+        PartyRoomMenuComponent,
     ],
     imports: [
         BrowserModule,
