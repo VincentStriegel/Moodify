@@ -33,7 +33,7 @@ public class LoginController {
             if (emailExists(email)) {
                 User user = this.DATABASE_SERVICE.getUserByEmailAndPassword(email, password);
                 if (user == null) {
-                    throw new WrongPasswordException("Wrong password");
+                    throw new WrongPasswordException("Invalid password");
                 }
                 return user.getId();
             }
