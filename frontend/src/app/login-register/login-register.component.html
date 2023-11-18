@@ -12,16 +12,17 @@
       <div class="grid gap-3">
         <h2 class="text-white text-4xl">Login</h2>
         <mat-form-field>
-          <mat-label>Enter a username</mat-label>
+          <mat-label>Enter your username</mat-label>
           <input [minlength]="5" [maxlength]="20" matInput [formControl]="username" required>
           <mat-error class="text-xs"  *ngIf="username.invalid">{{getErrorMessageUsername()}}</mat-error>
         </mat-form-field>
         <mat-form-field>
-          <mat-label>Enter a password</mat-label>
+          <mat-label>Enter your password</mat-label>
           <input matInput [formControl]="password" required type="password">
           <mat-error class="text-xs"  *ngIf="password.invalid">{{getErrorMessagePassword()}}</mat-error>
         </mat-form-field>
         <button class="text-white bg-zinc-700 p-3 rounded-full m-2" type="submit">Login</button>
+        <p class="text-s text-red-600">{{responseError}}</p>
       </div>
     </form>
 
@@ -44,6 +45,7 @@
           <mat-error class="text-xs"  *ngIf="password.invalid">{{getErrorMessagePassword()}}</mat-error>
         </mat-form-field>
         <button class="text-white bg-zinc-700 p-3 rounded-full m-2" type="submit">Register</button>
+        <p class="text-s text-red-600">{{responseError}}</p>
      </div>
     </form>
    </div>
