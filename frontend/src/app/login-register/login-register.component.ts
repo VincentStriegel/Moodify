@@ -80,7 +80,7 @@ export class LoginRegisterComponent implements OnInit {
         this.backendCommunicationService.login(loginData.username, loginData.password).subscribe(
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             (response) => {
-              this.responseError = '';
+                this.responseError = '';
             },
             (error) => {
                 this.responseError = error.error.message;
@@ -100,7 +100,7 @@ export class LoginRegisterComponent implements OnInit {
             .subscribe(
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 (response) => {
-                  this.responseError = '';
+                    this.responseError = '';
                 },
                 (error) => {
                     this.responseError = error.error.message;
