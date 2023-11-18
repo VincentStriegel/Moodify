@@ -14,5 +14,4 @@ public interface DatabaseService extends JpaRepository<User, Long> {
 
     User findById(long id);
 
-
 }

@@ -1,12 +1,11 @@
 package com.moodify.backend.domain.services.security;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
 public class PasswordEncoder {
-    private BCryptPasswordEncoder encoder;
+    private final BCryptPasswordEncoder encoder;
 
     public PasswordEncoder() {
         this.encoder = new BCryptPasswordEncoder();

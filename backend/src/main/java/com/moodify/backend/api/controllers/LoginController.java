@@ -8,7 +8,6 @@ import com.moodify.backend.domain.services.exceptions.WrongPasswordException;
 import com.moodify.backend.domain.services.security.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -36,7 +35,7 @@ public class LoginController {
             if (emailExists(email)) {
                 User user = this.DATABASE_SERVICE.getUserByEmail(email);
 
-                boolean passNotEqual = !this.ENCODER.compare(loginUser.getPassword(),user.getPassword());
+                boolean passNotEqual = !this.ENCODER.compare(loginUser.getPassword(), user.getPassword());
                 if (passNotEqual) {
                     throw new WrongPasswordException("Invalid password");
                 }
@@ -47,7 +46,7 @@ public class LoginController {
             if (usernameExists(username)) {
                 User user = this.DATABASE_SERVICE.getUserByUsername(username);
 
-                boolean passNotEqual = !this.ENCODER.compare(loginUser.getPassword(),user.getPassword());
+                boolean passNotEqual = !this.ENCODER.compare(loginUser.getPassword(), user.getPassword());
                 if (passNotEqual) {
                     throw new WrongPasswordException("Wrong password");
                 }
