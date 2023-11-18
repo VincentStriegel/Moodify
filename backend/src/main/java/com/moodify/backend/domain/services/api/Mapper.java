@@ -1,4 +1,4 @@
-package com.moodify.backend.domain.services;
+package com.moodify.backend.domain.services.api;
 
 import com.moodify.backend.api.transferobjects.*;
 

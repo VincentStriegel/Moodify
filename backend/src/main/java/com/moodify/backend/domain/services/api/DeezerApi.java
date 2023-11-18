@@ -1,4 +1,4 @@
-package com.moodify.backend.domain.services;
+package com.moodify.backend.domain.services.api;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

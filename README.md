@@ -4,7 +4,7 @@ Is an upcoming Music streaming platform
 
 ## Running App using Docker-Compose
 
-First a file called .env.dev needs be to created.
+First a file called .env needs be to created.
 
 Within the file a env var called deezerApiKey needs to bet set, the value being the API key.
 
@@ -69,4 +69,4 @@ Then Run the BackendApplication, if the application successfully starts the back
 ---
 In order to connect to database use databaseUser = moodify, databasePassword = moodify
 
-Then Run the BackendApplication, if the application successfully starts the database will be available at: http://localhost:/5432/
+Then Run the BackendApplication, if the application successfully starts the database will be available at: http://localhost:5432/
