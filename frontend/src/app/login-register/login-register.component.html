@@ -8,13 +8,12 @@
             <p>Register</p>
         </button>
     </div>
-    <form *ngIf="login" [formGroup]="loginForm" (ngSubmit)="onLogin()">
+    <form *ngIf="login" (ngSubmit)="onLogin()">
       <div class="grid gap-3">
         <h2 class="text-white text-4xl">Login</h2>
         <mat-form-field>
-          <mat-label>Enter your username</mat-label>
-          <input [minlength]="5" [maxlength]="20" matInput [formControl]="username" required>
-          <mat-error class="text-xs"  *ngIf="username.invalid">{{getErrorMessageUsername()}}</mat-error>
+          <mat-label>Enter your username or email</mat-label>
+          <input matInput [formControl]="credentials" required>
         </mat-form-field>
         <mat-form-field>
           <mat-label>Enter your password</mat-label>
@@ -26,7 +25,7 @@
       </div>
     </form>
 
-    <form *ngIf="!login" [formGroup]="registerForm" (ngSubmit)="onRegister()">
+    <form *ngIf="!login" (ngSubmit)="onRegister()">
      <div class="grid gap-3">
         <h2 class="text-white text-4xl">Register</h2>
         <mat-form-field>

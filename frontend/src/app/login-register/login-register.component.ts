@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BackendCommunicationService } from '../services/backend-communication.service';
 
 @Component({
@@ -7,7 +7,7 @@ import { BackendCommunicationService } from '../services/backend-communication.s
     templateUrl: './login-register.component.html',
     styleUrls: ['./login-register.component.css'],
 })
-export class LoginRegisterComponent implements OnInit {
+export class LoginRegisterComponent {
     loginForm!: FormGroup;
     registerForm!: FormGroup;
     login: boolean = true;
@@ -20,6 +20,8 @@ export class LoginRegisterComponent implements OnInit {
         Validators.required,
         Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[#?!@$%^&*-]).{8,}$'),
     ]);
+    credentials = new FormControl('', [Validators.required]);
+
     responseError: string = '';
 
     getErrorMessageEmail() {
@@ -53,31 +55,15 @@ export class LoginRegisterComponent implements OnInit {
         return '';
     }
 
-    constructor(
-        private formBuilder: FormBuilder,
-        private backendCommunicationService: BackendCommunicationService,
-    ) {}
-
-    ngOnInit(): void {
-        this.loginForm = this.formBuilder.group({
-            username: ['', Validators.required],
-            password: ['', Validators.required],
-        });
-
-        this.registerForm = this.formBuilder.group({
-            username: ['', Validators.required, Validators.length],
-            email: ['', [Validators.required, Validators.email]],
-            password: ['', Validators.required, Validators.length],
-        });
-    }
+    constructor(private backendCommunicationService: BackendCommunicationService) {}
 
     onLogin(): void {
         const loginData = {
-            username: this.username?.value as string,
+            credentials: this.credentials?.value as string,
             password: this.password?.value as string,
         };
 
-        this.backendCommunicationService.login(loginData.username, loginData.password).subscribe(
+        this.backendCommunicationService.login(loginData.credentials, loginData.password).subscribe(
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             (response) => {
                 this.responseError = '';
