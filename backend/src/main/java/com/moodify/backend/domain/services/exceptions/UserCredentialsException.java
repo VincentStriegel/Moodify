@@ -1,7 +1,11 @@
 package com.moodify.backend.domain.services.exceptions;
 
 public class UserCredentialsException extends Exception {
-    public UserCredentialsException(String message) {
-        super(message);
+
+    private static final String MESSAGE = "Email and Username do not exist";
+
+    public UserCredentialsException() {
+        super(MESSAGE);
     }
+
 }

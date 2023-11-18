@@ -16,7 +16,7 @@ public class EmailValidator {
 
         boolean emailInvalid = !matcher.matches();
         if (emailInvalid) {
-            throw new InvalidEmailException("Format of the email is not correct");
+            throw new InvalidEmailException();
         }
     }
 }

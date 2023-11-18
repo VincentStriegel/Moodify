@@ -22,7 +22,7 @@ public class UsernameValidator {
 
         boolean usernameInvalid = !matcher.matches();
         if (usernameInvalid) {
-            throw new InvalidUsernameException("Format of the username is not correct");
+            throw new InvalidUsernameException();
         }
     }
 }

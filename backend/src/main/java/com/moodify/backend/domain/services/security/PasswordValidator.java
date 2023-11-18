@@ -20,7 +20,7 @@ public class PasswordValidator {
 
         boolean passwordInvalid = !matcher.matches();
         if (passwordInvalid) {
-            throw new InvalidPasswordException("Format of the password is not correct");
+            throw new InvalidPasswordException();
         }
     }
 }

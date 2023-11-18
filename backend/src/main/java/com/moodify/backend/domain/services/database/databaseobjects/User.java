@@ -1,4 +1,4 @@
-package com.moodify.backend.domain.services.database;
+package com.moodify.backend.domain.services.database.databaseobjects;
 
 import jakarta.persistence.*;
 

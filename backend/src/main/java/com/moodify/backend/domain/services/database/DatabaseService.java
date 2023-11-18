@@ -1,17 +1,13 @@
 package com.moodify.backend.domain.services.database;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.moodify.backend.api.transferobjects.UserTO;
+import com.moodify.backend.domain.services.database.databaseobjects.User;
+import org.springframework.web.bind.annotation.RequestBody;
 
-public interface DatabaseService extends JpaRepository<User, Long> {
+public interface DatabaseService {
+    void saveUser(User user) throws Exception;
 
-    Boolean existsUserByUsername(String username);
+    long loginUser(@RequestBody LoginUser loginUser) throws Exception;
 
-    Boolean existsUserByEmail(String email);
-
-    User getUserByEmail(String email);
-
-    User getUserByUsername(String username);
-
-    User findById(long id);
-
+    UserTO getUser(long id);
 }
