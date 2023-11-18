@@ -8,9 +8,9 @@ public interface DatabaseService extends JpaRepository<User, Long> {
 
     Boolean existsUserByEmail(String email);
 
-    User getUserByEmailAndPassword(String credentials, String password);
+    User getUserByEmail(String email);
 
-    User getUserByUsernameAndPassword(String credentials, String password);
+    User getUserByUsername(String username);
 
     User findById(long id);
 

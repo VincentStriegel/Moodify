@@ -5,6 +5,7 @@ import com.moodify.backend.domain.services.database.LoginUser;
 import com.moodify.backend.domain.services.database.User;
 import com.moodify.backend.domain.services.exceptions.UserCredentialsException;
 import com.moodify.backend.domain.services.exceptions.WrongPasswordException;
+import com.moodify.backend.domain.services.security.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -15,10 +16,11 @@ import org.springframework.web.server.ResponseStatusException;
 public class LoginController {
 
     private final DatabaseService DATABASE_SERVICE;
-
+    private final PasswordEncoder ENCODER;
     @Autowired
-    public LoginController(DatabaseService USER_SERVICE) {
+    public LoginController(DatabaseService USER_SERVICE, PasswordEncoder ENCODER) {
         this.DATABASE_SERVICE = USER_SERVICE;
+        this.ENCODER = ENCODER;
     }
 
     @PostMapping({"/submit"})
@@ -31,19 +33,24 @@ public class LoginController {
 
 
             if (emailExists(email)) {
-                User user = this.DATABASE_SERVICE.getUserByEmailAndPassword(email, password);
-                if (user == null) {
+                User user = this.DATABASE_SERVICE.getUserByEmail(email);
+
+                boolean passNotEqual = !this.ENCODER.compare(loginUser.getPassword(), user.getPassword());
+                if (passNotEqual) {
                     throw new WrongPasswordException("Invalid password");
                 }
+
                 return user.getId();
             }
 
             if (usernameExists(username)) {
-                User user = this.DATABASE_SERVICE.getUserByUsernameAndPassword(username, password);
+                User user = this.DATABASE_SERVICE.getUserByUsername(username);
 
-                if (user == null) {
+                boolean passNotEqual = !this.ENCODER.compare(loginUser.getPassword(), user.getPassword());
+                if (passNotEqual) {
                     throw new WrongPasswordException("Wrong password");
                 }
+
                 return user.getId();
             }
 
