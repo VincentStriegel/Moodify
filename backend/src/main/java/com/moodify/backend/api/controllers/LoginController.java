@@ -21,7 +21,7 @@ public class LoginController {
         this.DATABASE_SERVICE = USER_SERVICE;
     }
 
-    @GetMapping({"/submit"})
+    @PostMapping({"/submit"})
     @ResponseStatus(HttpStatus.OK)
     public long loginUser(@RequestBody LoginUser loginUser) {
         try {

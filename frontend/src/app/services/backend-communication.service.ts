@@ -53,7 +53,7 @@ export class BackendCommunicationService {
 
     // Login
     login(username: string, password: string): Observable<any> {
-        return this.http.post<any>(`${this.apiServerURL}/login`, { username, password });
+        return this.http.post<any>(`${this.apiServerURL}/login/submit`, { username, password });
     }
 
     // Register

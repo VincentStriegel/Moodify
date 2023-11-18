@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { BackendCommunicationService } from '../services/backend-communication.service';
 
 @Component({
@@ -11,6 +11,41 @@ export class LoginRegisterComponent implements OnInit {
   loginForm!: FormGroup;
   registerForm!: FormGroup;
   login: boolean = true;
+  email = new FormControl('', [Validators.required, Validators.email]);
+  username = new FormControl('', [Validators.required, Validators.pattern('^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){3,18}[a-zA-Z0-9]')]);
+  password = new FormControl('', [Validators.required, Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[#?!@$%^&*-]).{8,}$')]);
+
+  getErrorMessageEmail() {
+    if (this.email.hasError('required')) {
+      return 'You must enter a value';
+    }
+    return this.email.hasError('email') ? 'Not a valid email' : '';
+  }
+
+  getErrorMessageUsername() {
+    if (this.username.hasError('required')) {
+      return 'You must enter a value';
+    }
+  
+    if (this.username.hasError('pattern')) {
+      return 'Username: 5-20 characters, alphanumeric, dot, underscore, hyphen. No dots, underscores, or hyphens at start/end or in a row.';
+    }
+  
+    return '';
+  }
+
+  getErrorMessagePassword() {
+    if (this.password.hasError('required')) {
+      return 'You must enter a value';
+    }
+  
+    if (this.password.hasError('pattern')) {
+      return 'Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, and one special character.';
+    }
+  
+    return '';
+  }
+
 
   constructor(private formBuilder: FormBuilder, private backendCommunicationService: BackendCommunicationService) { }
 
@@ -21,24 +56,33 @@ export class LoginRegisterComponent implements OnInit {
     });
 
     this.registerForm = this.formBuilder.group({
-      username: ['', Validators.required],
+      username: ['', Validators.required, Validators.length],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required]
+      password: ['', Validators.required, Validators.length]
     });
   }
 
   onLogin(): void {
-    // Implement your login logic here
+    const loginData = {
+      username: this.username?.value as string,
+      password: this.password?.value as string,
+    };
+
+    this.backendCommunicationService.login(loginData.username, loginData.password).subscribe((data) => {
+      
+    });
+  
   }
 
   onRegister(): void {
     const registerData = {
-      username: this.registerForm.get('username')?.value,
-      password: this.registerForm.get('password')?.value,
-      email: this.registerForm.get('email')?.value
+      username: this.username?.value as string,
+      password: this.password?.value as string,
+      email: this.email?.value as string,
     };
 
     this.backendCommunicationService.register(registerData.username, registerData.password, registerData.email).subscribe((data) => {
+      console.log(data)
     });
   }
 }

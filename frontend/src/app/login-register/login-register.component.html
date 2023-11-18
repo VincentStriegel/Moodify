@@ -1,5 +1,5 @@
 <div class="h-[100vh] justify-center items-center flex text-2xl">
-   <div class="flex-col bg-zinc-900 p-4 rounded-lg min-h-[30vh]">
+   <div class="flex-col bg-zinc-900 p-4 rounded-lg min-h-[30vh]  lg:min-w-[30vw] min-w-[80vw] max-w-[1000px]">
     <div class="p-2 bg-zinc-800">
         <button  (click)="login = true;" [ngClass]="{'bg-[#663dff]': login, 'bg-zinc-500': !login}" class="h-10 w-[50%] text-white">
             <p>Login</p>
@@ -11,8 +11,16 @@
     <form *ngIf="login" [formGroup]="loginForm" (ngSubmit)="onLogin()">
       <div class="grid gap-3">
         <h2 class="text-white text-4xl">Login</h2>
-        <input class="p-2 rounded-lg" type="text" formControlName="username" placeholder="Username">
-        <input class="p-2 rounded-lg" type="password" formControlName="password" placeholder="Password">
+        <mat-form-field>
+          <mat-label>Enter a username</mat-label>
+          <input [minlength]="5" [maxlength]="20" matInput [formControl]="username" required>
+          <mat-error class="text-xs"  *ngIf="username.invalid">{{getErrorMessageUsername()}}</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Enter a password</mat-label>
+          <input matInput [formControl]="password" required type="password">
+          <mat-error class="text-xs"  *ngIf="password.invalid">{{getErrorMessagePassword()}}</mat-error>
+        </mat-form-field>
         <button class="text-white bg-zinc-700 p-3 rounded-full m-2" type="submit">Login</button>
       </div>
     </form>
@@ -20,9 +28,21 @@
     <form *ngIf="!login" [formGroup]="registerForm" (ngSubmit)="onRegister()">
      <div class="grid gap-3">
         <h2 class="text-white text-4xl">Register</h2>
-        <input class="p-2 rounded-lg" type="text" formControlName="username" placeholder="Username">
-        <input class="p-2 rounded-lg" type="email" formControlName="email" placeholder="Email">
-        <input class="p-2 rounded-lg" type="password" formControlName="password" placeholder="Password">
+        <mat-form-field>
+          <mat-label>Enter a username</mat-label>
+          <input [minlength]="5" [maxlength]="20" matInput [formControl]="username" required>
+          <mat-error class="text-xs"  *ngIf="username.invalid">{{getErrorMessageUsername()}}</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Enter your email</mat-label>
+          <input matInput placeholder="pat@example.com" [formControl]="email" required>
+          <mat-error class="text-xs" *ngIf="email.invalid">{{getErrorMessageEmail()}}</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Enter a password</mat-label>
+          <input matInput [formControl]="password" required type="password">
+          <mat-error class="text-xs"  *ngIf="password.invalid">{{getErrorMessagePassword()}}</mat-error>
+        </mat-form-field>
         <button class="text-white bg-zinc-700 p-3 rounded-full m-2" type="submit">Register</button>
      </div>
     </form>

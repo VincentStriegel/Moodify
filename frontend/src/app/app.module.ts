@@ -20,6 +20,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { LoginRegisterComponent } from './login-register/login-register.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
     declarations: [
@@ -45,7 +48,10 @@ import { LoginRegisterComponent } from './login-register/login-register.componen
         MatToolbarModule,
         MatIconModule,
         MatButtonModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        BrowserAnimationsModule
     ],
     providers: [],
     bootstrap: [AppComponent],

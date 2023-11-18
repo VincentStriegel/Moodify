@@ -22,7 +22,7 @@ public class RegisterController {
         this.DATABASE_SERVICE = DATABASE_SERVICE;
     }
 
-    @PostMapping({"submit"})
+    @PostMapping({"/submit"})
     @ResponseStatus(HttpStatus.OK)
     public void registerUser(@RequestBody User user) {
 
