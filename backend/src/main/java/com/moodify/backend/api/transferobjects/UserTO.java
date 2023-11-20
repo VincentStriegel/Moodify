@@ -1,17 +1,21 @@
 package com.moodify.backend.api.transferobjects;
 
 public class UserTO implements Cloneable {
+
+    private long id;
     private String email;
     private String username;
-
     private PersonalLibraryTO personalLibraryTO;
+
     public UserTO() {
         this.personalLibraryTO = new PersonalLibraryTO();
     }
 
-    public String getEmail() {
-        return email;
-    }
+    public long getId() { return id; }
+
+    public void setId(long id) { this.id = id; }
+
+    public String getEmail() { return email; }
 
     public void setEmail(String email) {
         this.email = email;

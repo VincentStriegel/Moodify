@@ -1,4 +1,4 @@
-package com.moodify.backend.domain.services.exceptions;
+package com.moodify.backend.domain.services.exceptions.registration;
 
 public class InvalidPasswordException extends Exception {
     private static final String MESSAGE = "Format of the password is not correct";

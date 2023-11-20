@@ -3,12 +3,14 @@ package com.moodify.backend.api.controllers;
 import com.moodify.backend.api.transferobjects.UserTO;
 import com.moodify.backend.domain.services.database.DatabaseService;
 import com.moodify.backend.domain.services.database.PostgresService;
+import com.moodify.backend.domain.services.database.databaseobjects.UserDO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@RequestMapping("/profiles")
+@RequestMapping("/users")
 public class ProfileController {
     private final DatabaseService POSTGRES_SERVICE;
 
@@ -21,6 +23,13 @@ public class ProfileController {
     @ResponseStatus(HttpStatus.OK)
     public UserTO getUser(@PathVariable("profileId") long profileId) {
         return POSTGRES_SERVICE.getUser(profileId);
+    }
+
+    @PostMapping({"/addCustomPlaylist/{profileId}/{title}"})
+    @ResponseStatus(HttpStatus.OK)
+    public void addCustomPlaylist(@PathVariable("profileId") long profileId, @PathVariable("title") String title) {
+
+
     }
 
 }

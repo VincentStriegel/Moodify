@@ -12,15 +12,6 @@ public class TrackTO implements Cloneable {
 
     private String release_date;
 
-    // TODO
-    // private String cover;
-
-    // TODO
-    // private String lyrics;
-
-    // TODO
-    // private String genre;
-
     private ArtistTO artist;
 
     private AlbumTO album;
