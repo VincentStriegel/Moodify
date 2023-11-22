@@ -114,10 +114,15 @@ public class TrackTO implements Cloneable {
             return null;
         }
     }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         TrackTO trackTO = (TrackTO) o;
         return Objects.equals(id, trackTO.id);
     }

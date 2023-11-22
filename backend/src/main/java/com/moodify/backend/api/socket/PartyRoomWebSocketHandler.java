@@ -4,15 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.moodify.backend.api.transferobjects.PartyRoomTrackTO;
-import com.moodify.backend.api.transferobjects.PartyRoomWebSocketTO;
 import com.moodify.backend.api.transferobjects.TrackTO;
-import com.moodify.backend.domain.services.MessageType;
 import org.springframework.web.socket.*;
-import org.springframework.web.socket.handler.TextWebSocketHandler;
-import org.w3c.dom.Text;
 
-import javax.sound.midi.Track;
 import java.io.IOException;
 import java.net.URI;
 import java.util.*;
@@ -23,13 +17,9 @@ import java.util.regex.Pattern;
 public class PartyRoomWebSocketHandler implements WebSocketHandler {
     private Map<String, List<WebSocketSession>> rooms = new HashMap<>();
 
-
-    // create list of PartyRoomTrackTOs
-    List<PartyRoomTrackTO> partyRoomTrackTOs = new ArrayList<PartyRoomTrackTO>();
-
     private Map<TrackTO, Integer> trackRatings = new HashMap<>();
 
-    Set<TrackTO> trackTOSet = new LinkedHashSet<>();
+    private Set<TrackTO> trackTOSet = new LinkedHashSet<>();
 
     // ...
 
@@ -85,6 +75,9 @@ public class PartyRoomWebSocketHandler implements WebSocketHandler {
                             // Handle the responseMessage if needed
                         }
                         break;
+
+                    default:
+                        break;
                 }
 
 /*
@@ -124,11 +117,11 @@ public class PartyRoomWebSocketHandler implements WebSocketHandler {
         return false;
     }
 
-    private TextMessage suggestTrack (TrackTO trackTO) throws JsonProcessingException {
+    private TextMessage suggestTrack(TrackTO trackTO) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         synchronized (trackRatings) {
             trackRatings.merge(trackTO, 1, Integer::sum);
-            if(!trackTOSet.contains(trackTO)){
+            if (!trackTOSet.contains(trackTO)) {
                 trackTOSet.add(trackTO);
             }
         }
@@ -145,11 +138,9 @@ public class PartyRoomWebSocketHandler implements WebSocketHandler {
         }
     }
 
-
     private void sendCurrentTrack(WebSocketSession session) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-
-/*
+        /*
         // Create a new message object with the type and the track list
         PartyRoomWebSocketTO message = new PartyRoomWebSocketTO(MessageType.CURRENT_TRACK, trackTOSet.iterator().next());
 
@@ -166,8 +157,6 @@ public class PartyRoomWebSocketHandler implements WebSocketHandler {
         String trackRatingsJson = mapper.writeValueAsString(trackTOSet);
         session.sendMessage(new TextMessage(trackRatingsJson));
     }
-
-
 
     private String getId(WebSocketSession session) {
         return session.getId();
