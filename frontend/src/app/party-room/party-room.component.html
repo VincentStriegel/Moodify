@@ -1,8 +1,51 @@
-<div class="h-[100vh] bg-zinc-800">
-<button class="bg-indigo-600 p-3" (click)="sendSong()">
-    Send Song
-</button>
-<div>
-    {{song}}
-</div>
+<div class=" bg-zinc-800 grid grid-cols-2 gap-5 p-3 min-h-[100vh]">
+    <div class="bg-zinc-900 rounded-lg">
+        <div class="bg-zinc-900 flex flex-col justify-between flex-shrink-0 text-white p-3 text-center rounded-lg">
+            <div *ngIf="currentTrack" class="justify-self-center">
+                <div class="flex flex-col items-center">
+                    <img class="rounded-lg" src="{{currentTrack.album.cover_big}}">
+                    <p>{{currentTrack.title}}</p>
+                    <p>{{currentTrack.artist.name}}</p>
+                </div>
+                <div class= "px-[20%] row-start-2 md:row-start-1 md:col-span-3 justify-center bottom-0 mt-10">
+                    <mat-progress-bar mode="determinate" value="{{progress}}"></mat-progress-bar>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-zinc-900 rounded-lg p-3 ">
+        <div class="relative align-middle">
+            <input type="text" placeholder="Search for songs to suggest"
+                class="w-[100%] max-w-[800px] bg-zinc-700 rounded-full px-4 py-1 text-white focus:outline-none"
+                [(ngModel)]="searchQuery">
+            <button (click)="searchTracks()"
+                class="absolute inset-y-0 right-0 flex items-center bg-indigo-900 rounded-r-full text-white px-4 hover:bg-indigo-400 focus:bg-indigo-600 focus:outline-none">
+                <span class="material-icons-outlined">
+                    search
+                </span>
+            </button>
+        </div>
+        <div class="w-[100%] mt-5 col-span-3 overflow-auto ">
+
+            <div class="w-[100%] mt-5 col-span-3 h-[100%]">
+                <div class="overflow-y-auto h-[50vh]">
+                    <div *ngFor="let track of searchedTracks">
+                        <app-track-element [track]="track" [isPartyRoom]="true"
+                            (suggestSongPartyRoom)="suggestSong(track)"></app-track-element>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-span-2 min-w-[100%] bg-zinc-900 rounded-lg p-5 min-h-[260px]">
+        <div class="flex flex-nowrap overflow-x-auto overflow-y-hidden h-[250px] gap-2">
+            <div class="w-24 h-[150px] p-2 m-1 bg-zinc-900 flex flex-col justify-between flex-shrink-0 text-white"
+                *ngFor="let track of partyRoomTracks">
+                <img src="{{track.album.cover_big}}">
+                <p>{{track.title}}</p>
+                <p>{{track.artist.name}}</p>
+            </div>
+        </div>
+    </div>
 </div>
