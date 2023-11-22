@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, shareReplay } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -48,5 +48,27 @@ export class BackendCommunicationService {
         return this.http
             .get<PlaylistTO[]>(`${this.apiServerURL}/music/search/playlists/${searchQuery}`)
             .pipe(shareReplay(1));
+    }
+
+    // Login
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    login(credential: string, password: string): Observable<HttpResponse<any>> {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        return this.http.post<any>(
+            `${this.apiServerURL}/login/submit`,
+            { credential, password },
+            { observe: 'response' },
+        );
+    }
+
+    // Register
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    register(username: string, password: string, email: string): Observable<HttpResponse<any>> {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        return this.http.post<any>(
+            `${this.apiServerURL}/register/submit`,
+            { username, password, email },
+            { observe: 'response' },
+        );
     }
 }
