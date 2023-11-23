@@ -1,4 +1,4 @@
-package com.moodify.backend.domain.services.exceptions;
+package com.moodify.backend.domain.services.exceptions.registration;
 
 public class InvalidUsernameException extends Exception {
 

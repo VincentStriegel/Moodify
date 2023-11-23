@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TrackTO } from '../types/trackTO';
 import { BackendCommunicationService } from '../services/backend-communication.service';
-import { MusicPlayerService } from '../services/music-player.service';
+import { environment } from 'src/environments/environment';
 
 export type PartyRoomTrackTO = {
     TrackTO: TrackTO;
@@ -34,14 +34,13 @@ export class PartyRoomComponent {
     progress = 0;
     isPlaying = false;
     private webSocket: WebSocket;
-
+    private webSocketServerURL = environment.webSocketServerURL;
     constructor(
         private route: ActivatedRoute,
         private backendCommunicationService: BackendCommunicationService,
-        private musicPlayerService: MusicPlayerService,
     ) {
         this.query = this.route.snapshot.paramMap.get('roomId') || '';
-        this.webSocket = new WebSocket('ws://localhost:8080/party-room/' + this.query);
+        this.webSocket = new WebSocket(`${this.webSocketServerURL}/party-room/${this.query}`);
         this.webSocket.onmessage = (event) => {
             // this.musicPlayerService.playTrack(JSON.parse(event.data) as trackRatings);
             this.partyRoomTracks = JSON.parse(event.data) as TrackTO[];
@@ -101,5 +100,13 @@ export class PartyRoomComponent {
             this.isPlaying = false;
             this.removeTrack(this.currentTrack);
         }
+    }
+
+    ngOnDestroy(): void {
+        if (this.audio) {
+            this.audio.removeEventListener('timeupdate', this.updateProgress);
+            this.audio.pause();
+        }
+        this.webSocket.close();
     }
 }

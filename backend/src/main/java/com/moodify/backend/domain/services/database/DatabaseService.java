@@ -1,13 +1,38 @@
 package com.moodify.backend.domain.services.database;
 
-import com.moodify.backend.api.transferobjects.UserTO;
-import com.moodify.backend.domain.services.database.databaseobjects.User;
-import org.springframework.web.bind.annotation.RequestBody;
+import com.moodify.backend.api.transferobjects.AlbumTO;
+import com.moodify.backend.api.transferobjects.ArtistTO;
+import com.moodify.backend.api.transferobjects.TrackTO;
+import com.moodify.backend.domain.services.database.databaseobjects.PersonalLibraryDO;
+import com.moodify.backend.domain.services.database.databaseobjects.UserDO;
 
 public interface DatabaseService {
-    void saveUser(User user) throws Exception;
 
-    long loginUser(@RequestBody LoginUser loginUser) throws Exception;
+    UserDO createUser(UserDO userDO) throws Exception;
 
-    UserTO getUser(long id);
+    void saveUser(UserDO userDO);
+
+    long loginUser(LoginUser loginUser) throws Exception;
+
+    UserDO getUser(long userId) throws Exception;
+
+    PersonalLibraryDO addCustomPlaylist(long userId, String playlistTitle) throws Exception;
+
+    PersonalLibraryDO removeCustomPlaylist(long userId, long playlistId) throws Exception;
+
+    PersonalLibraryDO addToCustomPlaylist(TrackTO trackTO, long userId, long playlistId) throws Exception;
+
+    PersonalLibraryDO removeFromCustomPlaylist(long userId, long playlistId, long trackId) throws Exception;
+
+    PersonalLibraryDO addToLikedTracks(TrackTO trackTO, long userId) throws Exception;
+
+    PersonalLibraryDO removeFromLikedTracks(long userId, long trackId) throws Exception;
+
+    PersonalLibraryDO addToLikedArtists(ArtistTO artistTO, long userId) throws Exception;
+
+    PersonalLibraryDO removeFromLikedArtists(long artistId, long userId) throws Exception;
+
+    PersonalLibraryDO addToLikedAlbums(AlbumTO albumTO, long userId) throws Exception;
+
+    PersonalLibraryDO removeFromLikedAlbums(long albumId, long userId) throws Exception;
 }

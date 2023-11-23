@@ -1,6 +1,6 @@
 package com.moodify.backend.domain.services.security;
 
-import com.moodify.backend.domain.services.exceptions.InvalidEmailException;
+import com.moodify.backend.domain.services.exceptions.registration.InvalidEmailException;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

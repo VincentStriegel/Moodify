@@ -11,6 +11,7 @@ import { PlaylistTO } from '../types/playlistTO';
     providedIn: 'root',
 })
 export class BackendCommunicationService {
+    userId?: number;
     private apiServerURL = environment.apiServerURL;
     constructor(private http: HttpClient) {}
 
@@ -54,11 +55,7 @@ export class BackendCommunicationService {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     login(credential: string, password: string): Observable<HttpResponse<any>> {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        return this.http.post<any>(
-            `${this.apiServerURL}/login/submit`,
-            { credential, password },
-            { observe: 'response' },
-        );
+        return this.http.post<any>(`${this.apiServerURL}/sign/in`, { credential, password }, { observe: 'response' });
     }
 
     // Register
@@ -66,9 +63,13 @@ export class BackendCommunicationService {
     register(username: string, password: string, email: string): Observable<HttpResponse<any>> {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         return this.http.post<any>(
-            `${this.apiServerURL}/register/submit`,
+            `${this.apiServerURL}/sign/up`,
             { username, password, email },
             { observe: 'response' },
         );
+    }
+
+    setUserId(userId: number) {
+        this.userId = userId;
     }
 }
