@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { TrackTO } from '../types/trackTO';
 import { MusicPlayerService } from '../services/music-player.service';
 import { Router } from '@angular/router';
@@ -14,6 +14,9 @@ export class TrackElementComponent {
     Math = Math;
     @Input({ required: true }) track!: TrackTO;
     @Input() imageSrc?: string;
+    @Input() isPlayingTrack?: boolean;
+    @Input() isPartyRoom?: boolean;
+    @Output() suggestSongPartyRoom: EventEmitter<void> = new EventEmitter<void>();
 
     constructor(
         private musicPlayerService: MusicPlayerService,
@@ -28,5 +31,8 @@ export class TrackElementComponent {
 
     goToArtistProfile(artistId: number) {
         this.router.navigateByUrl(`/artist/${artistId}`);
+    }
+    suggestSong(): void {
+        this.suggestSongPartyRoom.emit();
     }
 }

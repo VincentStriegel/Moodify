@@ -1,0 +1,17 @@
+<div class="h-[100vh] justify-center items-center flex text-2xl">
+   <div class="flex-col bg-zinc-900 p-4 rounded-lg min-w-[20vw]">
+
+
+      <div class="px-4">
+         <button class="text-white bg-zinc-700 p-3 rounded-full w-[100%]" (click)="createRoom()">Create A Party Room</button>
+      </div>
+
+         <div class="px-4 pt-4 flex flex-wrap">
+         <input type="text" placeholder="Party room id"
+            class=" max-w-[800px] bg-zinc-700 rounded-l-full p-3 text-white focus:outline-none"
+            [(ngModel)]="roomID">
+         <button class="p-3 bg-zinc-800 rounded-r-full text-white font-bold" (click)="navigateToRoom()">Join</button>
+      </div>
+
+   </div>
+</div>
