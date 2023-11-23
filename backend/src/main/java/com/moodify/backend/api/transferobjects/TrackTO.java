@@ -4,6 +4,8 @@ package com.moodify.backend.api.transferobjects;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Objects;
+
 @Getter
 @Setter
 public class TrackTO implements Cloneable {
