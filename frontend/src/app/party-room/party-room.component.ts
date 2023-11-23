@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TrackTO } from '../types/trackTO';
 import { BackendCommunicationService } from '../services/backend-communication.service';
-import { MusicPlayerService } from '../services/music-player.service';
 import { environment } from 'src/environments/environment';
 
 export type PartyRoomTrackTO = {
@@ -35,11 +34,10 @@ export class PartyRoomComponent {
     progress = 0;
     isPlaying = false;
     private webSocket: WebSocket;
-    private webSocketServerURL = environment.webSocketServerURL
+    private webSocketServerURL = environment.webSocketServerURL;
     constructor(
         private route: ActivatedRoute,
         private backendCommunicationService: BackendCommunicationService,
-
     ) {
         this.query = this.route.snapshot.paramMap.get('roomId') || '';
         this.webSocket = new WebSocket(`${this.webSocketServerURL}/party-room/${this.query}`);
@@ -105,9 +103,10 @@ export class PartyRoomComponent {
     }
 
     ngOnDestroy(): void {
-        this.audio.removeEventListener('timeupdate', this.updateProgress);
-        this.audio.pause();
-        this.audio = undefined as any;
+        if (this.audio) {
+            this.audio.removeEventListener('timeupdate', this.updateProgress);
+            this.audio.pause();
+        }
         this.webSocket.close();
     }
 }

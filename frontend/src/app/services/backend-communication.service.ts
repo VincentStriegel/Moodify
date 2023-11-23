@@ -55,11 +55,7 @@ export class BackendCommunicationService {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     login(credential: string, password: string): Observable<HttpResponse<any>> {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        return this.http.post<any>(
-            `${this.apiServerURL}/sign/in`,
-            { credential, password },
-            { observe: 'response' },
-        );
+        return this.http.post<any>(`${this.apiServerURL}/sign/in`, { credential, password }, { observe: 'response' });
     }
 
     // Register
