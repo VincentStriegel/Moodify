@@ -14,8 +14,8 @@
       </div>
       <div *ngIf="windowWidth >= 1000">
         <ul class="flex space-x-4">
-          <li><a routerLink="" class="hover:text-indigo-700">Library</a></li>
-          <li><a routerLink="" class="hover:text-indigo-700">Party Rooms</a></li>
+          <li><a [routerLink]=""  class="hover:text-indigo-700">Library</a></li>
+          <li><a [routerLink]="['/party-room-menu']" class="hover:text-indigo-700">Party Rooms</a></li>
           <li><a [routerLink]="['/login']" class="hover:text-indigo-700">Login</a></li>
           <li><span class="material-icons-outlined">
             account_circle
@@ -32,7 +32,7 @@
       <ul class="flex flex-col space-y-4 pt-4">
         <li><a routerLink="" class="hover:text-indigo-700">Library</a></li>
         <hr>
-        <li><a routerLink="" class="hover:text-indigo-700">Party Rooms</a></li>
+        <li><a [routerLink]="['/party-room-menu']" class="hover:text-indigo-700">Party Rooms</a></li>
         <hr>
         <li><a [routerLink]="['/login']" class="hover:text-indigo-700">Login</a></li>
         <hr>
