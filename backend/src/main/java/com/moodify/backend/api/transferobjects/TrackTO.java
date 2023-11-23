@@ -1,7 +1,11 @@
 package com.moodify.backend.api.transferobjects;
 
-import java.util.Objects;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class TrackTO implements Cloneable {
 
     private long id;
@@ -18,62 +22,10 @@ public class TrackTO implements Cloneable {
 
     private AlbumTO album;
 
-    public long getId() {
-        return id;
+    public TrackTO() {
+        this.artist = new ArtistTO();
+        this.album = new AlbumTO();
     }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public int getDuration() {
-        return duration;
-    }
-
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
-
-    public String getPreview() {
-        return preview;
-    }
-
-    public void setPreview(String preview) {
-        this.preview = preview;
-    }
-
-    public String getRelease_date() {
-        return release_date;
-    }
-
-    public void setRelease_date(String release_date) {
-        this.release_date = release_date;
-    }
-
-    public ArtistTO getArtist() {
-        return artist;
-    }
-
-    public void setArtist(ArtistTO artist) {
-        this.artist = artist;
-    }
-
-    public AlbumTO getAlbum() {
-        return album;
-    }
-
-    public void setAlbum(AlbumTO album) {
-        this.album = album;
-    }
-
     @Override
     public String toString() {
         return "TrackTO :{"

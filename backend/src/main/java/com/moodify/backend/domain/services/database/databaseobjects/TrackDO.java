@@ -1,13 +1,19 @@
 package com.moodify.backend.domain.services.database.databaseobjects;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "tracks")
+@Getter
+@Setter
 public class TrackDO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    @Setter(AccessLevel.NONE)
     private long id;
 
     @Column(nullable = false)
@@ -23,7 +29,7 @@ public class TrackDO {
     private String release_date;
 
     @Column(nullable = false)
-    private String artist_id_deezer;
+    private long artist_id_deezer;
 
     @Column(nullable = false)
     private String artist_name_deezer;
@@ -34,13 +40,11 @@ public class TrackDO {
     @Column(nullable = false)
     private String album_cover_small_deezer;
 
-    //Track : title, duration, artist id , artist name , ablum cover_big, album_cover_small
-
     public TrackDO(String title,
                    int duration,
                    String preview,
                    String release_date,
-                   String artist_id_deezer,
+                   long artist_id_deezer,
                    String artist_name_deezer,
                    String album_cover_big_deezer,
                    String album_cover_small_deezer) {
@@ -53,4 +57,9 @@ public class TrackDO {
         this.album_cover_big_deezer = album_cover_big_deezer;
         this.album_cover_small_deezer = album_cover_small_deezer;
     }
+
+    public TrackDO() {
+
+    }
+
 }

@@ -1,6 +1,5 @@
 package com.moodify.backend.api.controllers;
 
-import com.moodify.backend.api.transferobjects.UserTO;
 import com.moodify.backend.domain.services.database.DatabaseService;
 import com.moodify.backend.domain.services.database.LoginUser;
 import com.moodify.backend.domain.services.database.PostgresService;
@@ -22,7 +21,7 @@ public class SignController {
     }
 
     @PostMapping({"/up"})
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     public void registerUser(@RequestBody UserDO userDO) {
 
         try {
@@ -36,12 +35,9 @@ public class SignController {
 
     @PostMapping({"/in"})
     @ResponseStatus(HttpStatus.OK)
-    public UserTO loginUser(@RequestBody LoginUser loginUser) {
+    public long loginUser(@RequestBody LoginUser loginUser) {
         try {
-            long id = this.POSTGRES_SERVICE.loginUser(loginUser);
-            UserTO userTO = new UserTO();
-            userTO.setId(id);
-            return userTO;
+            return this.POSTGRES_SERVICE.loginUser(loginUser);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
