@@ -67,6 +67,7 @@ export class LoginRegisterComponent {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             (response) => {
                 this.responseError = '';
+                this.backendCommunicationService.setUserId(response.body);
             },
             (error) => {
                 this.responseError = error.error.message;

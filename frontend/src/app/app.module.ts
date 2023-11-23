@@ -25,6 +25,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PartyRoomMenuComponent } from './party-room-menu/party-room-menu.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 @NgModule({
     declarations: [
@@ -40,6 +41,7 @@ import { PartyRoomMenuComponent } from './party-room-menu/party-room-menu.compon
         CollectionComponent,
         LoginRegisterComponent,
         PartyRoomMenuComponent,
+        UserProfileComponent,
     ],
     imports: [
         BrowserModule,
