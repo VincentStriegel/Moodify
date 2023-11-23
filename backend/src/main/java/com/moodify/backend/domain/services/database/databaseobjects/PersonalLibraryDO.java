@@ -22,16 +22,16 @@ public class PersonalLibraryDO {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "personal_library_id")
-    List<ArtistDO> likedArtists;
+    private List<ArtistDO> likedArtists;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "personal_library_id")
-    List<AlbumDO> likedAlbums;
+    private List<AlbumDO> likedAlbums;
 
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "personal_library_id")
-    List<PlaylistDO> playlists;
+    private List<PlaylistDO> playlists;
 
     public PersonalLibraryDO() {
         this.likedArtists = new ArrayList<ArtistDO>();

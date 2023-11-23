@@ -57,7 +57,9 @@ public class ProfileController {
 
     @PostMapping({"getUser/{profileId}/addToCustomPlaylist/{playlistId}"})
     @ResponseStatus(HttpStatus.OK)
-    public PersonalLibraryDO addToCustomPlaylist(@RequestBody TrackTO trackTO, @PathVariable("profileId") long profileId, @PathVariable("playlistId") long playlistId) {
+    public PersonalLibraryDO addToCustomPlaylist(@RequestBody TrackTO trackTO,
+                                                 @PathVariable("profileId") long profileId,
+                                                 @PathVariable("playlistId") long playlistId) {
 
         try {
             return this.POSTGRES_SERVICE.addToCustomPlaylist(trackTO, profileId, playlistId);
@@ -69,7 +71,9 @@ public class ProfileController {
 
     @DeleteMapping({"getUser/{profileId}/removeFromCustomPlaylist/{playlistId}/track/{trackId}"})
     @ResponseStatus(HttpStatus.OK)
-    public PersonalLibraryDO removeFromCustomPlaylist(@PathVariable("profileId") long profileId, @PathVariable("playlistId") long playlistId, @PathVariable("trackId") long trackId) {
+    public PersonalLibraryDO removeFromCustomPlaylist(@PathVariable("profileId") long profileId,
+                                                      @PathVariable("playlistId") long playlistId,
+                                                      @PathVariable("trackId") long trackId) {
 
         try {
             return this.POSTGRES_SERVICE.removeFromCustomPlaylist(profileId, playlistId, trackId);

@@ -21,14 +21,17 @@ public class ObjectTransformer {
         String albumSmallCover = trackTO.getAlbum().getCover_small();
 
 
-        TrackDO trackDO = new TrackDO(title,
-                duration,
-                preview,
-                releaseDate,
-                artistIdDeezer,
-                artistNameDeezer,
-                albumBigCover,
-                albumSmallCover);
+
+        TrackDO trackDO = new TrackDO();
+
+        trackDO.setTitle(title);
+        trackDO.setDuration(duration);
+        trackDO.setPreview(preview);
+        trackDO.setRelease_date(releaseDate);
+        trackDO.setArtist_id_deezer(artistIdDeezer);
+        trackDO.setArtist_name_deezer(artistNameDeezer);
+        trackDO.setAlbum_cover_big_deezer(albumBigCover);
+        trackDO.setAlbum_cover_small_deezer(albumSmallCover);
 
         return trackDO;
     }
