@@ -41,7 +41,7 @@ public class PlaylistDO {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "playlist_id")
-    List<TrackDO> tracks;
+    private List<TrackDO> tracks;
 
     public PlaylistDO(String title, boolean isLikedTrackPlaylist) {
         this(title);
