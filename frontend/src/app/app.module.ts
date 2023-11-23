@@ -14,6 +14,7 @@ import { TrackElementComponent } from './track-element/track-element.component';
 import { SearchResultComponent } from './search-result/search-result.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { ArtistProfileComponent } from './artist-profile/artist-profile.component';
+import { PartyRoomComponent } from './party-room/party-room.component';
 import { CollectionElementComponent } from './collection/collection-element/collection-element.component';
 import { CollectionComponent } from './collection/collection.component';
 import { MatIconModule } from '@angular/material/icon';
@@ -23,6 +24,7 @@ import { LoginRegisterComponent } from './login-register/login-register.componen
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { PartyRoomMenuComponent } from './party-room-menu/party-room-menu.component';
 
 @NgModule({
     declarations: [
@@ -33,9 +35,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         TrackElementComponent,
         SearchResultComponent,
         ArtistProfileComponent,
+        PartyRoomComponent,
         CollectionElementComponent,
         CollectionComponent,
         LoginRegisterComponent,
+        PartyRoomMenuComponent,
     ],
     imports: [
         BrowserModule,

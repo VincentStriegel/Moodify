@@ -4,13 +4,19 @@
             <div class="shrink-0 relative"> <!-- Make this a relative container for absolute positioning of the icon -->
                 <img *ngIf="imageSrc  == undefined" class="w-20 h-20 cursor-pointer"
                     src="{{ track.album.cover_big ? track.album.cover_big : 'assets/placeholder.jpg' }}" alt="Track cover">
-                <div *ngIf="imageSrc  == undefined" (click)="togglePlay()" class="absolute inset-0 flex justify-center items-center bg-black bg-opacity-50 opacity-0 hover:opacity-100 transition-opacity duration-300 cursor-pointer"> <!-- Icon container -->
+                <div *ngIf="imageSrc  == undefined && !isPartyRoom" (click)="togglePlay()" class="absolute inset-0 flex justify-center items-center bg-black bg-opacity-50 opacity-0 hover:opacity-100 transition-opacity duration-300 cursor-pointer"> <!-- Icon container -->
                     <span class="material-icons-outlined text-white text-4xl">play_circle</span>
+                </div>
+                 <div *ngIf="imageSrc  == undefined && isPartyRoom" (click)="suggestSong()" class="absolute inset-0 flex justify-center items-center bg-black bg-opacity-50 opacity-0 hover:opacity-100 transition-opacity duration-300 cursor-pointer"> <!-- Icon container -->
+                    <span class="material-icons-outlined text-white text-4xl">playlist_add</span>
                 </div>
             </div>
             <div [class.hidden]="imageSrc === undefined" class="md:flex md:flex-col md:items-center">
-                <button (click)="togglePlay()" class="justify-self-center">
+                <button *ngIf="!isPartyRoom" (click)="togglePlay()" class="justify-self-center">
                     <span class="material-icons-outlined scale-150">{{ isPlaying ? 'pause' : 'play_circle' }}</span>
+                </button>
+                <button *ngIf="isPartyRoom" (click)="suggestSong()" class="justify-self-center">
+                    <span class="material-icons-outlined scale-150">playlist_add</span>
                 </button>
             </div>
             <div class="flex flex-col">

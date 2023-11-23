@@ -1,5 +1,7 @@
 package com.moodify.backend.api.transferobjects;
 
+import java.util.Objects;
+
 public class TrackTO implements Cloneable {
 
     private long id;
@@ -74,14 +76,14 @@ public class TrackTO implements Cloneable {
 
     @Override
     public String toString() {
-        return "TrackTO{"
-                + "id=" + id
-                + ", title='" + title + '\''
-                + ", duration=" + duration
-                + ", preview='" + preview + '\''
-                + ", release_date='" + release_date + '\''
-                + ", artist=" + artist
-                + ", album=" + album
+        return "TrackTO :{"
+                + "id:" + id
+                + ", title:'" + title + '\''
+                + ", duration:" + duration
+                + ", preview:'" + preview + '\''
+                + ", release_date:'" + release_date + '\''
+                + ", artist:" + artist
+                + ", album:" + album
                 + '}';
     }
 
@@ -102,5 +104,22 @@ public class TrackTO implements Cloneable {
             e.printStackTrace(); // Handle the exception appropriately
             return null;
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        TrackTO trackTO = (TrackTO) o;
+        return Objects.equals(id, trackTO.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
