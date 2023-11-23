@@ -1,30 +1,38 @@
 package com.moodify.backend.domain.services.database;
 
-import com.moodify.backend.api.transferobjects.UserTO;
+import com.moodify.backend.api.transferobjects.AlbumTO;
+import com.moodify.backend.api.transferobjects.ArtistTO;
+import com.moodify.backend.api.transferobjects.TrackTO;
+import com.moodify.backend.domain.services.database.databaseobjects.PersonalLibraryDO;
 import com.moodify.backend.domain.services.database.databaseobjects.UserDO;
-import org.springframework.web.bind.annotation.RequestBody;
 
 public interface DatabaseService {
 
     UserDO createUser(UserDO userDO) throws Exception;
+
     void saveUser(UserDO userDO);
 
     long loginUser(LoginUser loginUser) throws Exception;
 
-    UserTO getUser(long id);
+    UserDO getUser(long userId) throws Exception;
 
-    long addCustomPlaylist(long userId, String playlistTitle);
-    //removeCustomPlaylist()
-    //addToCustomPlaylist()
-    //removeFromCustomPlaylist()
+    PersonalLibraryDO addCustomPlaylist(long userId, String playlistTitle) throws Exception;
 
-    //addToLikedTracks()
-    //addToLikedPlaylists()
-    //addToLikedAlbums()
-    //addToLikedArtists()
+    PersonalLibraryDO removeCustomPlaylist(long userId, long playlistId) throws Exception;
 
-    //removeFromLikedTracks()
-    //removeFromLikedArtists()
-    //removeFromLikedAlbums()
-    //removeFromLikedPlaylists()
+    PersonalLibraryDO addToCustomPlaylist(TrackTO trackTO, long userId, long playlistId) throws Exception;
+
+    PersonalLibraryDO removeFromCustomPlaylist(long userId, long playlistId, long trackId) throws Exception;
+
+    PersonalLibraryDO addToLikedTracks(TrackTO trackTO, long userId) throws Exception;
+
+    PersonalLibraryDO removeFromLikedTracks(long userId, long trackId) throws Exception;
+
+    PersonalLibraryDO addToLikedArtists(ArtistTO artistTO, long userId) throws Exception;
+
+    PersonalLibraryDO removeFromLikedArtists(long artistId, long userId) throws Exception;
+
+    PersonalLibraryDO addToLikedAlbums(AlbumTO albumTO, long userId) throws Exception;
+
+    PersonalLibraryDO removeFromLikedAlbums(long albumId, long userId) throws Exception;
 }
