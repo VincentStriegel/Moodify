@@ -14,12 +14,12 @@
       </div>
       <div *ngIf="windowWidth >= 1000">
         <ul class="flex space-x-4">
-          <li><a [routerLink]=""  class="hover:text-indigo-700">Library</a></li>
+          <li><a [routerLink]="['/library']"  class="hover:text-indigo-700">Library</a></li>
           <li><a [routerLink]="['/party-room-menu']" class="hover:text-indigo-700">Party Rooms</a></li>
-          <li><a [routerLink]="['/login']" class="hover:text-indigo-700">Login</a></li>
-          <li><span class="material-icons-outlined">
+          <li *ngIf="!isLoggedIn"><a [routerLink]="['/login']" class="hover:text-indigo-700">Login</a></li>
+          <li><a [routerLink]="['/profile']" class="hover:text-indigo-700"><span class="material-icons-outlined">
             account_circle
-            </span></li>
+            </span></a></li>
         </ul>  
       </div>
       <div *ngIf="windowWidth < 1000">
@@ -30,15 +30,15 @@
     </div>
     <div class="absolute w-full left-0 text-white sticky bg-black/90  top-0 z-10 backdrop-blur-sm" [ngClass]="{'hidden': !isOpen}">
       <ul class="flex flex-col space-y-4 pt-4">
-        <li><a routerLink="" class="hover:text-indigo-700">Library</a></li>
+        <li><a [routerLink]="['/library']" class="hover:text-indigo-700">Library</a></li>
         <hr>
         <li><a [routerLink]="['/party-room-menu']" class="hover:text-indigo-700">Party Rooms</a></li>
+        <hr *ngIf="!isLoggedIn">
+        <li *ngIf="!isLoggedIn"><a [routerLink]="['/login']" class="hover:text-indigo-700">Login</a></li>
         <hr>
-        <li><a [routerLink]="['/login']" class="hover:text-indigo-700">Login</a></li>
-        <hr>
-        <li><span class="material-icons-outlined">
+        <li><a [routerLink]="['/profile']" class="hover:text-indigo-700"><span class="material-icons-outlined">
           account_circle
-          </span></li>
+          </span></a></li>
       </ul>  
     </div> 
   </div>        

@@ -4,11 +4,12 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { MusicPlayerComponent } from './music-player/music-player.component';
 import { FormsModule } from '@angular/forms';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('AppComponent', () => {
     beforeEach(() =>
         TestBed.configureTestingModule({
-            imports: [RouterTestingModule, FormsModule],
+            imports: [RouterTestingModule, FormsModule, HttpClientTestingModule],
             declarations: [AppComponent, HeaderComponent, MusicPlayerComponent],
         }),
     );

@@ -16,9 +16,12 @@
             <p class="capitalize">{{type}} | Songs: {{album ? album.number_of_songs : playlist?.number_of_songs}}</p>
         </div>
     </div>
-    <div class="flex flex-wrap items-center p-2">
+    <div class="flex flex-wrap items-center p-2 gap-2">
         <button (click)="onPlay()">
             <span class="material-icons-outlined text-white text-6xl hover:scale-110">play_circle</span>
+        </button>
+        <button *ngIf=" type != 'custom-playlist'" (click)="isLiked ? unlike() : like()">
+            <span class="material-icons-outlined text-white text-6xl hover:scale-110">{{ isLiked ? 'favorite' : 'favorite_border' }}</span>
         </button>
     </div>
     <div *ngIf="album || playlist" class="w-[100%] mt-5 col-span-3">
@@ -26,7 +29,7 @@
         <hr class="py-3">
         <div>
             <div *ngFor="let track of (album?.trackTOList || playlist?.trackTOList)">
-                <app-track-element [track]="track" [imageSrc]="album?.cover_small"></app-track-element>
+                <app-track-element [track]="track" [imageSrc]="album?.cover_small" [playlistId]="customPlaylistId" (removeFromPlaylistEvent)="removeFromCustomPlaylist(track.id)"></app-track-element>
             </div>
         </div>
     </div>

@@ -2,7 +2,11 @@
     class="grid grid-cols-3 lg:grid-cols-6 bg-zinc-800 p-3 max-w-[1800px] justify-center mx-auto min-h-[100vh]">
     <div class="col-span-3 justify-self-center lg:justify-self-start p-3">
         <img class="rounded-full border-solid border-2 border-white" src="{{artist.picture_big}}" alt="Artist">
-        <h1 class="text-white text-2xl">{{artist.name}}</h1>
+        <h1 class="text-white text-2xl py-2 font-bold">{{artist.name}}</h1>
+        <button class="bg-zinc-900 p-2 px-3 rounded-full items-center flex" (click)="isLiked ? unlikeArtist() : likeArtist()">
+            <span class="material-icons-outlined text-white text-2xl pr-2"><span class="material-icons-outlined">{{ isLiked ? 'favorite' : 'favorite_border' }}</span></span>
+            <span class="text-white font-bold">{{ isLiked ? 'Liked Artist' : 'Like Artist' }}</span>
+        </button>
     </div>
     <div *ngIf= "artist.trackTOList.length > 0" class="w-[100%] mt-5 col-span-3">
         <h2 class="text-white font-bold h-16 text-left text-2xl">Songs</h2>

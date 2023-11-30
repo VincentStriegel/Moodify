@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TrackElementComponent } from './track-element.component';
+import { PlaylistPopupComponent } from './playlist-popup.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
-describe('TrackElementComponent', () => {
-    let component: TrackElementComponent;
-    let fixture: ComponentFixture<TrackElementComponent>;
+describe('PlaylistPopupComponent', () => {
+    let component: PlaylistPopupComponent;
+    let fixture: ComponentFixture<PlaylistPopupComponent>;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            declarations: [TrackElementComponent],
+            declarations: [PlaylistPopupComponent],
             imports: [HttpClientTestingModule],
         });
-        fixture = TestBed.createComponent(TrackElementComponent);
+        fixture = TestBed.createComponent(PlaylistPopupComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

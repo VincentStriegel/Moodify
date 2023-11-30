@@ -25,7 +25,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PartyRoomMenuComponent } from './party-room-menu/party-room-menu.component';
-import { UserProfileComponent } from './user-profile/user-profile.component';
+import { UserLibraryComponent } from './user-library/user-library.component';
+import { MatMenuModule } from '@angular/material/menu';
+import { PlaylistPopupComponent } from './playlist-popup/playlist-popup.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { UserInterceptor } from './interceptors/user-interceptor.interceptor';
 
 @NgModule({
     declarations: [
@@ -41,7 +45,8 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
         CollectionComponent,
         LoginRegisterComponent,
         PartyRoomMenuComponent,
-        UserProfileComponent,
+        UserLibraryComponent,
+        PlaylistPopupComponent,
     ],
     imports: [
         BrowserModule,
@@ -58,8 +63,12 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
         MatFormFieldModule,
         MatInputModule,
         BrowserAnimationsModule,
+        MatMenuModule,
     ],
-    providers: [],
+    providers: [
+        { provide: HTTP_INTERCEPTORS, useClass: UserInterceptor, multi: true },
+        // ...
+    ],
     bootstrap: [AppComponent],
 })
 export class AppModule {}

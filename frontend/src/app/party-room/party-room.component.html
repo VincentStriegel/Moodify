@@ -38,13 +38,15 @@
             </div>
         </div>
     </div>
-    <div class="col-span-2 min-w-[100%] bg-zinc-900 rounded-lg p-5 min-h-[260px]">
-        <div class="flex flex-nowrap overflow-x-auto overflow-y-hidden h-[250px] gap-2">
-            <div class="w-24 h-[150px] p-2 m-1 bg-zinc-900 flex flex-col justify-between flex-shrink-0 text-white"
+
+    <div class="flex flex-col w-[100%] mt-5 col-span-2 bg-zinc-900 rounded-lg p-3 ">
+        <h2 class="text-white font-bold h-16 text-2xl text-left">Songs</h2>
+        <div
+            class="flex flex-nowrap overflow-x-auto overflow-y-hidden">
+            <div class="mb-2"
                 *ngFor="let track of partyRoomTracks">
-                <img src="{{track.album.cover_big}}">
-                <p>{{track.title}}</p>
-                <p>{{track.artist.name}}</p>
+               <app-track-element [track]="track" [isPartyRoom]="true" [squareLayout]="true"></app-track-element>
+               <div class="text-white text-center">PlaceHolder</div>
             </div>
         </div>
     </div>

@@ -105,7 +105,7 @@ public class PostgresService implements DatabaseService {
     }
 
     @Override
-    public PersonalLibraryDO addCustomPlaylist(long userId, String playlistTitle) throws Exception {
+    public Long addCustomPlaylist(long userId, String playlistTitle) throws Exception {
         UserDO userDO = this.findUserById(userId);
 
 
@@ -114,7 +114,7 @@ public class PostgresService implements DatabaseService {
         userDO.getPersonalLibrary().getPlaylists().add(playlistDO);
         this.DATABASE_REPOSITORY.save(userDO);
 
-        return userDO.getPersonalLibrary();
+        return userDO.getPersonalLibrary().getPlaylists().get(userDO.getPersonalLibrary().getPlaylists().size() - 1).getId();
     }
 
     @Override
@@ -237,7 +237,7 @@ public class PostgresService implements DatabaseService {
                 .getPersonalLibrary()
                 .getLikedAlbums()
                 .stream()
-                .filter(al -> al.getId() == albumId)
+                .filter(al -> al.getAlbum_id_deezer() == albumId)
                 .findFirst()
                 .orElse(null);
         if (albumDO == null) {
@@ -295,7 +295,7 @@ public class PostgresService implements DatabaseService {
     }
 
     private TrackDO findTrackFromPlaylist(PlaylistDO playlistDO, long trackId) throws Exception {
-        TrackDO track = playlistDO.getTracks().stream().filter(trackDO -> trackDO.getId() == trackId).findFirst().orElse(null);
+        TrackDO track = playlistDO.getTracks().stream().filter(trackDO -> trackDO.getId_deezer() == trackId).findFirst().orElse(null);
         if (track == null) {
             throw new TrackNotFoundException();
         }
@@ -329,7 +329,7 @@ public class PostgresService implements DatabaseService {
                 .getPersonalLibrary()
                 .getLikedArtists()
                 .stream()
-                .filter(ar -> ar.getId() == artistId)
+                .filter(ar -> ar.getArtist_id_deezer() == artistId)
                 .findFirst()
                 .orElse(null);
 
