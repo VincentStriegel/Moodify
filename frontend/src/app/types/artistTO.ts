@@ -3,6 +3,7 @@ import { TrackTO } from './trackTO';
 
 export type ArtistTO = {
     id: number;
+    // deezerId: number;
     nb_fans: number;
     name: string;
     picture_small: string;

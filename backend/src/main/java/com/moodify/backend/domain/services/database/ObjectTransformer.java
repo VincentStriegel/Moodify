@@ -1,16 +1,16 @@
 package com.moodify.backend.domain.services.database;
 
-import com.moodify.backend.api.transferobjects.AlbumTO;
-import com.moodify.backend.api.transferobjects.ArtistTO;
-import com.moodify.backend.api.transferobjects.TrackTO;
-import com.moodify.backend.domain.services.database.databaseobjects.AlbumDO;
-import com.moodify.backend.domain.services.database.databaseobjects.ArtistDO;
-import com.moodify.backend.domain.services.database.databaseobjects.TrackDO;
+import com.moodify.backend.api.transferobjects.*;
+import com.moodify.backend.domain.services.database.databaseobjects.*;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class ObjectTransformer {
     public TrackDO generateTrackDOFrom(TrackTO trackTO) {
+        long deezerId = trackTO.getId();
         String title = trackTO.getTitle();
         int duration = trackTO.getDuration();
         String preview = trackTO.getPreview();
@@ -24,6 +24,7 @@ public class ObjectTransformer {
 
         TrackDO trackDO = new TrackDO();
 
+        trackDO.setId_deezer(deezerId);
         trackDO.setTitle(title);
         trackDO.setDuration(duration);
         trackDO.setPreview(preview);
@@ -38,7 +39,7 @@ public class ObjectTransformer {
 
     public TrackTO generateTrackTOFrom(TrackDO trackDO) {
         TrackTO trackTO =  new TrackTO();
-        trackTO.setId(trackDO.getId());
+        trackTO.setId(trackDO.getId_deezer());
         trackTO.setTitle(trackDO.getTitle());
         trackTO.setDuration(trackDO.getDuration());
         trackTO.setPreview(trackDO.getPreview());
@@ -52,7 +53,6 @@ public class ObjectTransformer {
     }
 
     public ArtistDO generateArtistDOFrom(ArtistTO artistTO) {
-
 
         int nbOfFans = artistTO.getNb_fans();
         String name = artistTO.getName();
@@ -77,5 +77,85 @@ public class ObjectTransformer {
         AlbumDO albumDO = new AlbumDO(title, coverSmall, coverBig, releaseDate, numberOfSongs, albumIdDeezer);
 
         return albumDO;
+    }
+
+    public ArtistTO generateArtistTOFrom(ArtistDO artistDO) {
+        ArtistTO artistTO = new ArtistTO();
+        artistTO.setId(artistDO.getArtist_id_deezer());
+        //artistTO.setDeezerId(artistDO.getArtist_id_deezer());
+        artistTO.setNb_fans(artistDO.getNb_fans());
+        artistTO.setName(artistDO.getName());
+        artistTO.setPicture_small(artistDO.getPicture_small());
+        artistTO.setPicture_big(artistDO.getPicture_big());
+        return artistTO;
+    }
+
+    public AlbumTO generateAlbumTOFrom(AlbumDO albumDO) {
+        AlbumTO albumTO = new AlbumTO();
+        albumTO.setId(albumDO.getAlbum_id_deezer());
+        albumTO.setTitle(albumDO.getTitle());
+        albumTO.setCover_small(albumDO.getCover_small());
+        albumTO.setCover_big(albumDO.getCover_big());
+        albumTO.setRelease_date(albumDO.getRelease_date());
+        albumTO.setNumber_of_songs(albumDO.getNumber_of_songs());
+        return albumTO;
+    }
+
+    public PersonalLibraryTO generatePersonalLibraryTOFrom(PersonalLibraryDO personalLibraryDO) {
+        PersonalLibraryTO personalLibraryTO = new PersonalLibraryTO();
+        personalLibraryTO.setLikedAlbums(generateAlbumTOListFrom(personalLibraryDO.getLikedAlbums()));
+        personalLibraryTO.setLikedArtists(generateArtistTOListFrom(personalLibraryDO.getLikedArtists()));
+        personalLibraryTO.setLikedTracks(generateTrackTOListFrom(personalLibraryDO.getPlaylists().get(0).getTracks()));
+        personalLibraryTO.setCustomPlaylists(generatePlaylistTOListFrom(personalLibraryDO.getPlaylists()));
+        return personalLibraryTO;
+
+    }
+
+    public UserTO generateUserTOFrom(UserDO userDO) {
+        UserTO userTO = new UserTO();
+        userTO.setId(userDO.getId());
+        userTO.setUsername(userDO.getUsername());
+        userTO.setPersonalLibrary(generatePersonalLibraryTOFrom(userDO.getPersonalLibrary()));
+        return userTO;
+    }
+
+    private List<AlbumTO> generateAlbumTOListFrom(List<AlbumDO> albumDOList) {
+        List<AlbumTO> albumTOList = new ArrayList<>();
+        for (AlbumDO albumDO : albumDOList) {
+            albumTOList.add(generateAlbumTOFrom(albumDO));
+        }
+        return albumTOList;
+    }
+
+    private List<ArtistTO> generateArtistTOListFrom(List<ArtistDO> artistDOList) {
+        List<ArtistTO> artistTOList = new ArrayList<>();
+        for (ArtistDO artistDO : artistDOList) {
+            artistTOList.add(generateArtistTOFrom(artistDO));
+        }
+        return artistTOList;
+    }
+
+    private List<TrackTO> generateTrackTOListFrom(List<TrackDO> trackDOList) {
+        List<TrackTO> trackTOList = new ArrayList<>();
+        for (TrackDO trackDO : trackDOList) {
+            trackTOList.add(generateTrackTOFrom(trackDO));
+        }
+        return trackTOList;
+    }
+
+    private List<PlaylistTO> generatePlaylistTOListFrom(List<PlaylistDO> playlistDOList) {
+        List<PlaylistTO> playlistTOList = new ArrayList<>();
+        for (PlaylistDO playlistDO : playlistDOList) {
+            playlistTOList.add(generatePlaylistTOFrom(playlistDO));
+        }
+        return playlistTOList;
+    }
+
+    private PlaylistTO generatePlaylistTOFrom(PlaylistDO playlistDO) {
+        PlaylistTO playlistTO = new PlaylistTO();
+        playlistTO.setId(playlistDO.getId());
+        playlistTO.setTitle(playlistDO.getTitle());
+        playlistTO.setTrackTOList(generateTrackTOListFrom(playlistDO.getTracks()));
+        return playlistTO;
     }
 }

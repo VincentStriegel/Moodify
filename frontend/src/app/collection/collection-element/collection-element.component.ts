@@ -15,6 +15,7 @@ export class CollectionElementComponent {
     @Input() artist?: ArtistTO;
     @Input() album?: AlbumTO;
     @Input() playlist?: PlaylistTO;
+    @Input() isCustomPlaylist = false;
 
     constructor(
         private router: Router,
@@ -27,18 +28,25 @@ export class CollectionElementComponent {
     }
 
     navigateTo(type: string, id: number) {
-        this.router.navigateByUrl(`/collection/${type}/${id}`);
+        this.isCustomPlaylist
+            ? this.router.navigateByUrl(`/collection/custom-playlist/${id}`)
+            : this.router.navigateByUrl(`/collection/${type}/${id}`);
     }
 
     onPlay() {
         const id = this.album?.id || this.playlist?.id || 0;
-        this.album
-            ? this.backendCommunicationService
-                  .getAlbum(id)
-                  .subscribe((data) => this.musicPlayerService.playTracks(data.trackTOList, data.cover_small))
-            : this.backendCommunicationService
-                  .getPlaylist(id)
-                  .subscribe((data) => this.musicPlayerService.playTracks(data.trackTOList));
+
+        if (this.album) {
+            this.backendCommunicationService
+                .getAlbum(id)
+                .subscribe((data) => this.musicPlayerService.playTracks(data.trackTOList, data.cover_small));
+        } else if (this.isCustomPlaylist) {
+            this.musicPlayerService.playTracks(this.playlist!.trackTOList);
+        } else {
+            this.backendCommunicationService
+                .getPlaylist(id)
+                .subscribe((data) => this.musicPlayerService.playTracks(data.trackTOList));
+        }
     }
 
     formatFansCount(fans: number): string {

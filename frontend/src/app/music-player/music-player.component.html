@@ -39,7 +39,7 @@
                     <p class="font-bold">{{currentTrack.artist.name}}</p>
                     <p>{{currentTrack.title}}</p>
                 </div>
-                <button class="text-white justify-self-end" (click)="isFavorite = !isFavorite">
+                <button class="text-white justify-self-end" (click)="likeSong()">
                     <span class="material-icons-outlined">{{ isFavorite ? 'favorite' : 'favorite_border' }}</span>
                 </button>
                 <button class="text-white justify-center">

@@ -3,10 +3,11 @@ package com.moodify.backend.api.controllers;
 import com.moodify.backend.api.transferobjects.AlbumTO;
 import com.moodify.backend.api.transferobjects.ArtistTO;
 import com.moodify.backend.api.transferobjects.TrackTO;
+import com.moodify.backend.api.transferobjects.UserTO;
 import com.moodify.backend.domain.services.database.DatabaseService;
+import com.moodify.backend.domain.services.database.ObjectTransformer;
 import com.moodify.backend.domain.services.database.PostgresService;
 import com.moodify.backend.domain.services.database.databaseobjects.PersonalLibraryDO;
-import com.moodify.backend.domain.services.database.databaseobjects.UserDO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -24,10 +25,10 @@ public class ProfileController {
 
     @GetMapping({"getUser/{profileId}"})
     @ResponseStatus(HttpStatus.OK)
-    public UserDO getUser(@PathVariable("profileId") long profileId) {
+    public UserTO getUser(@PathVariable("profileId") long profileId) {
 
         try {
-            return POSTGRES_SERVICE.getUser(profileId);
+            return ObjectTransformer.class.newInstance().generateUserTOFrom(this.POSTGRES_SERVICE.getUser(profileId));
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
@@ -35,7 +36,7 @@ public class ProfileController {
 
     @PostMapping({"getUser/{profileId}/addCustomPlaylist/{title}"})
     @ResponseStatus(HttpStatus.CREATED)
-    public PersonalLibraryDO addCustomPlaylist(@PathVariable("profileId") long profileId, @PathVariable("title") String title) {
+    public Long addCustomPlaylist(@PathVariable("profileId") long profileId, @PathVariable("title") String title) {
         try {
             return this.POSTGRES_SERVICE.addCustomPlaylist(profileId, title);
 
@@ -143,7 +144,7 @@ public class ProfileController {
 
     }
 
-    @DeleteMapping({"getUser/{profileId}/removeFromLikedArtists/{albumId}"})
+    @DeleteMapping({"getUser/{profileId}/removeFromLikedAlbums/{albumId}"})
     @ResponseStatus(HttpStatus.OK)
     public PersonalLibraryDO removeFromLikedAlbums(@PathVariable("profileId") long profileId, @PathVariable("albumId") long albumId) {
 

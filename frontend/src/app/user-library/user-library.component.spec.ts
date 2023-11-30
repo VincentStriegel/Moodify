@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TrackElementComponent } from './track-element.component';
+import { UserLibraryComponent } from './user-library.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
-describe('TrackElementComponent', () => {
-    let component: TrackElementComponent;
-    let fixture: ComponentFixture<TrackElementComponent>;
+describe('UserLibraryComponent', () => {
+    let component: UserLibraryComponent;
+    let fixture: ComponentFixture<UserLibraryComponent>;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            declarations: [TrackElementComponent],
+            declarations: [UserLibraryComponent],
             imports: [HttpClientTestingModule],
         });
-        fixture = TestBed.createComponent(TrackElementComponent);
+        fixture = TestBed.createComponent(UserLibraryComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

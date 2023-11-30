@@ -1,0 +1,41 @@
+<div *ngIf="userProfile" class="pb-10 bg-zinc-800 min-h-[100vh]">
+    <div class="p-4">
+        <div *ngIf="userProfile.personalLibrary.likedTracks.length" class="flex flex-col w-[100%] mt-5 h-64">
+            <h2 class="text-white font-bold h-16 text-left text-2xl">Liked Songs</h2>
+            <div class="flex flex-nowrap overflow-x-auto py-3">
+                <div *ngFor="let track of userProfile.personalLibrary.likedTracks">
+                    <app-track-element [track]="track" [squareLayout]="true"></app-track-element>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="userProfile.personalLibrary.likedArtists.length" class="flex flex-col w-[100%] mt-5">
+            <h2 class="text-white font-bold h-16 text-2xl text-left">Liked Artists</h2>
+            <div class="flex flex-nowrap overflow-x-auto overflow-y-hidden gap-2">
+                <div *ngFor="let artist of userProfile.personalLibrary.likedArtists">
+                    <app-collection-element [artist]="artist"></app-collection-element>
+                </div>
+            </div>
+        </div>
+
+
+        <div *ngIf="userProfile.personalLibrary.likedAlbums.length" class="flex flex-col w-[100%] mt-5 ">
+            <h2 class="text-white font-bold h-16 text-2xl text-left">Liked Albums</h2>
+            <div class="flex flex-nowrap overflow-x-auto overflow-y-hidden ">
+                <div *ngFor="let album of userProfile.personalLibrary.likedAlbums">
+                    <app-collection-element [album]="album"></app-collection-element>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex flex-col w-[100%] mt-5 h-[350px]">
+            <h2 class="text-white font-bold h-16 text-2xl text-left">Playlists</h2>
+            <div class="flex flex-nowrap overflow-x-auto overflow-y-hidden h-[350px]">
+                <div *ngFor="let playlist of userProfile.personalLibrary.customPlaylists | slice:1">
+                    <app-collection-element [playlist]="playlist" [isCustomPlaylist]="true"></app-collection-element>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

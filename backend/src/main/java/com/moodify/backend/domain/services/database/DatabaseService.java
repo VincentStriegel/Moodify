@@ -16,7 +16,7 @@ public interface DatabaseService {
 
     UserDO getUser(long userId) throws Exception;
 
-    PersonalLibraryDO addCustomPlaylist(long userId, String playlistTitle) throws Exception;
+    Long addCustomPlaylist(long userId, String playlistTitle) throws Exception;
 
     PersonalLibraryDO removeCustomPlaylist(long userId, long playlistId) throws Exception;
 

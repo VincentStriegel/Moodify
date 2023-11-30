@@ -34,3 +34,11 @@ mat-slider input {
   }
   
 
+.mat-mdc-menu-content {
+    background-color: #333 !important;
+}
+
+.mat-mdc-menu-item >*{
+    display: flex !important;
+    align-items: center !important;
+}

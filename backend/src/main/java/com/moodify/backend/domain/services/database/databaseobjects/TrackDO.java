@@ -17,6 +17,9 @@ public class TrackDO {
     private long id;
 
     @Column(nullable = false)
+    private long id_deezer;
+
+    @Column(nullable = false)
     private String title;
 
     @Column(nullable = false)
@@ -25,7 +28,7 @@ public class TrackDO {
     @Column(nullable = false)
     private String preview;
 
-    @Column(nullable = false)
+    @Column()
     private String release_date;
 
     @Column(nullable = false)

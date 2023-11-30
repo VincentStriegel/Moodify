@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MusicPlayerService } from '../services/music-player.service';
 import { TrackTO } from '../types/trackTO';
+import { BackendCommunicationService } from '../services/backend-communication.service';
 
 @Component({
     selector: 'app-music-player',
@@ -23,7 +24,10 @@ export class MusicPlayerComponent {
     isFavorite = false;
     imageSrc?: string;
 
-    constructor(private musicPlayerService: MusicPlayerService) {
+    constructor(
+        private musicPlayerService: MusicPlayerService,
+        private backendCommunicationService: BackendCommunicationService,
+    ) {
         this.musicPlayerService.nextTrack$.subscribe((track) => {
             if (!track) return;
 
@@ -32,6 +36,7 @@ export class MusicPlayerComponent {
             this.imageSrc = this.currentTrack.album?.cover_small || this.musicPlayerService.imageSrc;
             this.setupAudioPlayer();
             this.togglePlay();
+            this.checkIfLiked();
         });
     }
 
@@ -102,5 +107,43 @@ export class MusicPlayerComponent {
         }
         this.volumeMute ? (this.audio.volume = this.currentVolume) : (this.audio.volume = 0);
         this.volumeMute = !this.volumeMute;
+    }
+    likeSong(): void {
+        if (!this.isFavorite) {
+            this.backendCommunicationService.addToLikedTracks(this.currentTrack).subscribe(
+                () => {
+                    this.backendCommunicationService.userProfile.personalLibrary.likedTracks.push(this.currentTrack);
+                    this.isFavorite = true;
+                },
+                (error) => {
+                    console.error('Error:', error);
+                },
+            );
+        } else {
+            this.backendCommunicationService.removeFromLikedTracks(this.currentTrack.id).subscribe(
+                () => {
+                    this.backendCommunicationService.userProfile.personalLibrary.likedTracks.splice(
+                        this.backendCommunicationService.userProfile.personalLibrary.likedTracks.findIndex(
+                            (track) => track.id === this.currentTrack.id,
+                        ),
+                        1,
+                    );
+                    this.isFavorite = false;
+                },
+                (error) => {
+                    console.error('Error:', error);
+                },
+            );
+        }
+    }
+
+    checkIfLiked(): void {
+        this.backendCommunicationService.userProfile.personalLibrary.likedTracks.forEach((track) => {
+            if (track.id === this.currentTrack.id) {
+                this.isFavorite = true;
+            } else {
+                this.isFavorite = false;
+            }
+        });
     }
 }

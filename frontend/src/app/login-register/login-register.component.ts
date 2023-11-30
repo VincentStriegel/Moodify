@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BackendCommunicationService } from '../services/backend-communication.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-login-register',
@@ -55,7 +56,10 @@ export class LoginRegisterComponent {
         return '';
     }
 
-    constructor(private backendCommunicationService: BackendCommunicationService) {}
+    constructor(
+        private backendCommunicationService: BackendCommunicationService,
+        private router: Router,
+    ) {}
 
     onLogin(): void {
         const loginData = {
@@ -68,6 +72,7 @@ export class LoginRegisterComponent {
             (response) => {
                 this.responseError = '';
                 this.backendCommunicationService.setUserId(response.body);
+                this.router.navigate(['/library']);
             },
             (error) => {
                 this.responseError = error.error.message;
@@ -88,6 +93,8 @@ export class LoginRegisterComponent {
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 (response) => {
                     this.responseError = '';
+                    this.credentials.setValue(registerData.username);
+                    this.onLogin();
                 },
                 (error) => {
                     this.responseError = error.error.message;

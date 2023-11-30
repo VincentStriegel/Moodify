@@ -10,10 +10,10 @@ public class UserTO {
     private long id;
     private String email;
     private String username;
-    private PersonalLibraryTO personalLibraryTO;
+    private PersonalLibraryTO personalLibrary;
 
     public UserTO() {
-        this.personalLibraryTO = new PersonalLibraryTO();
+        this.personalLibrary = new PersonalLibraryTO();
     }
 
 

@@ -1,6 +1,7 @@
 import { Component, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { TrackTO } from '../types/trackTO';
+import { BackendCommunicationService } from '../services/backend-communication.service';
 
 @Component({
     selector: 'app-header',
@@ -12,13 +13,18 @@ export class HeaderComponent {
     query!: string;
     isOpen = false;
     windowWidth: number;
+    isLoggedIn = false;
     constructor(
         private router: Router,
         private elementRef: ElementRef,
+        private backendCommunicationService: BackendCommunicationService,
     ) {
         this.windowWidth = window.innerWidth;
         document.addEventListener('click', this.onClickOutside.bind(this));
         window.addEventListener('resize', this.onResize.bind(this));
+        this.backendCommunicationService.getUserPersonalLibrary().subscribe(() => {
+            this.isLoggedIn = true;
+        });
     }
     ngOnInit() {}
     search() {
