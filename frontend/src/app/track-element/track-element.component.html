@@ -1,24 +1,36 @@
-<div *ngIf="track" [ngClass]="{'w-40 mx-2': squareLayout, 'w-full p-2': !squareLayout}">
-    <div class="flex justify-between text-white items-center w-full">
-        <div class="flex-initial flex items-center space-x-2 gap-3">
+<div *ngIf="track"
+    [ngClass]="{'w-40': squareLayout, 'w-full my-3 hover:opacity-90 hover:bg-zinc-700': !squareLayout}"
+    [class.max-w-64]="tinyLayout">
+    <div class="flex justify-between text-white items-center w-[100%] flex-none">
+        <div class="flex-initial flex items-center space-x-2 gap-3 flex-none">
             <div class="relative">
-                <img *ngIf="imageSrc == undefined" [ngClass]="{'w-40': squareLayout, 'w-20': !squareLayout}"
-                    src="{{ track.album.cover_big ? track.album.cover_big : 'assets/placeholder.jpg' }}" alt="Track cover">
-                <div *ngIf="imageSrc == undefined && !isPartyRoom"
-                    (click)="togglePlay()" class="absolute inset-0 flex justify-center items-center bg-black bg-opacity-50 opacity-0 hover:opacity-100 transition-opacity duration-300 cursor-pointer">
-                    <span class="material-icons-outlined text-white text-[4rem]">play_circle</span>
+                <img *ngIf="!isAlbum" [class.w-40]="squareLayout" [class.w-8]="tinyLayout" class="w-20"
+                    [src]="tinyLayout ? track.album.cover_small : (track.album.cover_big ? track.album.cover_big : 'assets/placeholder.jpg')"
+                    alt="Track cover">
+                <div *ngIf="!isPartyRoom && !isAlbum" (click)="togglePlay()"
+                    class="absolute inset-0 flex justify-center items-center bg-black bg-opacity-50 opacity-0 hover:opacity-100 transition-opacity duration-300 cursor-pointer">
+                    <span class="material-icons-outlined text-white text-[4rem]"
+                        [class.text-xl]="tinyLayout">play_circle</span>
                 </div>
-                <div *ngIf="imageSrc == undefined && isPartyRoom && !squareLayout"
-                    (click)="suggestSong()" class="absolute inset-0 flex justify-center items-center bg-black bg-opacity-50 opacity-0 hover:opacity-100 transition-opacity duration-300 cursor-pointer">
+                <div *ngIf="isPartyRoom && !squareLayout" (click)="suggestSong()"
+                    class="absolute inset-0 flex justify-center items-center bg-black bg-opacity-50 opacity-0 hover:opacity-100 transition-opacity duration-300 cursor-pointer">
                     <span class="material-icons-outlined text-white text-4xl">playlist_add</span>
                 </div>
-                <div *ngIf="squareLayout" class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-70 text-white p-1 backdrop-blur-sm">
-                    <button class="w-fit font-bold text-left hover:underline truncate"
+                <div *ngIf="squareLayout"
+                    class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-70 text-white p-1 backdrop-blur-sm">
+                    <button class="w-fit font-bold text-left hover:underline truncate whitespace-nowrap"
                         (click)="goToArtistProfile(track.artist.id)">{{track.artist.name}}</button>
-                    <p class="text-left truncate text-xs">{{track.title}}</p>
+                    <div class="flex flex-nowrap justify-between">
+                        <p class="text-left truncate text-xs whitespace-nowrap mr-1">{{track.title}}</p>
+                        <button class="text-xs" matTooltip="Unlike Song" *ngIf="!isPartyRoom" (click)="likeSong()">
+                            <span class="material-icons-outlined text-xs">{{ isFavorite ? 'favorite' : 'favorite_border'
+                                }}</span>
+                        </button>
+                    </div>
                 </div>
             </div>
-            <div *ngIf="!squareLayout" [class.hidden]="imageSrc === undefined" class="md:flex md:flex-col md:items-center">
+            <div *ngIf="!squareLayout && !tinyLayout" [class.hidden]="imageSrc === undefined"
+                class="md:flex md:flex-col md:items-center">
                 <button *ngIf="!isPartyRoom" (click)="togglePlay()" class="justify-self-center">
                     <span class="material-icons-outlined scale-150">{{ isPlaying ? 'pause' : 'play_circle' }}</span>
                 </button>
@@ -26,43 +38,55 @@
                     <span class="material-icons-outlined scale-150">playlist_add</span>
                 </button>
             </div>
-            <div *ngIf="!squareLayout" class="flex flex-col">
-                <button class="w-fit font-bold text-left hover:underline" (click)="goToArtistProfile(track.artist.id)">{{track.artist.name}}</button>
-                <p class="text-left truncate">{{track.title}}</p>
-            </div>
+        </div>
+
+        <div *ngIf="!squareLayout" class="flex-col flex-auto px-4 overflow-hidden">
+            <button class="font-bold text-left hover:underline truncate w-full"
+                (click)="goToArtistProfile(track.artist.id)">{{track.artist.name}}</button>
+            <p class="text-left truncate">{{track.title}}</p>
         </div>
 
         <div *ngIf="playlistPopup">
-            <app-playlist-popup [track]="track" (closePopup)="closePopup()" (close)="playlistPopup = false"></app-playlist-popup>
+            <app-playlist-popup [track]="track" (closePopup)="closePopup()"
+                (close)="playlistPopup = false"></app-playlist-popup>
         </div>
 
-        <div *ngIf="!squareLayout" class="flex-end">
-           <div class="flex flex-nowrap items-center h-full">
-            <p class="pr-1">
-                {{Math.floor(track.duration / 60) + ':' + (track.duration % 60).toString().padStart(2, '0')}}
-            </p>
-            <button *ngIf="!isPartyRoom" [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-                <span class="material-icons-outlined text-white text-4xl">more_horiz</span>
-              </button>
-              <mat-menu #menu="matMenu" class="bg-zinc-900">
-                <button mat-menu-item class="bg-zinc-900" (click)="likeSong()">
-                    <span class="material-icons-outlined text-white text-2xl pr-2">favorite</span>
-                    <span class="text-white">Like</span>
-                </button>
-                <button mat-menu-item class="bg-zinc-900" (click)="playlistPopup = true">
-                    <span class="material-icons-outlined text-white text-2xl pr-2">playlist_add</span>
-                    <span class="text-white">Add to playlist</span>
-                </button>
-                <button *ngIf="playlistId" mat-menu-item class="bg-zinc-900" (click)="removeFromPlaylist()">
-                    <span class="material-icons-outlined text-white text-2xl pr-2">playlist_remove</span>
-                    <span class="text-white">Remove from playlist</span>
-                </button>
-                <button mat-menu-item>
-                    <span class="material-icons-outlined text-white text-2xl pr-2">queue_music</span>
-                    <span class="text-white">Add to queue</span>
-                </button>
-              </mat-menu>
-           </div>
+        <div *ngIf="!squareLayout" class="flex-end flex-none">
+            <div class="flex flex-col items-center h-full">
+                <div class="flex flex-row">
+                    <button mat-icon-button matTooltip="{{ isFavorite ? 'Unlike Song' : 'Like Song' }}"
+                        *ngIf="!isPartyRoom" (click)="likeSong()">
+                        <span class="material-icons-outlined">{{ isFavorite ? 'favorite' : 'favorite_border' }}</span>
+                    </button>
+                    <button mat-icon-button matTooltip="More" *ngIf="!isPartyRoom" [matMenuTriggerFor]="menu"
+                        aria-label="Icon-button with a menu">
+                        <span class="material-icons-outlined">more_horiz</span>
+                    </button>
+                </div>
+                <p class="pr-1 text-right w-full text-s pr-3">
+                    {{Math.floor(track.duration / 60) + ':' + (track.duration % 60).toString().padStart(2, '0')}}
+                </p>
+                <mat-menu #menu="matMenu" class="bg-zinc-900">
+                    <!--
+                    <button mat-menu-item class="bg-zinc-900" (click)="likeSong()">
+                        <span class="material-icons-outlined text-white text-2xl pr-2">favorite</span>
+                        <span class="text-white">Like</span>
+                    </button>
+                    -->
+                    <button mat-menu-item class="bg-zinc-900" (click)="playlistPopup = true">
+                        <span class="material-icons-outlined text-white text-2xl pr-2">playlist_add</span>
+                        <span class="text-white">Add to playlist</span>
+                    </button>
+                    <button *ngIf="playlistId" mat-menu-item class="bg-zinc-900" (click)="removeFromPlaylist()">
+                        <span class="material-icons-outlined text-white text-2xl pr-2">playlist_remove</span>
+                        <span class="text-white">Remove from playlist</span>
+                    </button>
+                    <button *ngIf="!tinyLayout" mat-menu-item (click)="queueTrack()">
+                        <span class="material-icons-outlined text-white text-2xl pr-2">queue_music</span>
+                        <span class="text-white">Add to queue</span>
+                    </button>
+                </mat-menu>
+            </div>
         </div>
     </div>
 </div>

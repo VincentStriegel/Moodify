@@ -5,7 +5,7 @@
 </button>
 <button *ngIf="album || playlist" class="w-40 h-[250px] p-4 m-4 bg-zinc-900 flex flex-col justify-between flex-shrink-0 hover:scale-110" (click)="album ? navigateTo('album', album.id) : navigateTo('playlist', playlist!.id)">
     <div class="w-30 h-30 mb-2 relative">
-        <img [src]="album ? album.cover_big : playlist?.picture_big" 
+        <img [src]="album ? album.cover_big : playlist?.picture_big || 'assets/music-placeholder.png'" 
              [alt]="album ? 'Album' : 'Playlist'">
              <div class="absolute inset-0 flex justify-left items-end bg-black bg-opacity-50 opacity-0 hover:opacity-100 transition-opacity duration-100 cursor-pointer">
                 <span (click)="$event.stopPropagation(); onPlay()" class="material-icons-outlined text-white text-4xl hover:scale-110">play_circle</span>

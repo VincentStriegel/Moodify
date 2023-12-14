@@ -1,7 +1,7 @@
 <div class="max-w-[1800px] justify-center mx-auto p-3 min-h-[100vh]">
     <div class="flex flex-wrap bg-zinc-900 rounded-lg">
         <div class="p-4 relative grid-cols-3">
-            <img class="h-52" [src]="album ? album.cover_big : playlist?.picture_big"
+            <img class="h-52" [src]="album ? album.cover_big : playlist?.picture_big || 'assets/music-placeholder.png'"
                 [alt]="album ? 'Album' : 'Playlist'">
             <div
                 class="absolute inset-0 flex justify-center items-center bg-black bg-opacity-50 opacity-0 hover:opacity-100 transition-opacity duration-100 cursor-pointer">
@@ -17,11 +17,14 @@
         </div>
     </div>
     <div class="flex flex-wrap items-center p-2 gap-2">
-        <button (click)="onPlay()">
+        <button (click)="onPlay()" matTooltip="Play">
             <span class="material-icons-outlined text-white text-6xl hover:scale-110">play_circle</span>
         </button>
-        <button *ngIf=" type != 'custom-playlist'" (click)="isLiked ? unlike() : like()">
+        <button *ngIf=" type != 'custom-playlist'" matTooltip="{{isLiked? 'Unlike' : 'Like'}}" (click)="isLiked ? unlike() : like()">
             <span class="material-icons-outlined text-white text-6xl hover:scale-110">{{ isLiked ? 'favorite' : 'favorite_border' }}</span>
+        </button>
+        <button *ngIf="type == 'custom-playlist'" matTooltip="Delete Playlist" (click)="deleteCustomPlaylist()">
+            <span class="material-icons-outlined text-white text-6xl hover:scale-110">delete</span>
         </button>
     </div>
     <div *ngIf="album || playlist" class="w-[100%] mt-5 col-span-3">
@@ -29,7 +32,7 @@
         <hr class="py-3">
         <div>
             <div *ngFor="let track of (album?.trackTOList || playlist?.trackTOList)">
-                <app-track-element [track]="track" [imageSrc]="album?.cover_small" [playlistId]="customPlaylistId" (removeFromPlaylistEvent)="removeFromCustomPlaylist(track.id)"></app-track-element>
+                <app-track-element [isAlbum]="type == 'album'" [track]="track" [imageSrc]="album?.cover_small" [playlistId]="customPlaylistId" (removeFromPlaylistEvent)="removeFromCustomPlaylist(track.id)"></app-track-element>
             </div>
         </div>
     </div>

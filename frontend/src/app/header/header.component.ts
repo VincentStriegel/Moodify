@@ -1,7 +1,8 @@
 import { Component, ElementRef } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { TrackTO } from '../types/trackTO';
 import { BackendCommunicationService } from '../services/backend-communication.service';
+import { filter } from 'rxjs';
 
 @Component({
     selector: 'app-header',
@@ -14,6 +15,7 @@ export class HeaderComponent {
     isOpen = false;
     windowWidth: number;
     isLoggedIn = false;
+    isPartyRoom = false;
     constructor(
         private router: Router,
         private elementRef: ElementRef,
@@ -22,11 +24,21 @@ export class HeaderComponent {
         this.windowWidth = window.innerWidth;
         document.addEventListener('click', this.onClickOutside.bind(this));
         window.addEventListener('resize', this.onResize.bind(this));
-        this.backendCommunicationService.getUserPersonalLibrary().subscribe(() => {
-            this.isLoggedIn = true;
+        this.backendCommunicationService.isLoggedIn.subscribe((data) => {
+            this.isLoggedIn = data;
         });
     }
-    ngOnInit() {}
+    ngOnInit() {
+        this.router.events.pipe(
+            filter((event): event is NavigationEnd => event instanceof NavigationEnd)
+        ).subscribe((event: NavigationEnd) => {
+            if(event.urlAfterRedirects.includes('/party-room/')) {
+                this.isPartyRoom = true
+            } else {
+                this.isPartyRoom = false
+            }
+        });
+    }
     search() {
         this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
             this.router.navigate(['/search', this.query]);
@@ -42,4 +54,5 @@ export class HeaderComponent {
             this.isOpen = false;
         }
     }
+
 }

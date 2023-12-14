@@ -39,7 +39,7 @@ public class PlaylistDO {
     @Setter(AccessLevel.NONE)
     private int number_of_songs = this.tracks == null ? 0 : this.tracks.size();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "playlist_id")
     private List<TrackDO> tracks;
 

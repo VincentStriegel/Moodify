@@ -6,7 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PasswordValidator {
-    private static final String REGEX_PATTERN = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[#?!@$%^&*-]).{8,}$";
+    private static final String REGEX_PATTERN = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[#?!@$%^&*-_]).{8,}$";
     /*
        (1) Has minimum 8 characters in length. Adjust it by modifying {8,}
        (2) At least one uppercase English letter. You can remove this condition by removing (?=.*?[A-Z])

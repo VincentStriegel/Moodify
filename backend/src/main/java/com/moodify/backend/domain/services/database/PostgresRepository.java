@@ -1,5 +1,6 @@
 package com.moodify.backend.domain.services.database;
 
+import com.moodify.backend.domain.services.database.databaseobjects.PlaylistDO;
 import com.moodify.backend.domain.services.database.databaseobjects.UserDO;
 import org.springframework.data.jpa.repository.JpaRepository;
 

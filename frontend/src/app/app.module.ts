@@ -30,6 +30,11 @@ import { MatMenuModule } from '@angular/material/menu';
 import { PlaylistPopupComponent } from './playlist-popup/playlist-popup.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { UserInterceptor } from './interceptors/user-interceptor.interceptor';
+import { LoadingScreenComponent } from './loading-screen/loading-screen.component';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatSelectModule} from '@angular/material/select';
+import {MatTooltipModule} from '@angular/material/tooltip';
+
 
 @NgModule({
     declarations: [
@@ -47,6 +52,7 @@ import { UserInterceptor } from './interceptors/user-interceptor.interceptor';
         PartyRoomMenuComponent,
         UserLibraryComponent,
         PlaylistPopupComponent,
+        LoadingScreenComponent,
     ],
     imports: [
         BrowserModule,
@@ -64,6 +70,9 @@ import { UserInterceptor } from './interceptors/user-interceptor.interceptor';
         MatInputModule,
         BrowserAnimationsModule,
         MatMenuModule,
+        MatProgressSpinnerModule,
+        MatSelectModule,
+        MatTooltipModule
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: UserInterceptor, multi: true },

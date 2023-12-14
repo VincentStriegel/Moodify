@@ -4,10 +4,10 @@
       <div>
         <h1 class="text-2xl font-bold"><a routerLink="">Moodify</a></h1>
       </div>
-      <div class="relative align-middle">
+      <div class="relative align-middle" *ngIf="!isPartyRoom">
         <input type="text" placeholder="Search for your favorite songs" class="w-[50vw] max-w-[800px] rounded-full px-4 py-1 text-gray-700 focus:outline-none border" [(ngModel)]="query">
-        <button class="absolute inset-y-0 right-0 flex items-center bg-indigo-900 rounded-r-full text-white px-4 hover:bg-indigo-400 focus:bg-indigo-600 focus:outline-none">
-          <span class="material-icons-outlined" (click)="search()">
+        <button class="absolute inset-y-0 right-0 flex items-center bg-indigo-900 rounded-r-full text-white px-4 hover:bg-indigo-400 focus:bg-indigo-600 focus:outline-none" (click)="search()">
+          <span class="material-icons-outlined">
             search
           </span>
         </button>

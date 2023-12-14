@@ -42,3 +42,16 @@ mat-slider input {
     display: flex !important;
     align-items: center !important;
 }
+
+.mat-mdc-form-field-flex,  .mdc-text-field, .ng-trigger-transformPanel{
+    background-color: #3F3F46 !important;
+    color: white !important;
+}
+
+.ng-trigger-transformPanel{
+   margin-left: 50px;
+}
+
+.mat-mdc-select-min-line, .mdc-list-item__primary-text, .mat-mdc-select-placeholder {
+    color: white !important;
+}

@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { TrackTO } from '../types/trackTO';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import { BackendCommunicationService } from '../services/backend-communication.service';
 import { PlaylistTO } from '../types/playlistTO';
 import { AlbumTO } from '../types/albumTO';
@@ -24,13 +24,14 @@ export class CollectionComponent {
     tracks?: TrackTO[];
     constructor(
         private route: ActivatedRoute,
+        private router: Router,
         private backendCommunicationService: BackendCommunicationService,
         private musicPlayerService: MusicPlayerService,
     ) {
         this.type = this.route.snapshot.paramMap.get('collectionType')!;
         this.id = parseInt(this.route.snapshot.paramMap.get('id')!);
         if (this.type == 'album') {
-            this.backendCommunicationService.getAlbum(this.id).subscribe((data) => (this.album = data));
+            this.backendCommunicationService.getAlbum(this.id).subscribe((data) => (this.album = data, this.setAlbum()));
         } else if (this.type == 'custom-playlist') {
             this.backendCommunicationService.userProfile.personalLibrary.customPlaylists.forEach((playlist) => {
                 if (playlist.id === this.id) {
@@ -46,16 +47,28 @@ export class CollectionComponent {
             this.isLiked =
                 this.type == 'album'
                     ? backendCommunicationService.userProfile.personalLibrary.likedAlbums.some(
-                          (album) => album.id === this.id,
-                      )
+                        (album) => album.id === this.id,
+                    )
                     : backendCommunicationService.userProfile.personalLibrary.likedPlaylists.some(
-                          (playlist) => playlist.id === this.id,
-                      );
+                        (playlist) => playlist.id === this.id,
+                    );
         }
     }
     ngOnInit(): void {
         window.scrollTo(0, 0);
     }
+
+    setAlbum(): void {
+        if (this.type === 'album' && this.album) {
+            this.album.trackTOList.forEach(track => {
+                track.album.id = this.album!.id;
+                track.album.title = this.album!.title;
+                track.album.cover_small = this.album!.cover_small;
+                track.album.cover_big = this.album!.cover_big;
+            });
+        }
+    }
+
     onPlay() {
         const tracks = this.album?.trackTOList || this.playlist?.trackTOList || [];
         this.musicPlayerService.playTracks(tracks, this.album?.cover_small);
@@ -63,60 +76,77 @@ export class CollectionComponent {
     like(): void {
         this.type == 'album'
             ? this.backendCommunicationService.addToLikedAlbums(this.album!).subscribe(
-                  () => {
-                      this.isLiked = true;
-                      this.backendCommunicationService.userProfile.personalLibrary.likedAlbums.push(this.album!);
-                  },
-                  (error) => {
-                      console.error('Error:', error);
-                  },
-              )
+                () => {
+                    this.isLiked = true;
+                    this.backendCommunicationService.userProfile.personalLibrary.likedAlbums.push(this.album!);
+                },
+                (error) => {
+                    console.error('Error:', error);
+                },
+            )
             : this.backendCommunicationService.addToLikedPlaylists(this.playlist!).subscribe(
-                  () => {
-                      this.isLiked = true;
-                      this.backendCommunicationService.userProfile.personalLibrary.likedPlaylists.push(this.playlist!);
-                  },
-                  (error) => {
-                      console.error('Error:', error);
-                  },
-              );
+                () => {
+                    this.isLiked = true;
+                    this.backendCommunicationService.userProfile.personalLibrary.likedPlaylists.push(this.playlist!);
+                },
+                (error) => {
+                    console.error('Error:', error);
+                },
+            );
     }
     unlike(): void {
         this.type == 'album'
             ? this.backendCommunicationService.removeLikedAlbums(this.album!.id).subscribe(
-                  () => {
-                      this.isLiked = false;
-                      this.backendCommunicationService.userProfile.personalLibrary.likedAlbums.splice(
-                          this.backendCommunicationService.userProfile.personalLibrary.likedAlbums.findIndex(
-                              (album) => album.id === this.album!.id,
-                          ),
-                          1,
-                      );
-                  },
-                  (error) => {
-                      console.error('Error:', error);
-                  },
-              )
+                () => {
+                    this.isLiked = false;
+                    this.backendCommunicationService.userProfile.personalLibrary.likedAlbums.splice(
+                        this.backendCommunicationService.userProfile.personalLibrary.likedAlbums.findIndex(
+                            (album) => album.id === this.album!.id,
+                        ),
+                        1,
+                    );
+                },
+                (error) => {
+                    console.error('Error:', error);
+                },
+            )
             : this.backendCommunicationService.removeLikedPlaylists(this.playlist!.id).subscribe(
-                  () => {
-                      this.isLiked = false;
-                      this.backendCommunicationService.userProfile.personalLibrary.likedPlaylists.splice(
-                          this.backendCommunicationService.userProfile.personalLibrary.likedPlaylists.findIndex(
-                              (playlist) => playlist.id === this.playlist!.id,
-                          ),
-                          1,
-                      );
-                  },
-                  (error) => {
-                      console.error('Error:', error);
-                  },
-              );
+                () => {
+                    this.isLiked = false;
+                    this.backendCommunicationService.userProfile.personalLibrary.likedPlaylists.splice(
+                        this.backendCommunicationService.userProfile.personalLibrary.likedPlaylists.findIndex(
+                            (playlist) => playlist.id === this.playlist!.id,
+                        ),
+                        1,
+                    );
+                },
+                (error) => {
+                    console.error('Error:', error);
+                },
+            );
     }
 
     removeFromCustomPlaylist(trackId: number): void {
         this.playlist!.trackTOList.splice(
             this.playlist!.trackTOList.findIndex((track) => track.id === trackId),
             1,
+        );
+    }
+
+    deleteCustomPlaylist(): void {
+        this.backendCommunicationService.deleteCustomPlaylist(this.customPlaylistId!).subscribe(
+            () => {
+                this.backendCommunicationService.userProfile.personalLibrary.customPlaylists.splice(
+                    this.backendCommunicationService.userProfile.personalLibrary.customPlaylists.findIndex(
+                        (playlist) => playlist.id === this.customPlaylistId!,
+                    ),
+                    1,
+                );
+                this.router.navigate(['/library']);
+            },
+            (error) => {
+                console.error('Error:', error);
+            },
         );
     }
 }

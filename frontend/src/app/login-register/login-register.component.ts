@@ -19,7 +19,7 @@ export class LoginRegisterComponent {
     ]);
     password = new FormControl('', [
         Validators.required,
-        Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[#?!@$%^&*-]).{8,}$'),
+        Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[#?!@$%^&*-_]).{8,}$'),
     ]);
     credentials = new FormControl('', [Validators.required]);
 

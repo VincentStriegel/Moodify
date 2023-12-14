@@ -2,6 +2,7 @@ package com.moodify.backend.domain.services.database;
 
 import com.moodify.backend.api.transferobjects.*;
 import com.moodify.backend.domain.services.database.databaseobjects.*;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -135,7 +136,7 @@ public class ObjectTransformer {
         return artistTOList;
     }
 
-    private List<TrackTO> generateTrackTOListFrom(List<TrackDO> trackDOList) {
+    public List<TrackTO> generateTrackTOListFrom(List<TrackDO> trackDOList) {
         List<TrackTO> trackTOList = new ArrayList<>();
         for (TrackDO trackDO : trackDOList) {
             trackTOList.add(generateTrackTOFrom(trackDO));
@@ -151,7 +152,7 @@ public class ObjectTransformer {
         return playlistTOList;
     }
 
-    private PlaylistTO generatePlaylistTOFrom(PlaylistDO playlistDO) {
+    public PlaylistTO generatePlaylistTOFrom(PlaylistDO playlistDO) {
         PlaylistTO playlistTO = new PlaylistTO();
         playlistTO.setId(playlistDO.getId());
         playlistTO.setTitle(playlistDO.getTitle());
