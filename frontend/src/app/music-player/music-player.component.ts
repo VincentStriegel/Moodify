@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { MusicPlayerService } from '../services/music-player.service';
 import { TrackTO } from '../types/trackTO';
 import { BackendCommunicationService } from '../services/backend-communication.service';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs';
 
 @Component({
     selector: 'app-music-player',
@@ -23,21 +25,40 @@ export class MusicPlayerComponent {
     repeat = false;
     isFavorite = false;
     imageSrc?: string;
+    showMusicPlayer = true;
+    showQueue = false;
+    trackQueue: TrackTO[] = [];
+    currentTrackIndex = 0;
 
     constructor(
         private musicPlayerService: MusicPlayerService,
         private backendCommunicationService: BackendCommunicationService,
+        private router: Router,
     ) {
         this.musicPlayerService.nextTrack$.subscribe((track) => {
             if (!track) return;
 
             this.isShuffle = this.musicPlayerService.isShuffled;
             this.currentTrack = track;
-            this.imageSrc = this.currentTrack.album?.cover_small || this.musicPlayerService.imageSrc;
+            this.imageSrc = this.currentTrack.album?.cover_small;
             this.setupAudioPlayer();
             this.togglePlay();
+            this.isFavorite = false;
             this.checkIfLiked();
+            this.trackQueue = musicPlayerService.trackArr;
+            this.currentTrackIndex = musicPlayerService.index;
         });
+    }
+
+    ngOnInit() {
+        this.router.events
+            .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
+            .subscribe((event: NavigationEnd) => {
+                this.showMusicPlayer = !event.urlAfterRedirects.includes('/party-room/');
+                if (!this.showMusicPlayer && this.audio) {
+                    this.audio.pause();
+                }
+            });
     }
 
     setupAudioPlayer(): void {
@@ -138,12 +159,12 @@ export class MusicPlayerComponent {
     }
 
     checkIfLiked(): void {
-        this.backendCommunicationService.userProfile.personalLibrary.likedTracks.forEach((track) => {
+        if (this.backendCommunicationService.userProfile == undefined || this.isFavorite) return;
+        this.isFavorite = this.backendCommunicationService.userProfile.personalLibrary.likedTracks.some((track) => {
             if (track.id === this.currentTrack.id) {
-                this.isFavorite = true;
-            } else {
-                this.isFavorite = false;
+                return true;
             }
+            return false;
         });
     }
 }

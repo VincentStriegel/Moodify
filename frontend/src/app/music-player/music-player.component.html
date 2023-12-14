@@ -1,4 +1,5 @@
-<div *ngIf="audio" class="fixed rounded-lg md:rounded-none md:pb-4 bottom-0 w-full pb-8 h-26 md:h-16 bg-zinc-900 flex items-center justify-center p-4">
+<div *ngIf="audio && showMusicPlayer" (mouseleave)="showVolumeSlider = false"
+    class="fixed rounded-lg md:rounded-none md:pb-4 bottom-0 w-full pb-8 h-26 md:h-16 bg-zinc-900 flex items-center justify-center p-4">
     <div class="grid grid-cols-1 md:grid-cols-7 items-center items-center justify-center max-w-[1600px] w-[100%] gap-3">
         <!-- Music Controls (Previous, Play/Pause, Skip, Repeat) -->
         <div class="row-start-3 md:row-start-1 md:col-span-2 flex items-center gap-x-2 justify-center md:justify-end">
@@ -17,7 +18,7 @@
             <button class="text-white justify-self-end" (click)="toggleShuffle()">
                 <span class="material-icons-outlined">{{ isShuffle ? 'shuffle_on' : 'shuffle' }}</span>
             </button>
-            
+
         </div>
 
         <!-- Progress Bar -->
@@ -27,36 +28,67 @@
             </mat-slider>
         </div>
 
-        <!-- Volume and Track info -->
+        <!-- Track info -->
         <div class="row-start-1 md:col-span-2 md:col-start-6 gap-2 justify-center">
-            <div class="row-start-1 grid grid-cols-6 items-center col-span-4 gap-3 col-start-0">
+            <div class="row-start-1 grid grid-cols-5 items-center col-span-4 gap-3 col-start-0">
                 <div class="w-8 h-8 bg-white col-span-1 justify-self-center">
-                    <img src="{{imageSrc}}"
-                        alt="Track cover">
+                    <img src="{{imageSrc}}" alt="Track cover">
                 </div>
 
                 <div class="text-white w-[100%] col-span-2 truncate text-xs justify-end">
                     <p class="font-bold">{{currentTrack.artist.name}}</p>
                     <p>{{currentTrack.title}}</p>
                 </div>
-                <button class="text-white justify-self-end" (click)="likeSong()">
-                    <span class="material-icons-outlined">{{ isFavorite ? 'favorite' : 'favorite_border' }}</span>
-                </button>
-                <button class="text-white justify-center">
-                    <span class="material-icons-outlined">playlist_add</span>
-                </button>
-                <div class="flex items-center gap-2 justify-start">
-                    <button class="text-white" (mouseover)="toggleVolumeSlider()" (click)="toggleMute()">
-                        <span *ngIf="audio.volume > 0.50" class="material-icons-outlined">volume_up</span>
-                        <span *ngIf="audio.volume > 0.00 &&  audio.volume < 0.49"
-                            class="material-icons-outlined">volume_down</span>
-                        <span *ngIf="audio.volume == 0" class="material-icons-outlined">volume_off</span>
+
+                <!-- Controls / Buttons -->
+
+                <div class="col-span-2 flex items-center gap-x-2 justify-center justify-start">
+                    <button class="text-white justify-self-end" (click)="likeSong()">
+                        <span class="material-icons-outlined">{{ isFavorite ? 'favorite' : 'favorite_border' }}</span>
                     </button>
-    
-                    <div *ngIf="showVolumeSlider" (mouseleave)="showVolumeSlider = false"
-                        class="p-2 w-10 h-22 absolute bottom-full mb bg-zinc-800 text-center shadow-md border-slate-600">
-                        <input type="range" class="w-4 h-20 bottom-full" orient="vertical" min="0" max="1" step="0.01"
-                            [(ngModel)]="audio.volume" />
+                    <button class="text-white justify-center">
+                        <span class="material-icons-outlined">playlist_add</span>
+                    </button>
+
+                    <div class="flex items-center gap-2 justify-start">
+                        <button class="text-white justify-center" (click)="showQueue = !showQueue">
+                            <span class="material-icons-outlined">queue_music</span>
+                        </button>
+
+                        <div *ngIf="showQueue" 
+                            class="p-4 w-[300px] h-[50vh] absolute bottom-full mb bg-zinc-900 text-center shadow-md border-slate-600 z-40 -ml-[220px] rounded-lg">
+                            <div class="flex justify-between">
+                                <h2 class="text-white text-xl font-bold p-1">Queue</h2>
+                                <button (click)="showQueue = false"><span class="material-icons-outlined text-white">
+                                        close
+                                    </span></button>
+                            </div>
+                            <hr>
+
+                            <div class="overflow-y-auto max-h-[90%]">
+                                <div *ngFor="let track of trackQueue; let i = index"
+                                    [class.opacity-40]="currentTrackIndex > i"
+                                    [class.bg-zinc-600]="currentTrackIndex == i">
+                                    <app-track-element [tinyLayout]="true" [track]="track"></app-track-element>
+                                    <hr>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-2 justify-start">
+                        <button class="text-white" (mouseover)="toggleVolumeSlider()" (click)="toggleMute()">
+                            <span *ngIf="audio.volume > 0.50" class="material-icons-outlined">volume_up</span>
+                            <span *ngIf="audio.volume > 0.00 &&  audio.volume < 0.49"
+                                class="material-icons-outlined">volume_down</span>
+                            <span *ngIf="audio.volume == 0" class="material-icons-outlined">volume_off</span>
+                        </button>
+
+                        <div *ngIf="showVolumeSlider" (mouseleave)="showVolumeSlider = false"
+                            class="p-2 w-10 h-22 absolute bottom-full mb bg-zinc-800 text-center shadow-md border-slate-600">
+                            <input type="range" class="w-4 h-20 bottom-full" orient="vertical" min="0" max="1"
+                                step="0.01" [(ngModel)]="audio.volume" />
+                        </div>
                     </div>
                 </div>
             </div>

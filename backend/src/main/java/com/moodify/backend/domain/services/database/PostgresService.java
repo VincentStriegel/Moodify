@@ -15,9 +15,11 @@ import com.moodify.backend.domain.services.security.PasswordValidator;
 import com.moodify.backend.domain.services.security.UsernameValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @Component
+@Transactional
 public class PostgresService implements DatabaseService {
     private final PostgresRepository DATABASE_REPOSITORY;
     private final PasswordEncoder ENCODER;
@@ -232,6 +234,15 @@ public class PostgresService implements DatabaseService {
         return userDO.getPersonalLibrary();
     }
 
+    @Override
+    @Transactional
+    public PlaylistDO getPlaylistById(long playlistId, long userId) throws Exception {
+        UserDO userDO = this.findUserById(userId);
+        PlaylistDO customPlaylist = this.findCustomPlaylistFrom(userDO, playlistId);
+
+        return customPlaylist;
+    }
+
     private AlbumDO findAlbumById(UserDO userDO, long albumId) throws Exception {
         AlbumDO albumDO = userDO
                 .getPersonalLibrary()
@@ -338,6 +349,22 @@ public class PostgresService implements DatabaseService {
         }
 
         return artist;
+    }
+
+    private PlaylistDO findPlaylistById(long playlistId, UserDO userDO) throws Exception {
+        PlaylistDO playlistDO = userDO
+                .getPersonalLibrary()
+                .getPlaylists()
+                .stream()
+                .filter(pl -> pl.getId() == playlistId)
+                .findFirst()
+                .orElse(null);
+
+        if (playlistDO == null) {
+            throw new PlaylistNotFoundException();
+        }
+
+        return playlistDO;
     }
 
 }

@@ -4,6 +4,7 @@ import com.moodify.backend.api.transferobjects.AlbumTO;
 import com.moodify.backend.api.transferobjects.ArtistTO;
 import com.moodify.backend.api.transferobjects.TrackTO;
 import com.moodify.backend.domain.services.database.databaseobjects.PersonalLibraryDO;
+import com.moodify.backend.domain.services.database.databaseobjects.PlaylistDO;
 import com.moodify.backend.domain.services.database.databaseobjects.UserDO;
 
 public interface DatabaseService {
@@ -35,4 +36,6 @@ public interface DatabaseService {
     PersonalLibraryDO addToLikedAlbums(AlbumTO albumTO, long userId) throws Exception;
 
     PersonalLibraryDO removeFromLikedAlbums(long albumId, long userId) throws Exception;
+
+    PlaylistDO getPlaylistById(long playlistId, long userId) throws Exception;
 }

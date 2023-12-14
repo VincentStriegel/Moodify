@@ -4,40 +4,43 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.moodify.backend.api.transferobjects.PartyRoomTO;
+import com.moodify.backend.api.transferobjects.PlaylistTO;
 import com.moodify.backend.api.transferobjects.TrackTO;
+import com.moodify.backend.domain.services.database.DatabaseService;
+import com.moodify.backend.domain.services.database.ObjectTransformer;
 import org.springframework.web.socket.*;
 
 import java.io.IOException;
 import java.net.URI;
 import java.util.*;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class PartyRoomWebSocketHandler implements WebSocketHandler {
-    private Map<String, List<WebSocketSession>> rooms = new HashMap<>();
 
-    private Map<TrackTO, Integer> trackRatings = new HashMap<>();
+    private Map<String, PartyRoom> rooms = new HashMap<>();
 
-    private Set<TrackTO> trackTOSet = new LinkedHashSet<>();
+    private final DatabaseService POSTGRES_SERVICE;
 
-    // ...
-
-    public void addTrackWithRating(TrackTO track, Integer rating) {
-        trackRatings.put(track, rating);
+    public PartyRoomWebSocketHandler(DatabaseService postgresService) {
+        POSTGRES_SERVICE = postgresService;
     }
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         String roomId = getRoomId(session);
-        rooms.computeIfAbsent(roomId, k -> new CopyOnWriteArrayList<>()).add(session);
+        PartyRoom partyRoom = rooms.get(roomId);
+        if (partyRoom == null) {
+            partyRoom = new PartyRoom();
+            rooms.put(roomId, partyRoom);
+        }
+        partyRoom.addSession(session);
     }
 
     @Override
     public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
         synchronized (rooms) {
             String roomId = getRoomId(session);
-            List<WebSocketSession> roomSessions = rooms.get(roomId);
+            List<WebSocketSession> roomSessions = rooms.get(roomId).getRoomSessions();
             if (roomSessions != null && !roomSessions.isEmpty()) {
                 ObjectMapper mapper = new ObjectMapper();
 
@@ -47,31 +50,43 @@ public class PartyRoomWebSocketHandler implements WebSocketHandler {
                 TextMessage responseMessage = new TextMessage("empty");
 
                 switch (messageType) {
+                    case "JOIN_ROOM":
+                        sendCurrentTrack(session);
+                        break;
                     case "SUGGEST_TRACK":
                         JsonNode trackTOText = rootNode.get("trackTO");
                         TrackTO trackTO = mapper.treeToValue(trackTOText, TrackTO.class);
-                        responseMessage = suggestTrack(trackTO);
+                        suggestTrack(trackTO, session);
                         break;
                     case "REMOVE_TRACK":
                         JsonNode removedTrackTOText = rootNode.get("trackTO");
                         TrackTO removedTrackTO = mapper.treeToValue(removedTrackTOText, TrackTO.class);
-                        removeTrack(removedTrackTO);
+                        removeTrack(removedTrackTO, session);
                         sendCurrentTrack(session);
                         break;
                     case "RATE_TRACK":
-                        // Handle rating a track
+                        JsonNode voteTrackTOText = rootNode.get("trackTO");
+                        int rating = rootNode.get("rating").asInt();
+                        rateTrack(mapper.treeToValue(voteTrackTOText, TrackTO.class), session, rating);
                         break;
-                    case "GET_CURRENT_STATE":
-                        // Handle getting the current state
+                    case "SET_CURRENT_POSITION":
+                        int position = rootNode.get("currentPosition").asInt();
+                        setCurrentPosition(position, session);
                         break;
-                    case "SET_PLAYLIST":
-                        JsonNode trackTOListText = rootNode.get("trackTOList");
-                        // Use TypeFactory to construct a List Type
+                    case "SET_PLAYLIST_ID":
+                        long playlistID = rootNode.get("playlistId").asLong();
+                        long userID = rootNode.get("userId").asLong();
+
+                        ObjectTransformer objectTransformer = ObjectTransformer.class.newInstance();
+
+                        PlaylistTO playlist = objectTransformer.generatePlaylistTOFrom(POSTGRES_SERVICE.getPlaylistById(playlistID, userID));
+
                         JavaType listType = mapper.getTypeFactory().constructCollectionType(List.class, TrackTO.class);
                         // Deserialize the JsonNode into a List<TrackTO>
-                        List<TrackTO> trackTOList = mapper.readValue(trackTOListText.toString(), listType);
+
+                        List<TrackTO> trackTOList = playlist.getTrackTOList();
                         for (TrackTO trackTOEntry : trackTOList) {
-                            responseMessage = suggestTrack(trackTOEntry);
+                            suggestTrack(trackTOEntry, session);
                             // Handle the responseMessage if needed
                         }
                         break;
@@ -80,15 +95,6 @@ public class PartyRoomWebSocketHandler implements WebSocketHandler {
                         break;
                 }
 
-/*
-                TrackTO trackTO = mapper.readValue((String) message.getPayload(), TrackTO.class);
-                synchronized (trackRatings) {
-                    trackRatings.merge(trackTO, 1, Integer::sum);
-                    trackTOList.add(trackTO);
-                }
-                String trackRatingsJson = mapper.writeValueAsString(trackTOList);
-                TextMessage trackRatingsMessage = new TextMessage(trackRatingsJson);
-             */
                 for (WebSocketSession roomSession : roomSessions) {
                     roomSession.sendMessage(responseMessage);
                 }
@@ -105,11 +111,10 @@ public class PartyRoomWebSocketHandler implements WebSocketHandler {
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 
             String roomId = getRoomId(session);
-            List<WebSocketSession> roomSessions = rooms.get(roomId);
+            List<WebSocketSession> roomSessions = rooms.get(roomId).getRoomSessions();
             if (roomSessions != null) {
                 roomSessions.remove(session);
             }
-
     }
 
     @Override
@@ -117,45 +122,31 @@ public class PartyRoomWebSocketHandler implements WebSocketHandler {
         return false;
     }
 
-    private TextMessage suggestTrack(TrackTO trackTO) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        synchronized (trackRatings) {
-            trackRatings.merge(trackTO, 1, Integer::sum);
-            if (!trackTOSet.contains(trackTO)) {
-                trackTOSet.add(trackTO);
+    private void suggestTrack(TrackTO trackTO, WebSocketSession session) throws JsonProcessingException {
+        Map<TrackTO, Integer> trackRatingsMap = rooms.get(getRoomId(session)).getTrackRatings();
+        Set<TrackTO> playedTracks = rooms.get(getRoomId(session)).getPlayedTracks();
+        synchronized (trackRatingsMap) {
+            if (!playedTracks.contains(trackTO)) {
+                trackRatingsMap.merge(trackTO, 0, Integer::sum);
             }
         }
-        String trackRatingsJson = mapper.writeValueAsString(trackTOSet);
-        return new TextMessage(trackRatingsJson);
+        sendToAllSessions(getRoomId(session), sortTracks(trackRatingsMap));
     }
 
-    private void removeTrack(TrackTO trackTO) throws JsonProcessingException {
-        synchronized (trackRatings) {
-            trackRatings.merge(trackTO, 1, Integer::sum);
-            if (trackTOSet.contains(trackTO)) {
-                trackTOSet.remove(trackTO);
+    private void removeTrack(TrackTO trackTO, WebSocketSession session) throws JsonProcessingException {
+        Map<TrackTO, Integer> trackRatingsMap = rooms.get(getRoomId(session)).getTrackRatings();
+        Set<TrackTO> playedTracks = rooms.get(getRoomId(session)).getPlayedTracks();
+        synchronized (trackRatingsMap) {
+            if (trackRatingsMap.containsKey(trackTO)) {
+                trackRatingsMap.remove(trackTO);
+                playedTracks.add(trackTO);
             }
         }
     }
 
     private void sendCurrentTrack(WebSocketSession session) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        /*
-        // Create a new message object with the type and the track list
-        PartyRoomWebSocketTO message = new PartyRoomWebSocketTO(MessageType.CURRENT_TRACK, trackTOSet.iterator().next());
-
-        // Serialize the entire message object to JSON
-        String messageJson = mapper.writeValueAsString(message);
-
-        // Create a TextMessage with the JSON string
-        TextMessage currentTrackMessage = new TextMessage(messageJson);
-
-        // Send the message over the WebSocket session
-        session.sendMessage(currentTrackMessage);
-
-        */
-        String trackRatingsJson = mapper.writeValueAsString(trackTOSet);
-        session.sendMessage(new TextMessage(trackRatingsJson));
+        Map<TrackTO, Integer> trackRatingsMap = rooms.get(getRoomId(session)).getTrackRatings();
+        sendToAllSessions(getRoomId(session), sortTracks(trackRatingsMap));
     }
 
     private String getId(WebSocketSession session) {
@@ -166,13 +157,57 @@ public class PartyRoomWebSocketHandler implements WebSocketHandler {
     URI uri = session.getUri();
     if (uri != null) {
         String path = uri.getPath();
-        Pattern pattern = Pattern.compile(".*/(\\d+)$");
-        Matcher matcher = pattern.matcher(path);
-        if (matcher.find()) {
-            return matcher.group(1);
-        }
+        return path.substring(path.lastIndexOf('/') + 1);
     }
     return null;
+    }
+
+    private Set<TrackTO> sortTracks(Map<TrackTO, Integer> trackRatings) {
+        Set<TrackTO> trackTOSet = new TreeSet<>((track1, track2) -> {
+            int compare = trackRatings.get(track2).compareTo(trackRatings.get(track1));
+            if (compare != 0) {
+                return compare;
+            } else {
+                return Long.compare(track1.getId(), track2.getId());
+            }
+        });
+        trackTOSet.addAll(trackRatings.keySet());
+        return trackTOSet;
+    }
+
+    private void rateTrack(TrackTO trackTO, WebSocketSession session, int rating) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        Map<TrackTO, Integer> trackRatingsMap = rooms.get(getRoomId(session)).getTrackRatings();
+        synchronized (trackRatingsMap) {
+            if (trackRatingsMap.containsKey(trackTO)) {
+               int currentTrackRating = trackRatingsMap.get(trackTO);
+               trackRatingsMap.put(trackTO, currentTrackRating + rating);
+               sendToAllSessions(getRoomId(session), sortTracks(trackRatingsMap));
+            }
+        }
+    }
+
+    private void sendToAllSessions(String partyRoomId, Set<TrackTO> tracks) throws JsonProcessingException {
+        List<WebSocketSession> roomSessions = rooms.get(partyRoomId).getRoomSessions();
+
+        ObjectMapper mapper = new ObjectMapper();
+        PartyRoomTO partyRoomTO = new PartyRoomTO();
+        partyRoomTO.setCurrentPosition(rooms.get(partyRoomId).getCurrentPosition());
+        partyRoomTO.setTracks(tracks);
+        String messageString = mapper.writeValueAsString(partyRoomTO);
+        TextMessage message = new TextMessage(messageString);
+        for (WebSocketSession roomSession : roomSessions) {
+            try {
+                roomSession.sendMessage(message);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    private void setCurrentPosition(float currentPosition, WebSocketSession session) {
+        rooms.get(getRoomId(session)).setCurrentPosition(currentPosition);
     }
 
 }

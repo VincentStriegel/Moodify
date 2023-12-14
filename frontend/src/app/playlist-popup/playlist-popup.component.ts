@@ -10,9 +10,13 @@ import { BackendCommunicationService } from '../services/backend-communication.s
 })
 export class PlaylistPopupComponent {
     @Input() track!: TrackTO;
-    @Output() closePopup: EventEmitter<void> = new EventEmitter<void>();
+    @Output() closePopup: EventEmitter<{ playlistId?: number; playlistTitle: string }> = new EventEmitter<{
+        playlistId?: number;
+        playlistTitle: string;
+    }>();
     personalLibrary!: PersonalLibraryTO;
     playlistName = '';
+    @Input() isPartyRoomMenu?: boolean;
 
     constructor(private backendCommunicationService: BackendCommunicationService) {
         this.backendCommunicationService
@@ -41,6 +45,15 @@ export class PlaylistPopupComponent {
             },
         );
     }
+
+    playlistAction(playlistId: number, playlistTitle?: string): void {
+        if (this.isPartyRoomMenu && playlistTitle) {
+            this.passPlaylistId(playlistId, playlistTitle);
+        } else {
+            this.addTrackToPlaylist(playlistId);
+        }
+    }
+
     addTrackToPlaylist(playlistId: number): void {
         this.backendCommunicationService.addToCustomPlaylist(playlistId, this.track).subscribe(
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -61,5 +74,9 @@ export class PlaylistPopupComponent {
                 this.closePopup.emit();
             },
         );
+    }
+
+    passPlaylistId(playlistId: number, playlistTitle: string): void {
+        this.closePopup.emit({ playlistId, playlistTitle });
     }
 }

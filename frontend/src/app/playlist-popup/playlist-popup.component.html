@@ -1,7 +1,7 @@
 <div class="fixed inset-0 bg-black z-50 bg-opacity-50 backdrop-blur-md" (keydown.escape)="closePopup.emit()">
 
     <div *ngIf="personalLibrary" (keydown.escape)="closePopup.emit()"
-        class="min-w-[350px] absolute bg-zinc-900 p-4 rounded-lg left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+        class="min-w-[350px] absolute bg-zinc-900 p-4 rounded-lg left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white">
         <div class="flex justify-between">
             <h2 class="text-white text-xl font-bold p-1">Playlists</h2>
             <button (click)="closePopup.emit()"><span class="material-icons-outlined">
@@ -10,7 +10,7 @@
         </div>
         <hr>
 
-        <div class="flex flex-nowrap my-2 justify-center">
+        <div *ngIf="!isPartyRoomMenu" class="flex flex-nowrap my-2 justify-center">
             <input type="text" placeholder="Playlist Name"
                 class="bg-zinc-700 rounded-l-full p-3 text-white focus:outline-none"
                 [(ngModel)]="playlistName">
@@ -19,11 +19,11 @@
         </div>
 
         <div class="overflow-y-auto max-h-[50vh]">
-            <div class="p-1" *ngFor="let playlists of personalLibrary.customPlaylists">
+            <div class="p-1" *ngFor="let playlist of personalLibrary.customPlaylists  | slice:1">
                 <button class="flex flex-nowrap p-2 hover:bg-zinc-800 w-[100%]"
-                    (click)="addTrackToPlaylist(playlists.id)">
-                    <img class="h-12" src="{{playlists.picture_small || 'assets/placeholder.jpg' }}" alt="">
-                    <p class="pl-1">{{playlists.title}}</p>
+                    (click)="playlistAction(playlist.id, playlist.title)">
+                    <img class="h-12" src="{{playlist.picture_small || 'assets/placeholder.jpg' }}" alt="">
+                    <p class="pl-1">{{playlist.title}}</p>
                 </button>
             </div>
         </div>

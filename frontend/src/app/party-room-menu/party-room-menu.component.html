@@ -1,16 +1,36 @@
 <div class="h-[100vh] justify-center items-center flex text-2xl">
-   <div class="flex-col bg-zinc-900 p-4 rounded-lg min-w-[20vw]">
+   <div class="flex-col bg-zinc-900 p-6 rounded-lg min-w-[20vw] m-2">
 
-
-      <div class="px-4">
-         <button class="text-white bg-zinc-700 p-3 rounded-full w-[100%]" (click)="createRoom()">Create A Party Room</button>
+      <div *ngIf="personalLibrary">
+         <h2 class="text-white font-bold text-2xl px-4">Create a Party Room</h2>
+         <div class="px-4 pt-4 grid grid-cols-3">
+            <mat-form-field class="col-span-2">
+               <mat-label>Playlist</mat-label>
+               <mat-select [(ngModel)]="playlistID">
+                  <mat-option *ngFor="let playlist of personalLibrary.customPlaylists | slice:1" [value]="playlist.id">
+                     {{playlist.title}}
+                 </mat-option>
+               </mat-select>
+            </mat-form-field>
+            <button class="p-2 bg-zinc-800 rounded-r-full text-white font-bold h-[64px] text-lg md:text-2xl" (click)="createRoom()">Create
+               Room</button>
+         </div>
       </div>
 
-         <div class="px-4 pt-4 flex flex-wrap">
-         <input type="text" placeholder="Party room id"
-            class=" max-w-[800px] bg-zinc-700 rounded-l-full p-3 text-white focus:outline-none"
-            [(ngModel)]="roomID">
-         <button class="p-3 bg-zinc-800 rounded-r-full text-white font-bold" (click)="navigateToRoom()">Join</button>
+      <div *ngIf="!personalLibrary">
+         <h2 class="text-white font-bold text-2xl px-4">To create a Party Room, please login</h2>
+      </div>
+
+      <hr class="my-8 mx-5">
+
+      <div class="mb-2">
+         <h2 class="text-white font-bold text-2xl px-4">Join a Party Room</h2>
+         <div class="px-4 pt-4 grid grid-cols-3">
+            <input type="text" placeholder="Party Room Id"
+               class="bg-zinc-700 rounded-l-lg p-3 text-white focus:outline-none col-span-2" [(ngModel)]="roomID">
+            <button class="p-2 bg-zinc-800 rounded-r-full text-white font-bold text-lg md:text-2xl" (click)="navigateToRoom()">Join
+               Room</button>
+         </div>
       </div>
 
    </div>

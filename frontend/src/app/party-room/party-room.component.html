@@ -1,23 +1,34 @@
-<div class=" bg-zinc-800 grid grid-cols-2 gap-5 p-3 min-h-[100vh]">
+<div class=" bg-zinc-800 grid grid-cols-1 md:grid-cols-2 gap-5 p-3 min-h-[100vh]">
     <div class="bg-zinc-900 rounded-lg">
-        <div class="bg-zinc-900 flex flex-col justify-between flex-shrink-0 text-white p-3 text-center rounded-lg">
-            <div *ngIf="currentTrack" class="justify-self-center">
+        <div
+            class="bg-zinc-900 flex flex-col justify-between flex-shrink-0 text-white p-3 text-center rounded-lg h-full">
+            <div *ngIf="currentTrack" class="justify-self-center pb-2">
                 <div class="flex flex-col items-center">
-                    <img class="rounded-lg" src="{{currentTrack.album.cover_big}}">
+                    <img class="rounded-lg h-[70%]" src="{{currentTrack.album.cover_big}}">
                     <p>{{currentTrack.title}}</p>
                     <p>{{currentTrack.artist.name}}</p>
                 </div>
-                <div class= "px-[20%] row-start-2 md:row-start-1 md:col-span-3 justify-center bottom-0 mt-10">
+                <div class="px-[20%] row-start-2 md:row-start-1 md:col-span-3 justify-center bottom-0 mt-10">
                     <mat-progress-bar mode="determinate" value="{{progress}}"></mat-progress-bar>
                 </div>
+            </div>
+            <div class="bg-zinc-700 rounded-lg flex items-center p-5 text-xl md:text-2xl justify-between mt-auto">
+                <p class="font-bold">Room Id: {{this.query}}</p>
+                <button mat-fab matTooltip="Copy Party Room Id" color="primary"
+                    class="flex items-center justify-center px-2" (click)="copyToClipboard(this.query)"
+                    aria-label="Copy room id">
+                    <span class="material-icons-outlined text-3xl">
+                        content_copy
+                    </span>
+                </button>
             </div>
         </div>
     </div>
 
-    <div class="bg-zinc-900 rounded-lg p-3 ">
+    <div class="bg-zinc-900 rounded-lg p-3" (keyup.enter)="searchTracks()">
         <div class="relative align-middle">
             <input type="text" placeholder="Search for songs to suggest"
-                class="w-[100%] max-w-[800px] bg-zinc-700 rounded-full px-4 py-1 text-white focus:outline-none"
+                class="w-[100%] bg-zinc-700 rounded-full px-4 py-1 text-white focus:outline-none"
                 [(ngModel)]="searchQuery">
             <button (click)="searchTracks()"
                 class="absolute inset-y-0 right-0 flex items-center bg-indigo-900 rounded-r-full text-white px-4 hover:bg-indigo-400 focus:bg-indigo-600 focus:outline-none">
@@ -28,10 +39,10 @@
         </div>
         <div class="w-[100%] mt-5 col-span-3 overflow-auto ">
 
-            <div class="w-[100%] mt-5 col-span-3 h-[100%]">
-                <div class="overflow-y-auto h-[50vh]">
+            <div class="w-[100%] mt-5 col-span-3 h-[60vh]">
+                <div class="overflow-y-auto h-[60vh]">
                     <div *ngFor="let track of searchedTracks">
-                        <app-track-element [track]="track" [isPartyRoom]="true"
+                        <app-track-element [track]="track" [isPartyRoom]="true" *ngIf="!checkIfPlayed(track.id)"
                             (suggestSongPartyRoom)="suggestSong(track)"></app-track-element>
                     </div>
                 </div>
@@ -39,14 +50,27 @@
         </div>
     </div>
 
-    <div class="flex flex-col w-[100%] mt-5 col-span-2 bg-zinc-900 rounded-lg p-3 ">
+    <div class="flex flex-col w-[100%] mt-5 md:col-span-2 bg-zinc-900 rounded-lg p-3 ">
         <h2 class="text-white font-bold h-16 text-2xl text-left">Songs</h2>
-        <div
-            class="flex flex-nowrap overflow-x-auto overflow-y-hidden">
-            <div class="mb-2"
-                *ngFor="let track of partyRoomTracks">
-               <app-track-element [track]="track" [isPartyRoom]="true" [squareLayout]="true"></app-track-element>
-               <div class="text-white text-center">PlaceHolder</div>
+        <div class="flex flex-nowrap overflow-x-auto overflow-y-hidden gap-2">
+            <div class="mb-2" *ngFor="let track of partyRoomTracks">
+                <app-track-element *ngIf="currentTrack.id != track.id" [track]="track" [isPartyRoom]="true"
+                    [squareLayout]="true"></app-track-element>
+                <div *ngIf="currentTrack.id != track.id"
+                    class="text-white text-center flex flex-nowrap justify-between px-8 py-2 overflow-hidden">
+                    <button class="hover:scale-110" (click)="likeTrack(track)">
+                        <span class="material-icons-outlined"
+                            [class.text-indigo-500]="checkTrackRating(track.id) === 'THUMBS_UP'">
+                            thumb_up
+                        </span>
+                    </button>
+                    <button class="hover:scale-110" (click)="dislikeTrack(track)">
+                        <span class="material-icons-outlined"
+                            [class.text-indigo-500]="checkTrackRating(track.id) === 'THUMBS_DOWN'">
+                            thumb_down
+                        </span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>

@@ -1,31 +1,29 @@
 import { Injectable } from '@angular/core';
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { EMPTY, Observable, finalize } from 'rxjs';
 import { Router } from '@angular/router';
 import { BackendCommunicationService } from '../services/backend-communication.service';
+import { LoadingService } from '../services/loading.service';
 
 @Injectable()
 export class UserInterceptor implements HttpInterceptor {
     constructor(
         private router: Router,
         private backendCommunicationService: BackendCommunicationService,
+        private loadingService: LoadingService,
     ) {}
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        const urlsRequiringUserId = [
-            '/users/getUser',
-            '/music/track',
-            '/music/artist',
-            '/music/album',
-            '/music/playlist',
-        ];
+        console.log(req.url);
+        this.loadingService.show();
+        const urlsRequiringUserId = ['/users/getUser'];
 
         if (urlsRequiringUserId.some((url) => req.url.includes(url))) {
             if (this.backendCommunicationService.userId === undefined) {
                 this.router.navigate(['/login']);
+                return EMPTY.pipe(finalize(() => this.loadingService.hide()));
             }
         }
 
-        return next.handle(req);
+        return next.handle(req).pipe(finalize(() => this.loadingService.hide()));
     }
 }

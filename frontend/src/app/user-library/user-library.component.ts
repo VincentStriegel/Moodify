@@ -11,6 +11,7 @@ export class UserLibraryComponent {
     userProfile!: userTO;
     playlistName = '';
     newPlaylistId?: number;
+    playlistPopup = false;
     constructor(private backendCommunicationService: BackendCommunicationService) {
         this.backendCommunicationService.getUserPersonalLibrary().subscribe((data) => (this.userProfile = data));
     }
