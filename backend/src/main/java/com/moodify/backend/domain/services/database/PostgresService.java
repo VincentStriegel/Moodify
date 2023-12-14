@@ -59,7 +59,6 @@ public class PostgresService implements DatabaseService {
 
     @Override
     public void saveUser(UserDO userDO) {
-
         this.DATABASE_REPOSITORY.save(userDO);
     }
 
@@ -100,9 +99,8 @@ public class PostgresService implements DatabaseService {
     }
 
     @Override
-    public UserDO getUser(long userId) throws Exception {
+    public UserDO getUserById(long userId) throws Exception {
         UserDO userDO = this.findUserById(userId);
-        userDO.setPassword("");
         return userDO;
     }
 
