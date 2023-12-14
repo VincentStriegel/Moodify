@@ -9,7 +9,7 @@ import java.util.List;
 
 @Component
 public class ObjectTransformer {
-    public TrackDO generateTrackDOFrom(TrackTO trackTO) {
+    public static TrackDO generateTrackDOFrom(TrackTO trackTO) {
         long deezerId = trackTO.getId();
         String title = trackTO.getTitle();
         int duration = trackTO.getDuration();
@@ -37,7 +37,7 @@ public class ObjectTransformer {
         return trackDO;
     }
 
-    public TrackTO generateTrackTOFrom(TrackDO trackDO) {
+    public static TrackTO generateTrackTOFrom(TrackDO trackDO) {
         TrackTO trackTO =  new TrackTO();
         trackTO.setId(trackDO.getId_deezer());
         trackTO.setTitle(trackDO.getTitle());
@@ -52,7 +52,7 @@ public class ObjectTransformer {
         return trackTO;
     }
 
-    public ArtistDO generateArtistDOFrom(ArtistTO artistTO) {
+    public static ArtistDO generateArtistDOFrom(ArtistTO artistTO) {
 
         int nbOfFans = artistTO.getNb_fans();
         String name = artistTO.getName();
@@ -64,7 +64,7 @@ public class ObjectTransformer {
          return  artistDO;
     }
 
-    public AlbumDO generateAlbumDoFrom(AlbumTO albumTO) {
+    public static AlbumDO generateAlbumDoFrom(AlbumTO albumTO) {
 
 
         String title = albumTO.getTitle();
@@ -79,7 +79,7 @@ public class ObjectTransformer {
         return albumDO;
     }
 
-    public ArtistTO generateArtistTOFrom(ArtistDO artistDO) {
+    public static ArtistTO generateArtistTOFrom(ArtistDO artistDO) {
         ArtistTO artistTO = new ArtistTO();
         artistTO.setId(artistDO.getArtist_id_deezer());
         //artistTO.setDeezerId(artistDO.getArtist_id_deezer());
@@ -90,7 +90,7 @@ public class ObjectTransformer {
         return artistTO;
     }
 
-    public AlbumTO generateAlbumTOFrom(AlbumDO albumDO) {
+    public static AlbumTO generateAlbumTOFrom(AlbumDO albumDO) {
         AlbumTO albumTO = new AlbumTO();
         albumTO.setId(albumDO.getAlbum_id_deezer());
         albumTO.setTitle(albumDO.getTitle());
@@ -101,7 +101,7 @@ public class ObjectTransformer {
         return albumTO;
     }
 
-    public PersonalLibraryTO generatePersonalLibraryTOFrom(PersonalLibraryDO personalLibraryDO) {
+    public static PersonalLibraryTO generatePersonalLibraryTOFrom(PersonalLibraryDO personalLibraryDO) {
         PersonalLibraryTO personalLibraryTO = new PersonalLibraryTO();
         personalLibraryTO.setLikedAlbums(generateAlbumTOListFrom(personalLibraryDO.getLikedAlbums()));
         personalLibraryTO.setLikedArtists(generateArtistTOListFrom(personalLibraryDO.getLikedArtists()));
@@ -111,7 +111,7 @@ public class ObjectTransformer {
 
     }
 
-    public UserTO generateUserTOFrom(UserDO userDO) {
+    public static UserTO generateUserTOFrom(UserDO userDO) {
         UserTO userTO = new UserTO();
         userTO.setId(userDO.getId());
         userTO.setUsername(userDO.getUsername());
@@ -119,7 +119,7 @@ public class ObjectTransformer {
         return userTO;
     }
 
-    private List<AlbumTO> generateAlbumTOListFrom(List<AlbumDO> albumDOList) {
+    private static List<AlbumTO> generateAlbumTOListFrom(List<AlbumDO> albumDOList) {
         List<AlbumTO> albumTOList = new ArrayList<>();
         for (AlbumDO albumDO : albumDOList) {
             albumTOList.add(generateAlbumTOFrom(albumDO));
@@ -127,7 +127,7 @@ public class ObjectTransformer {
         return albumTOList;
     }
 
-    private List<ArtistTO> generateArtistTOListFrom(List<ArtistDO> artistDOList) {
+    private static List<ArtistTO> generateArtistTOListFrom(List<ArtistDO> artistDOList) {
         List<ArtistTO> artistTOList = new ArrayList<>();
         for (ArtistDO artistDO : artistDOList) {
             artistTOList.add(generateArtistTOFrom(artistDO));
@@ -135,7 +135,7 @@ public class ObjectTransformer {
         return artistTOList;
     }
 
-    public List<TrackTO> generateTrackTOListFrom(List<TrackDO> trackDOList) {
+    public static List<TrackTO> generateTrackTOListFrom(List<TrackDO> trackDOList) {
         List<TrackTO> trackTOList = new ArrayList<>();
         for (TrackDO trackDO : trackDOList) {
             trackTOList.add(generateTrackTOFrom(trackDO));
@@ -143,7 +143,7 @@ public class ObjectTransformer {
         return trackTOList;
     }
 
-    private List<PlaylistTO> generatePlaylistTOListFrom(List<PlaylistDO> playlistDOList) {
+    private static List<PlaylistTO> generatePlaylistTOListFrom(List<PlaylistDO> playlistDOList) {
         List<PlaylistTO> playlistTOList = new ArrayList<>();
         for (PlaylistDO playlistDO : playlistDOList) {
             playlistTOList.add(generatePlaylistTOFrom(playlistDO));
@@ -151,7 +151,7 @@ public class ObjectTransformer {
         return playlistTOList;
     }
 
-    public PlaylistTO generatePlaylistTOFrom(PlaylistDO playlistDO) {
+    public static PlaylistTO generatePlaylistTOFrom(PlaylistDO playlistDO) {
         PlaylistTO playlistTO = new PlaylistTO();
         playlistTO.setId(playlistDO.getId());
         playlistTO.setTitle(playlistDO.getTitle());
