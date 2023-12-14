@@ -1,18 +1,17 @@
 import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root',
 })
 export class DataService {
+    playlistId?: number;
 
-  playlistId?: number;
+    constructor() {}
 
-  constructor() { }
-
-  setPlaylistID(playlistID: number) {
-    this.playlistId = playlistID;
-  }
-  getPlaylistID() {
-    return this.playlistId!;
-  }
+    setPlaylistID(playlistID: number) {
+        this.playlistId = playlistID;
+    }
+    getPlaylistID() {
+        return this.playlistId!;
+    }
 }

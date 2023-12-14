@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CollectionComponent } from './collection.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 describe('CollectionComponent', () => {
     let component: CollectionComponent;
@@ -11,7 +12,7 @@ describe('CollectionComponent', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             declarations: [CollectionComponent],
-            imports: [RouterTestingModule, HttpClientTestingModule],
+            imports: [RouterTestingModule, HttpClientTestingModule, MatTooltipModule],
         });
         fixture = TestBed.createComponent(CollectionComponent);
         component = fixture.componentInstance;

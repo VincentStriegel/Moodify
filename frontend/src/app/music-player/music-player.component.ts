@@ -27,7 +27,7 @@ export class MusicPlayerComponent {
     imageSrc?: string;
     showMusicPlayer = true;
     showQueue = false;
-    trackQueue : TrackTO[] = [];
+    trackQueue: TrackTO[] = [];
     currentTrackIndex = 0;
 
     constructor(
@@ -45,20 +45,20 @@ export class MusicPlayerComponent {
             this.togglePlay();
             this.isFavorite = false;
             this.checkIfLiked();
-            this.trackQueue = musicPlayerService.trackArr
-            this.currentTrackIndex = musicPlayerService.index
+            this.trackQueue = musicPlayerService.trackArr;
+            this.currentTrackIndex = musicPlayerService.index;
         });
     }
 
     ngOnInit() {
-        this.router.events.pipe(
-            filter((event): event is NavigationEnd => event instanceof NavigationEnd)
-        ).subscribe((event: NavigationEnd) => {
-            this.showMusicPlayer = !event.urlAfterRedirects.includes('/party-room/');
-            if (!this.showMusicPlayer && this.audio) {
-              this.audio.pause();
-            }
-        });
+        this.router.events
+            .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
+            .subscribe((event: NavigationEnd) => {
+                this.showMusicPlayer = !event.urlAfterRedirects.includes('/party-room/');
+                if (!this.showMusicPlayer && this.audio) {
+                    this.audio.pause();
+                }
+            });
     }
 
     setupAudioPlayer(): void {

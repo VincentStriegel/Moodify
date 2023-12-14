@@ -2,7 +2,6 @@ package com.moodify.backend.domain.services.database;
 
 import com.moodify.backend.api.transferobjects.*;
 import com.moodify.backend.domain.services.database.databaseobjects.*;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

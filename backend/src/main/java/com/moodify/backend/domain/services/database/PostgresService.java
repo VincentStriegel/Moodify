@@ -2,7 +2,6 @@ package com.moodify.backend.domain.services.database;
 
 import com.moodify.backend.api.transferobjects.AlbumTO;
 import com.moodify.backend.api.transferobjects.ArtistTO;
-import com.moodify.backend.api.transferobjects.PlaylistTO;
 import com.moodify.backend.api.transferobjects.TrackTO;
 import com.moodify.backend.domain.services.database.databaseobjects.*;
 import com.moodify.backend.domain.services.exceptions.login.UserCredentialsException;
@@ -14,7 +13,6 @@ import com.moodify.backend.domain.services.security.EmailValidator;
 import com.moodify.backend.domain.services.security.PasswordEncoder;
 import com.moodify.backend.domain.services.security.PasswordValidator;
 import com.moodify.backend.domain.services.security.UsernameValidator;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -323,7 +321,6 @@ public class PostgresService implements DatabaseService {
         return likedTracks;
     }
 
-
     private PlaylistDO findCustomPlaylistFrom(UserDO userDO, long playlistId) throws  Exception {
         PlaylistDO playlistDO = userDO
                 .getPersonalLibrary()
@@ -354,7 +351,7 @@ public class PostgresService implements DatabaseService {
         return artist;
     }
 
-    private PlaylistDO findPlaylistById(long playlistId, UserDO userDO) throws Exception{
+    private PlaylistDO findPlaylistById(long playlistId, UserDO userDO) throws Exception {
         PlaylistDO playlistDO = userDO
                 .getPersonalLibrary()
                 .getPlaylists()

@@ -31,10 +31,9 @@ import { PlaylistPopupComponent } from './playlist-popup/playlist-popup.componen
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { UserInterceptor } from './interceptors/user-interceptor.interceptor';
 import { LoadingScreenComponent } from './loading-screen/loading-screen.component';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatSelectModule} from '@angular/material/select';
-import {MatTooltipModule} from '@angular/material/tooltip';
-
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
     declarations: [
@@ -72,7 +71,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
         MatMenuModule,
         MatProgressSpinnerModule,
         MatSelectModule,
-        MatTooltipModule
+        MatTooltipModule,
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: UserInterceptor, multi: true },

@@ -44,7 +44,7 @@ export class PartyRoomComponent {
     isOwner = false;
     partyRoomData!: PartyRoomTO;
     firstTime = true;
-    playedTracksIds: Number[] = [];
+    playedTracksIds: number[] = [];
 
     trackRatings: Map<number, ThumbRating> = new Map<number, ThumbRating>();
 
@@ -113,7 +113,7 @@ export class PartyRoomComponent {
         if (!this.isPlaying && this.partyRoomTracks) {
             this.currentTrack = this.partyRoomTracks[0];
             this.audio = new Audio(this.currentTrack.preview);
-            if(this.partyRoomData.currentPosition && this.audio && this.firstTime && !this.isOwner){
+            if (this.partyRoomData.currentPosition && this.audio && this.firstTime && !this.isOwner) {
                 this.firstTime = false;
                 this.audio.currentTime = this.partyRoomData.currentPosition + 0.65;
             }
@@ -135,8 +135,8 @@ export class PartyRoomComponent {
 
     ngOnInit(): void {
         setInterval(() => {
-            if(this.isOwner){
-                console.log(this.audio.currentTime)
+            if (this.isOwner) {
+                console.log(this.audio.currentTime);
                 this.setCurrentPosition(this.audio.currentTime);
             }
         }, 500);
@@ -152,7 +152,7 @@ export class PartyRoomComponent {
 
     likeTrack(track: TrackTO) {
         let rating: number;
-        if(this.trackRatings.get(track.id) == ThumbRating.THUMBS_UP) {
+        if (this.trackRatings.get(track.id) == ThumbRating.THUMBS_UP) {
             rating = +2;
         } else {
             rating = +1;
@@ -168,7 +168,7 @@ export class PartyRoomComponent {
 
     dislikeTrack(track: TrackTO) {
         let rating: number;
-        if(this.trackRatings.get(track.id) == ThumbRating.THUMBS_UP) {
+        if (this.trackRatings.get(track.id) == ThumbRating.THUMBS_UP) {
             rating = -2;
         } else {
             rating = -1;
@@ -189,13 +189,13 @@ export class PartyRoomComponent {
     }
 
     copyToClipboard(value: string) {
-        navigator.clipboard.writeText(value).then(function() {
-        }, function(err) {
-        
-        });
+        navigator.clipboard.writeText(value).then(
+            function () {},
+            function () {},
+        );
     }
 
-    setCurrentPosition(int : number) {
+    setCurrentPosition(int: number) {
         //this.audio.currentTime = int;
         const message = {
             messageType: PartyRoomMessageType.SET_CURRENT_POSITION,

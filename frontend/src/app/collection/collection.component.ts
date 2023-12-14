@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { TrackTO } from '../types/trackTO';
-import { ActivatedRoute, Route, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BackendCommunicationService } from '../services/backend-communication.service';
 import { PlaylistTO } from '../types/playlistTO';
 import { AlbumTO } from '../types/albumTO';
@@ -31,7 +31,9 @@ export class CollectionComponent {
         this.type = this.route.snapshot.paramMap.get('collectionType')!;
         this.id = parseInt(this.route.snapshot.paramMap.get('id')!);
         if (this.type == 'album') {
-            this.backendCommunicationService.getAlbum(this.id).subscribe((data) => (this.album = data, this.setAlbum()));
+            this.backendCommunicationService
+                .getAlbum(this.id)
+                .subscribe((data) => ((this.album = data), this.setAlbum()));
         } else if (this.type == 'custom-playlist') {
             this.backendCommunicationService.userProfile.personalLibrary.customPlaylists.forEach((playlist) => {
                 if (playlist.id === this.id) {
@@ -47,11 +49,11 @@ export class CollectionComponent {
             this.isLiked =
                 this.type == 'album'
                     ? backendCommunicationService.userProfile.personalLibrary.likedAlbums.some(
-                        (album) => album.id === this.id,
-                    )
+                          (album) => album.id === this.id,
+                      )
                     : backendCommunicationService.userProfile.personalLibrary.likedPlaylists.some(
-                        (playlist) => playlist.id === this.id,
-                    );
+                          (playlist) => playlist.id === this.id,
+                      );
         }
     }
     ngOnInit(): void {
@@ -60,7 +62,7 @@ export class CollectionComponent {
 
     setAlbum(): void {
         if (this.type === 'album' && this.album) {
-            this.album.trackTOList.forEach(track => {
+            this.album.trackTOList.forEach((track) => {
                 track.album.id = this.album!.id;
                 track.album.title = this.album!.title;
                 track.album.cover_small = this.album!.cover_small;
@@ -76,54 +78,54 @@ export class CollectionComponent {
     like(): void {
         this.type == 'album'
             ? this.backendCommunicationService.addToLikedAlbums(this.album!).subscribe(
-                () => {
-                    this.isLiked = true;
-                    this.backendCommunicationService.userProfile.personalLibrary.likedAlbums.push(this.album!);
-                },
-                (error) => {
-                    console.error('Error:', error);
-                },
-            )
+                  () => {
+                      this.isLiked = true;
+                      this.backendCommunicationService.userProfile.personalLibrary.likedAlbums.push(this.album!);
+                  },
+                  (error) => {
+                      console.error('Error:', error);
+                  },
+              )
             : this.backendCommunicationService.addToLikedPlaylists(this.playlist!).subscribe(
-                () => {
-                    this.isLiked = true;
-                    this.backendCommunicationService.userProfile.personalLibrary.likedPlaylists.push(this.playlist!);
-                },
-                (error) => {
-                    console.error('Error:', error);
-                },
-            );
+                  () => {
+                      this.isLiked = true;
+                      this.backendCommunicationService.userProfile.personalLibrary.likedPlaylists.push(this.playlist!);
+                  },
+                  (error) => {
+                      console.error('Error:', error);
+                  },
+              );
     }
     unlike(): void {
         this.type == 'album'
             ? this.backendCommunicationService.removeLikedAlbums(this.album!.id).subscribe(
-                () => {
-                    this.isLiked = false;
-                    this.backendCommunicationService.userProfile.personalLibrary.likedAlbums.splice(
-                        this.backendCommunicationService.userProfile.personalLibrary.likedAlbums.findIndex(
-                            (album) => album.id === this.album!.id,
-                        ),
-                        1,
-                    );
-                },
-                (error) => {
-                    console.error('Error:', error);
-                },
-            )
+                  () => {
+                      this.isLiked = false;
+                      this.backendCommunicationService.userProfile.personalLibrary.likedAlbums.splice(
+                          this.backendCommunicationService.userProfile.personalLibrary.likedAlbums.findIndex(
+                              (album) => album.id === this.album!.id,
+                          ),
+                          1,
+                      );
+                  },
+                  (error) => {
+                      console.error('Error:', error);
+                  },
+              )
             : this.backendCommunicationService.removeLikedPlaylists(this.playlist!.id).subscribe(
-                () => {
-                    this.isLiked = false;
-                    this.backendCommunicationService.userProfile.personalLibrary.likedPlaylists.splice(
-                        this.backendCommunicationService.userProfile.personalLibrary.likedPlaylists.findIndex(
-                            (playlist) => playlist.id === this.playlist!.id,
-                        ),
-                        1,
-                    );
-                },
-                (error) => {
-                    console.error('Error:', error);
-                },
-            );
+                  () => {
+                      this.isLiked = false;
+                      this.backendCommunicationService.userProfile.personalLibrary.likedPlaylists.splice(
+                          this.backendCommunicationService.userProfile.personalLibrary.likedPlaylists.findIndex(
+                              (playlist) => playlist.id === this.playlist!.id,
+                          ),
+                          1,
+                      );
+                  },
+                  (error) => {
+                      console.error('Error:', error);
+                  },
+              );
     }
 
     removeFromCustomPlaylist(trackId: number): void {

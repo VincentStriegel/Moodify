@@ -10,7 +10,10 @@ import { BackendCommunicationService } from '../services/backend-communication.s
 })
 export class PlaylistPopupComponent {
     @Input() track!: TrackTO;
-    @Output() closePopup: EventEmitter<{playlistId?: number, playlistTitle: string }> = new EventEmitter<{ playlistId?: number, playlistTitle: string }>();
+    @Output() closePopup: EventEmitter<{ playlistId?: number; playlistTitle: string }> = new EventEmitter<{
+        playlistId?: number;
+        playlistTitle: string;
+    }>();
     personalLibrary!: PersonalLibraryTO;
     playlistName = '';
     @Input() isPartyRoomMenu?: boolean;

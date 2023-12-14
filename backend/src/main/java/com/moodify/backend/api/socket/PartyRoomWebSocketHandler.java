@@ -81,8 +81,6 @@ public class PartyRoomWebSocketHandler implements WebSocketHandler {
 
                         PlaylistTO playlist = objectTransformer.generatePlaylistTOFrom(POSTGRES_SERVICE.getPlaylistById(playlistID, userID));
 
-                        //PlaylistTO playlist = ObjectTransformer.class.newInstance().generatePlaylistTOFrom(POSTGRES_SERVICE.getPlaylistById(playlistID, userID));
-                        // Use TypeFactory to construct a List Type
                         JavaType listType = mapper.getTypeFactory().constructCollectionType(List.class, TrackTO.class);
                         // Deserialize the JsonNode into a List<TrackTO>
 
@@ -124,11 +122,11 @@ public class PartyRoomWebSocketHandler implements WebSocketHandler {
         return false;
     }
 
-    private void suggestTrack(TrackTO trackTO , WebSocketSession session) throws JsonProcessingException {
+    private void suggestTrack(TrackTO trackTO, WebSocketSession session) throws JsonProcessingException {
         Map<TrackTO, Integer> trackRatingsMap = rooms.get(getRoomId(session)).getTrackRatings();
         Set<TrackTO> playedTracks = rooms.get(getRoomId(session)).getPlayedTracks();
         synchronized (trackRatingsMap) {
-            if(!playedTracks.contains(trackTO)){
+            if (!playedTracks.contains(trackTO)) {
                 trackRatingsMap.merge(trackTO, 0, Integer::sum);
             }
         }

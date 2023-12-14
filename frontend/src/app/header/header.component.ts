@@ -29,15 +29,15 @@ export class HeaderComponent {
         });
     }
     ngOnInit() {
-        this.router.events.pipe(
-            filter((event): event is NavigationEnd => event instanceof NavigationEnd)
-        ).subscribe((event: NavigationEnd) => {
-            if(event.urlAfterRedirects.includes('/party-room/')) {
-                this.isPartyRoom = true
-            } else {
-                this.isPartyRoom = false
-            }
-        });
+        this.router.events
+            .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
+            .subscribe((event: NavigationEnd) => {
+                if (event.urlAfterRedirects.includes('/party-room/')) {
+                    this.isPartyRoom = true;
+                } else {
+                    this.isPartyRoom = false;
+                }
+            });
     }
     search() {
         this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
@@ -54,5 +54,4 @@ export class HeaderComponent {
             this.isOpen = false;
         }
     }
-
 }

@@ -5,12 +5,13 @@ import { HeaderComponent } from './header/header.component';
 import { MusicPlayerComponent } from './music-player/music-player.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { LoadingScreenComponent } from './loading-screen/loading-screen.component';
 
 describe('AppComponent', () => {
     beforeEach(() =>
         TestBed.configureTestingModule({
             imports: [RouterTestingModule, FormsModule, HttpClientTestingModule],
-            declarations: [AppComponent, HeaderComponent, MusicPlayerComponent],
+            declarations: [AppComponent, HeaderComponent, MusicPlayerComponent, LoadingScreenComponent],
         }),
     );
 
