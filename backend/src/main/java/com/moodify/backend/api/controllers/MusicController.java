@@ -25,8 +25,7 @@ public class MusicController {
     public TrackTO getTrack(@PathVariable("trackId") long trackId) {
         try {
             return apiService.getTrack(trackId);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
     }
@@ -36,8 +35,7 @@ public class MusicController {
     public ArtistTO getArtist(@PathVariable("artistId") long artistId) {
         try {
             return apiService.getArtist(artistId);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
     }
@@ -47,8 +45,7 @@ public class MusicController {
     public PlaylistTO getPlaylist(@PathVariable("playlistId") long playlistId) {
         try {
             return apiService.getPlaylist(playlistId);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
     }
@@ -58,8 +55,7 @@ public class MusicController {
     public AlbumTO getAlbum(@PathVariable("albumId") long albumId) {
         try {
             return apiService.getAlbum(albumId);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
 
@@ -70,8 +66,7 @@ public class MusicController {
     public List<TrackTO> search(@PathVariable ("searchQuery") String query) {
         try {
             return apiService.getTrackSearch(query);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
     }
@@ -81,8 +76,7 @@ public class MusicController {
     public List<AlbumTO> searchAlbum(@PathVariable ("searchQuery") String query) {
         try {
             return apiService.getAlbums(query);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
     }
@@ -92,8 +86,7 @@ public class MusicController {
     public List<ArtistTO> searchArtist(@PathVariable ("searchQuery") String query) {
         try {
             return apiService.getArtists(query);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
     }
@@ -103,8 +96,7 @@ public class MusicController {
     public List<PlaylistTO> searchPlaylist(@PathVariable ("searchQuery") String query) {
         try {
             return apiService.getPlaylists(query);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
     }
