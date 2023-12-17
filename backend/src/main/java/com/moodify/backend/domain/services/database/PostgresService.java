@@ -109,7 +109,9 @@ public class PostgresService implements DatabaseService {
         userDO.getPersonalLibrary().getPlaylists().add(playlistDO);
         this.DATABASE_REPOSITORY.save(userDO);
 
-        return userDO.getPersonalLibrary().getPlaylists().getLast().getId();
+
+        int numberOfPlaylists = userDO.getPersonalLibrary().getPlaylists().size();
+        return userDO.getPersonalLibrary().getPlaylists().get(numberOfPlaylists - 1).getId();
     }
 
     @Override
