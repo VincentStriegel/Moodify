@@ -23,16 +23,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class PostgresService implements DatabaseService {
     private final PostgresRepository DATABASE_REPOSITORY;
     private final PasswordEncoder ENCODER;
-    private final ObjectTransformer OBJECT_TRANSFORMER;
 
 
     @Autowired
-    public PostgresService(PostgresRepository DATABASE_REPOSITORY,
-                           PasswordEncoder ENCODER,
-                           ObjectTransformer OBJECT_TRANSFORMER) {
+    public PostgresService(PostgresRepository DATABASE_REPOSITORY, PasswordEncoder ENCODER) {
         this.DATABASE_REPOSITORY = DATABASE_REPOSITORY;
         this.ENCODER = ENCODER;
-        this.OBJECT_TRANSFORMER = OBJECT_TRANSFORMER;
     }
 
     @Override
@@ -100,12 +96,11 @@ public class PostgresService implements DatabaseService {
 
     @Override
     public UserDO getUserById(long userId) throws Exception {
-        UserDO userDO = this.findUserById(userId);
-        return userDO;
+        return this.findUserById(userId);
     }
 
     @Override
-    public Long addCustomPlaylist(long userId, String playlistTitle) throws Exception {
+    public Long createCustomPlaylist(long userId, String playlistTitle) throws Exception {
         UserDO userDO = this.findUserById(userId);
 
 
@@ -114,14 +109,14 @@ public class PostgresService implements DatabaseService {
         userDO.getPersonalLibrary().getPlaylists().add(playlistDO);
         this.DATABASE_REPOSITORY.save(userDO);
 
-        return userDO.getPersonalLibrary().getPlaylists().get(userDO.getPersonalLibrary().getPlaylists().size() - 1).getId();
+        return userDO.getPersonalLibrary().getPlaylists().getLast().getId();
     }
 
     @Override
-    public PersonalLibraryDO removeCustomPlaylist(long userId, long playlistId) throws Exception {
+    public PersonalLibraryDO deleteCustomPlaylist(long userId, long playlistId) throws Exception {
         UserDO userDO = findUserById(userId);
 
-        this.removeCustomPlaylist(userDO, playlistId);
+        this.deleteCustomPlaylist(userDO, playlistId);
 
         this.DATABASE_REPOSITORY.save(userDO);
 
@@ -134,7 +129,7 @@ public class PostgresService implements DatabaseService {
 
 
         PlaylistDO customPlaylist = this.findCustomPlaylistFrom(userDO, playlistId);
-        TrackDO newTrack = this.OBJECT_TRANSFORMER.generateTrackDOFrom(trackTO);
+        TrackDO newTrack = ObjectTransformer.generateTrackDOFrom(trackTO); //TODO potential problems with  mocking
 
         this.addToPlaylist(customPlaylist, newTrack);
 
@@ -145,7 +140,7 @@ public class PostgresService implements DatabaseService {
     }
 
     @Override
-    public PersonalLibraryDO removeFromCustomPlaylist(long userId, long playlistId, long trackId) throws Exception {
+    public PersonalLibraryDO deleteFromCustomPlaylist(long userId, long playlistId, long trackId) throws Exception {
         UserDO userDO = this.findUserById(userId);
 
         PlaylistDO playlistDO = this.findCustomPlaylistFrom(userDO, playlistId);
@@ -165,7 +160,7 @@ public class PostgresService implements DatabaseService {
         UserDO userDO = this.findUserById(userId);
 
 
-        TrackDO newTrack = this.OBJECT_TRANSFORMER.generateTrackDOFrom(trackTO);
+        TrackDO newTrack = ObjectTransformer.generateTrackDOFrom(trackTO); //TODO potential problems with  mocking
 
         PlaylistDO likedTracks = findLikedTracksPlaylist(userDO);
 
@@ -177,7 +172,7 @@ public class PostgresService implements DatabaseService {
     }
 
     @Override
-    public PersonalLibraryDO removeFromLikedTracks(long userId, long trackId) throws Exception {
+    public PersonalLibraryDO deleteFromLikedTracks(long userId, long trackId) throws Exception {
         UserDO userDO = this.findUserById(userId);
         PlaylistDO likedTracks = findLikedTracksPlaylist(userDO);
         TrackDO toRemove = this.findTrackFromPlaylist(likedTracks, trackId);
@@ -190,7 +185,7 @@ public class PostgresService implements DatabaseService {
     public PersonalLibraryDO addToLikedArtists(ArtistTO artistTO, long userId) throws Exception {
         UserDO userDO = this.findUserById(userId);
 
-        ArtistDO newArtist = this.OBJECT_TRANSFORMER.generateArtistDOFrom(artistTO);
+        ArtistDO newArtist = ObjectTransformer.generateArtistDOFrom(artistTO); //TODO potential problems with  mocking
         this.addToLikedArtists(userDO, newArtist);
 
         this.DATABASE_REPOSITORY.save(userDO);
@@ -199,7 +194,7 @@ public class PostgresService implements DatabaseService {
     }
 
     @Override
-    public PersonalLibraryDO removeFromLikedArtists(long artistId, long userId) throws Exception {
+    public PersonalLibraryDO deleteFromLikedArtists(long artistId, long userId) throws Exception {
         UserDO userDO = this.findUserById(userId);
         ArtistDO artistDO = this.findArtistById(artistId, userDO);
 
@@ -213,7 +208,7 @@ public class PostgresService implements DatabaseService {
     @Override
     public PersonalLibraryDO addToLikedAlbums(AlbumTO albumTO, long userId) throws Exception {
         UserDO userDO = this.findUserById(userId);
-        AlbumDO newAlbum = this.OBJECT_TRANSFORMER.generateAlbumDoFrom(albumTO);
+        AlbumDO newAlbum = ObjectTransformer.generateAlbumDoFrom(albumTO);
 
         userDO.getPersonalLibrary().getLikedAlbums().add(newAlbum);
         this.DATABASE_REPOSITORY.save(userDO);
@@ -222,7 +217,7 @@ public class PostgresService implements DatabaseService {
     }
 
     @Override
-    public PersonalLibraryDO removeFromLikedAlbums(long albumId, long userId) throws Exception {
+    public PersonalLibraryDO deleteFromLikedAlbums(long albumId, long userId) throws Exception {
         UserDO userDO = this.findUserById(userId);
         AlbumDO albumDO = this.findAlbumById(userDO, albumId);
 
@@ -236,9 +231,8 @@ public class PostgresService implements DatabaseService {
     @Transactional
     public PlaylistDO getPlaylistById(long playlistId, long userId) throws Exception {
         UserDO userDO = this.findUserById(userId);
-        PlaylistDO customPlaylist = this.findCustomPlaylistFrom(userDO, playlistId);
 
-        return customPlaylist;
+        return this.findCustomPlaylistFrom(userDO, playlistId);
     }
 
     private AlbumDO findAlbumById(UserDO userDO, long albumId) throws Exception {
@@ -276,7 +270,7 @@ public class PostgresService implements DatabaseService {
         playlistDO.getTracks().add(trackDO);
     }
 
-    private void removeCustomPlaylist(UserDO userDO, long playlistId) throws Exception {
+    private void deleteCustomPlaylist(UserDO userDO, long playlistId) throws Exception {
 
         PlaylistDO playlistDOS = userDO.getPersonalLibrary().getPlaylists().stream().filter(ps -> ps.getId() == playlistId).findFirst().orElse(null);
         if (playlistDOS == null) {

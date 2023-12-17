@@ -29,65 +29,61 @@ public class UsersController {
         }
     }
 
-    @PostMapping({"findUserById/{userId}/addCustomPlaylist/{title}"})
+    @PostMapping({"createCustomPlaylist"})
     @ResponseStatus(HttpStatus.CREATED)
-    public Long addCustomPlaylist(@PathVariable("userId") long userId, @PathVariable("title") String title) {
+    public Long createCustomPlaylist(@RequestParam long userId, @RequestParam String title) {
         try {
-            return this.POSTGRES_SERVICE.addCustomPlaylist(userId, title);
+            return this.POSTGRES_SERVICE.createCustomPlaylist(userId, title);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
     }
 
-    @DeleteMapping({"findUserById/{userId}/removeCustomPlaylist/{playlistId}"})
+    @DeleteMapping({"deleteCustomPlaylist"})
     @ResponseStatus(HttpStatus.OK)
-    public PersonalLibraryTO removeCustomPlaylist(@PathVariable("userId") long userId,
-                                                  @PathVariable("playlistId") long playlistId) {
+    public void deleteCustomPlaylist(@RequestParam long userId,
+                                     @RequestParam long playlistId) {
         try {
-            PersonalLibraryDO personalLibraryDO = this.POSTGRES_SERVICE.removeCustomPlaylist(userId, playlistId);
-            return ObjectTransformer.generatePersonalLibraryTOFrom(personalLibraryDO);
+            this.POSTGRES_SERVICE.deleteCustomPlaylist(userId, playlistId);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
     }
 
-    @PostMapping({"findUserById/{userId}/addToCustomPlaylist/{playlistId}"})
+    @PostMapping({"addToCustomPlaylist"})
     @ResponseStatus(HttpStatus.OK)
-    public PersonalLibraryTO addToCustomPlaylist(@RequestBody TrackTO trackTO,
-                                                 @PathVariable("userId") long userId,
-                                                 @PathVariable("playlistId") long playlistId) {
+    public void addToCustomPlaylist(@RequestBody TrackTO trackTO,
+                                    @RequestParam long userId,
+                                    @RequestParam long playlistId) {
 
         try {
-            PersonalLibraryDO personalLibraryDO = this.POSTGRES_SERVICE.addToCustomPlaylist(trackTO, userId, playlistId);
-            return ObjectTransformer.generatePersonalLibraryTOFrom(personalLibraryDO);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
-        }
-
-    }
-
-    @DeleteMapping({"findUserById/{userId}/removeFromCustomPlaylist/{playlistId}/track/{trackId}"})
-    @ResponseStatus(HttpStatus.OK)
-    public PersonalLibraryTO removeFromCustomPlaylist(@PathVariable("userId") long userId,
-                                                      @PathVariable("playlistId") long playlistId,
-                                                      @PathVariable("trackId") long trackId) {
-
-        try {
-            PersonalLibraryDO personalLibraryDO = this.POSTGRES_SERVICE.removeFromCustomPlaylist(userId, playlistId, trackId);
-            return ObjectTransformer.generatePersonalLibraryTOFrom(personalLibraryDO);
+            this.POSTGRES_SERVICE.addToCustomPlaylist(trackTO, userId, playlistId);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
 
     }
 
-    @PostMapping({"findUserById/{userId}/addToLikedTracks"})
+    @DeleteMapping({"deleteFromCustomPlaylist"})
     @ResponseStatus(HttpStatus.OK)
-    public PersonalLibraryTO addToLikedTracks(@RequestBody TrackTO trackTO, @PathVariable("userId") long userId) {
+    public void deleteFromCustomPlaylist(@RequestParam long userId,
+                                         @RequestParam long playlistId,
+                                         @RequestParam long trackId) {
 
         try {
-            PersonalLibraryDO personalLibraryDO = this.POSTGRES_SERVICE.addToLikedTracks(trackTO, userId);
-            return ObjectTransformer.generatePersonalLibraryTOFrom(personalLibraryDO);
+            this.POSTGRES_SERVICE.deleteFromCustomPlaylist(userId, playlistId, trackId);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+        }
+
+    }
+
+    @PostMapping({"addToLikedTracks"})
+    @ResponseStatus(HttpStatus.OK)
+    public void addToLikedTracks(@RequestBody TrackTO trackTO, @RequestParam long userId) {
+
+        try {
+            this.POSTGRES_SERVICE.addToLikedTracks(trackTO, userId);
 
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
@@ -95,26 +91,24 @@ public class UsersController {
 
     }
 
-    @DeleteMapping({"findUserById/{userId}/removeFromLikedTracks/{trackId}"})
+    @DeleteMapping({"deleteFromLikedTracks"})
     @ResponseStatus(HttpStatus.OK)
-    public PersonalLibraryTO addToLikedTracks(@PathVariable("userId") long userId, @PathVariable("trackId") long trackId) {
+    public void deleteFromLikedTracks(@RequestParam long userId, @RequestParam long trackId) {
 
         try {
-            PersonalLibraryDO personalLibraryDO = this.POSTGRES_SERVICE.removeFromLikedTracks(userId, trackId);
-            return ObjectTransformer.generatePersonalLibraryTOFrom(personalLibraryDO);
+            this.POSTGRES_SERVICE.deleteFromLikedTracks(userId, trackId);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
 
     }
 
-    @PostMapping({"findUserById/{userId}/addToLikedArtists"})
+    @PostMapping({"addToLikedArtists"})
     @ResponseStatus(HttpStatus.OK)
-    public PersonalLibraryTO addToLikedArtists(@RequestBody ArtistTO artistTO, @PathVariable("userId") long userId) {
+    public void addToLikedArtists(@RequestBody ArtistTO artistTO, @RequestParam long userId) {
 
         try {
-            PersonalLibraryDO personalLibraryDO = this.POSTGRES_SERVICE.addToLikedArtists(artistTO, userId);
-            return ObjectTransformer.generatePersonalLibraryTOFrom(personalLibraryDO);
+            this.POSTGRES_SERVICE.addToLikedArtists(artistTO, userId);
 
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
@@ -122,39 +116,38 @@ public class UsersController {
 
     }
 
-    @DeleteMapping({"findUserById/{userId}/removeFromLikedArtists/{artistId}"})
+    @DeleteMapping({"deleteFromLikedArtists"})
     @ResponseStatus(HttpStatus.OK)
-    public PersonalLibraryTO removeFromLikedArtists(@PathVariable("userId") long userId, @PathVariable("artistId") long artistId) {
+    public void deleteFromLikedArtists(@RequestParam long userId, @RequestParam long artistId) {
 
         try {
-            PersonalLibraryDO personalLibraryDO = this.POSTGRES_SERVICE.removeFromLikedArtists(artistId, userId);
-            return ObjectTransformer.generatePersonalLibraryTOFrom(personalLibraryDO);
+            this.POSTGRES_SERVICE.deleteFromLikedArtists(artistId, userId);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
 
     }
 
-    @PostMapping({"findUserById/{userId}/addToLikedAlbums"})
+    @PostMapping({"addToLikedAlbums"})
     @ResponseStatus(HttpStatus.OK)
-    public PersonalLibraryTO addToLikedAlbums(@RequestBody AlbumTO albumTO, @PathVariable("userId") long userId) {
+    public void addToLikedAlbums(@RequestBody AlbumTO albumTO, @RequestParam long userId) {
 
         try {
-            PersonalLibraryDO personalLibraryDO = this.POSTGRES_SERVICE.addToLikedAlbums(albumTO, userId);
-            return ObjectTransformer.generatePersonalLibraryTOFrom(personalLibraryDO);
+            this.POSTGRES_SERVICE.addToLikedAlbums(albumTO, userId);
+
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
 
     }
 
-    @DeleteMapping({"findUserById/{userId}/removeFromLikedAlbums/{albumId}"})
+    @DeleteMapping({"deleteFromLikedAlbums"})
     @ResponseStatus(HttpStatus.OK)
-    public PersonalLibraryTO removeFromLikedAlbums(@PathVariable("userId") long userId, @PathVariable("albumId") long albumId) {
+    public void deleteFromLikedAlbums(@RequestParam long userId, @RequestParam long albumId) {
 
         try {
-            PersonalLibraryDO personalLibraryDO = this.POSTGRES_SERVICE.removeFromLikedAlbums(albumId, userId);
-            return ObjectTransformer.generatePersonalLibraryTOFrom(personalLibraryDO);
+            this.POSTGRES_SERVICE.deleteFromLikedAlbums(albumId, userId);
+
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
