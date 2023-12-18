@@ -112,7 +112,7 @@ public class PostgresService implements DatabaseService {
     }
 
     @Override
-    public PersonalLibraryDO deleteCustomPlaylist(long userId, long playlistId) throws Exception {
+    public void deleteCustomPlaylist(long userId, long playlistId) throws Exception {
         UserDO user = findUserById(userId);
         PlaylistDO customPlaylist = this.findPlaylistById(playlistId, user);
 
@@ -123,12 +123,10 @@ public class PostgresService implements DatabaseService {
         user.getPersonalLibrary().getPlaylists().remove(customPlaylist);
 
         this.DATABASE_REPOSITORY.save(user);
-
-        return user.getPersonalLibrary();
     }
 
     @Override
-    public PersonalLibraryDO addToCustomPlaylist(TrackTO trackTO, long userId, long playlistId) throws Exception {
+    public void addToCustomPlaylist(TrackTO trackTO, long userId, long playlistId) throws Exception {
         UserDO user = this.findUserById(userId);
         PlaylistDO customPlaylist = this.findPlaylistById(playlistId, user);
         TrackDO track = this.OBJECT_TRANSFORMER.generateTrackDOFrom(trackTO);
@@ -136,12 +134,10 @@ public class PostgresService implements DatabaseService {
         this.addTrackTo(customPlaylist, track);
 
         this.DATABASE_REPOSITORY.save(user);
-
-        return user.getPersonalLibrary();
     }
 
     @Override
-    public PersonalLibraryDO deleteFromCustomPlaylist(long userId, long playlistId, long trackId) throws Exception {
+    public void deleteFromCustomPlaylist(long userId, long playlistId, long trackId) throws Exception {
         UserDO user = this.findUserById(userId);
         PlaylistDO customPlaylist = this.findPlaylistById(playlistId, user);
         TrackDO track = this.findTrackById(customPlaylist, trackId);
@@ -149,37 +145,30 @@ public class PostgresService implements DatabaseService {
         this.deleteTrackFrom(customPlaylist, track);
 
         this.DATABASE_REPOSITORY.save(user);
-
-        return user.getPersonalLibrary();
     }
 
     @Override
-    public PersonalLibraryDO addToLikedTracks(TrackTO trackTO, long userId) throws Exception {
+    public void addToLikedTracks(TrackTO trackTO, long userId) throws Exception {
         UserDO user = this.findUserById(userId);
         PlaylistDO likedTracks = this.findLikedTracksOf(user);
         TrackDO track = this.OBJECT_TRANSFORMER.generateTrackDOFrom(trackTO);
 
-
         this.addTrackTo(likedTracks, track);
 
         this.DATABASE_REPOSITORY.save(user);
-
-        return user.getPersonalLibrary();
     }
 
     @Override
-    public PersonalLibraryDO deleteFromLikedTracks(long userId, long trackId) throws Exception {
+    public void deleteFromLikedTracks(long userId, long trackId) throws Exception {
         UserDO user = this.findUserById(userId);
         PlaylistDO likedTracks = this.findLikedTracksOf(user);
         TrackDO track = this.findTrackById(likedTracks, trackId);
 
         this.deleteTrackFrom(likedTracks, track);
-
-        return  user.getPersonalLibrary();
     }
 
     @Override
-    public PersonalLibraryDO addToLikedArtists(ArtistTO artistTO, long userId) throws Exception {
+    public void addToLikedArtists(ArtistTO artistTO, long userId) throws Exception {
         UserDO user = this.findUserById(userId);
 
         ArtistDO artist = this.OBJECT_TRANSFORMER.generateArtistDOFrom(artistTO);
@@ -189,25 +178,22 @@ public class PostgresService implements DatabaseService {
         }
 
         user.getPersonalLibrary().getLikedArtists().add(artist);
-        this.DATABASE_REPOSITORY.save(user);
 
-        return user.getPersonalLibrary();
+        this.DATABASE_REPOSITORY.save(user);
     }
 
     @Override
-    public PersonalLibraryDO deleteFromLikedArtists(long artistId, long userId) throws Exception {
+    public void deleteFromLikedArtists(long artistId, long userId) throws Exception {
         UserDO user = this.findUserById(userId);
         ArtistDO artist = this.findArtistById(artistId, user);
 
         user.getPersonalLibrary().getLikedArtists().remove(artist);
 
         this.DATABASE_REPOSITORY.save(user);
-
-        return user.getPersonalLibrary();
     }
 
     @Override
-    public PersonalLibraryDO addToLikedAlbums(AlbumTO albumTO, long userId) throws Exception {
+    public void addToLikedAlbums(AlbumTO albumTO, long userId) throws Exception {
         UserDO user = this.findUserById(userId);
         AlbumDO album = this.OBJECT_TRANSFORMER.generateAlbumDoFrom(albumTO);
 
@@ -219,22 +205,19 @@ public class PostgresService implements DatabaseService {
             throw new DuplicateAlbumsException();
         }
 
-
         user.getPersonalLibrary().getLikedAlbums().add(album);
-        this.DATABASE_REPOSITORY.save(user);
 
-        return user.getPersonalLibrary();
+        this.DATABASE_REPOSITORY.save(user);
     }
 
     @Override
-    public PersonalLibraryDO deleteFromLikedAlbums(long albumId, long userId) throws Exception {
+    public void deleteFromLikedAlbums(long albumId, long userId) throws Exception {
         UserDO user = this.findUserById(userId);
         AlbumDO album = this.findAlbumById(user, albumId);
 
         user.getPersonalLibrary().getLikedAlbums().remove(album);
-        this.DATABASE_REPOSITORY.save(user);
 
-        return user.getPersonalLibrary();
+        this.DATABASE_REPOSITORY.save(user);
     }
 
     @Override
