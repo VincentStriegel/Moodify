@@ -4,6 +4,7 @@ import { TrackTO } from '../types/trackTO';
 import { BackendCommunicationService } from '../services/backend-communication.service';
 import { environment } from 'src/environments/environment';
 import { DataService } from '../services/data.service';
+import { SnackbarService } from '../services/snackbar.service';
 
 export type PartyRoomTO = {
     tracks: TrackTO[];
@@ -36,6 +37,7 @@ export class PartyRoomComponent {
     searchQuery: string = '';
     searchedTracks: TrackTO[] = [];
     partyRoomTracks: TrackTO[] = [];
+    prevPartyRoomTracks: TrackTO[] = [];
     currentTrack!: TrackTO;
     audio!: HTMLAudioElement;
     progress = 0;
@@ -53,6 +55,7 @@ export class PartyRoomComponent {
     constructor(
         private route: ActivatedRoute,
         private backendCommunicationService: BackendCommunicationService,
+        private snackbarService: SnackbarService,
         private dataService: DataService,
     ) {
         this.query = this.route.snapshot.paramMap.get('roomId') || '';
@@ -72,7 +75,18 @@ export class PartyRoomComponent {
 
         this.webSocket.onmessage = (event) => {
             this.partyRoomData = JSON.parse(event.data) as PartyRoomTO;
+            this.prevPartyRoomTracks = this.partyRoomTracks;
             this.partyRoomTracks = this.partyRoomData.tracks;
+            if(this.prevPartyRoomTracks.length != this.partyRoomTracks.length && !this.firstTime){
+                const newTracks = this.partyRoomTracks.filter(track => 
+                    !this.prevPartyRoomTracks.some(prevTrack => prevTrack.id === track.id) &&
+                    !this.playedTracksIds.includes(track.id)
+                );
+            
+                for(let track of newTracks) {
+                    this.snackbarService.openSuccessSnackBar(track.album.cover_small, track.title, "added to the queue");
+                }
+            }
             this.setupAudioPlayer();
         };
     }
@@ -136,7 +150,6 @@ export class PartyRoomComponent {
     ngOnInit(): void {
         setInterval(() => {
             if (this.isOwner) {
-                console.log(this.audio.currentTime);
                 this.setCurrentPosition(this.audio.currentTime);
             }
         }, 500);

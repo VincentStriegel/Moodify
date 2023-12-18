@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BackendCommunicationService } from '../services/backend-communication.service';
 import { ArtistTO } from '../types/artistTO';
+import { SnackbarService } from '../services/snackbar.service';
 
 @Component({
     selector: 'app-artist-profile',
@@ -15,6 +16,7 @@ export class ArtistProfileComponent {
     constructor(
         private route: ActivatedRoute,
         private backendCommunicationService: BackendCommunicationService,
+        private snackbarService: SnackbarService,
     ) {
         this.query = this.route.snapshot.paramMap.get('artistId')!;
         this.backendCommunicationService
@@ -36,6 +38,12 @@ export class ArtistProfileComponent {
             () => {
                 this.isLiked = true;
                 this.backendCommunicationService.userProfile.personalLibrary.likedArtists.push(this.artist);
+                this.snackbarService.openSuccessSnackBar(
+                    this.artist.picture_small,
+                    this.artist.name,
+                    'added to your liked artists',
+                );
+
             },
             (error) => {
                 console.error('Error:', error);
@@ -52,6 +60,11 @@ export class ArtistProfileComponent {
                         (artist) => artist.id === this.artist.id,
                     ),
                     1,
+                );
+                this.snackbarService.openSuccessSnackBar(
+                    this.artist.picture_small,
+                    this.artist.name,
+                    'removed from your liked artists',
                 );
             },
             (error) => {

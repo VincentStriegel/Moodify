@@ -34,6 +34,8 @@ import { LoadingScreenComponent } from './loading-screen/loading-screen.componen
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { SnackbarComponent } from './snackbar/snackbar.component';
 
 @NgModule({
     declarations: [
@@ -52,6 +54,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
         UserLibraryComponent,
         PlaylistPopupComponent,
         LoadingScreenComponent,
+        SnackbarComponent,
     ],
     imports: [
         BrowserModule,
@@ -72,6 +75,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
         MatProgressSpinnerModule,
         MatSelectModule,
         MatTooltipModule,
+        MatSnackBarModule
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: UserInterceptor, multi: true },

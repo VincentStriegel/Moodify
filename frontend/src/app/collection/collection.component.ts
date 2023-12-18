@@ -5,6 +5,7 @@ import { BackendCommunicationService } from '../services/backend-communication.s
 import { PlaylistTO } from '../types/playlistTO';
 import { AlbumTO } from '../types/albumTO';
 import { MusicPlayerService } from '../services/music-player.service';
+import { SnackbarService } from '../services/snackbar.service';
 
 @Component({
     selector: 'app-collection',
@@ -27,7 +28,8 @@ export class CollectionComponent {
         private router: Router,
         private backendCommunicationService: BackendCommunicationService,
         private musicPlayerService: MusicPlayerService,
-    ) {
+        private snackbarService: SnackbarService,
+            ) {
         this.type = this.route.snapshot.paramMap.get('collectionType')!;
         this.id = parseInt(this.route.snapshot.paramMap.get('id')!);
         if (this.type == 'album') {
@@ -95,6 +97,11 @@ export class CollectionComponent {
                       console.error('Error:', error);
                   },
               );
+        this.snackbarService.openSuccessSnackBar(
+            this.type == 'album' ? this.album!.cover_small : this.playlist!.picture_small,
+            this.type == 'album' ? this.album!.title : this.playlist!.title,
+            'added to your liked ' + this.type + 's',
+        );
     }
     unlike(): void {
         this.type == 'album'
@@ -126,6 +133,11 @@ export class CollectionComponent {
                       console.error('Error:', error);
                   },
               );
+              this.snackbarService.openSuccessSnackBar(
+                this.type == 'album' ? this.album!.cover_small : this.playlist!.picture_small,
+                this.type == 'album' ? this.album!.title : this.playlist!.title,
+                'removed from your liked ' + this.type + 's',
+            );
     }
 
     removeFromCustomPlaylist(trackId: number): void {

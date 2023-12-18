@@ -1,4 +1,4 @@
-<div class="relative bg-black/90 p-4 text-white sticky top-0 z-10 backdrop-blur-sm" (keyup.enter)="search()">
+<div class="relative bg-black/90 p-4 text-white sticky top-0 z-40 backdrop-blur-sm" (keyup.enter)="search()">
   <div class="w-full">
     <div class="flex items-center justify-between">
       <div>
@@ -6,7 +6,7 @@
       </div>
       <div class="relative align-middle" *ngIf="!isPartyRoom">
         <input type="text" placeholder="Search for your favorite songs" class="w-[50vw] max-w-[800px] rounded-full px-4 py-1 text-gray-700 focus:outline-none border" [(ngModel)]="query">
-        <button class="absolute inset-y-0 right-0 flex items-center bg-indigo-900 rounded-r-full text-white px-4 hover:bg-indigo-400 focus:bg-indigo-600 focus:outline-none" (click)="search()">
+        <button class="absolute inset-y-0 right-0 flex items-center bg-[#663dff] rounded-r-full text-white px-4 hover:bg-indigo-400 focus:bg-indigo-600 focus:outline-none" (click)="search()">
           <span class="material-icons-outlined">
             search
           </span>

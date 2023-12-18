@@ -13,7 +13,6 @@ export class UserInterceptor implements HttpInterceptor {
         private loadingService: LoadingService,
     ) {}
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        console.log(req.url);
         this.loadingService.show();
         const urlsRequiringUserId = ['/users/getUser'];
 
