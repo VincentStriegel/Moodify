@@ -146,8 +146,7 @@ public class PostgresService implements DatabaseService {
         PlaylistDO customPlaylist = this.findPlaylistById(playlistId, user);
         TrackDO track = this.findTrackById(customPlaylist, trackId);
 
-        customPlaylist.getTracks().remove(track);
-
+        this.deleteTrackFrom(customPlaylist, track);
 
         this.DATABASE_REPOSITORY.save(user);
 
@@ -174,7 +173,7 @@ public class PostgresService implements DatabaseService {
         PlaylistDO likedTracks = this.findLikedTracksOf(user);
         TrackDO track = this.findTrackById(likedTracks, trackId);
 
-        likedTracks.getTracks().remove(track);
+        this.deleteTrackFrom(likedTracks, track);
 
         return  user.getPersonalLibrary();
     }
@@ -335,6 +334,31 @@ public class PostgresService implements DatabaseService {
         }
 
         playlist.getTracks().add(track);
+        playlist.incrementNumberOfSongs();
+
+        if (playlist.getNumber_of_songs() == 1) {
+            playlist.setPicture_big(track.getAlbum_cover_big_deezer());
+            playlist.setPicture_small(track.getAlbum_cover_small_deezer());
+        }
+
+    }
+
+    private void deleteTrackFrom(PlaylistDO playlist, TrackDO track) throws Exception {
+
+        if (playlist
+                .getTracks()
+                .stream()
+                .noneMatch(tr -> tr.getPreview().equals(track.getPreview()))) {
+            throw new TrackNotFoundException();
+        }
+
+        playlist.getTracks().remove(track);
+        playlist.decrementNumberOfSongs();
+
+        if (playlist.getNumber_of_songs() == 0) {
+            playlist.setPicture_big(null); //TODO cab be changed to default picture
+            playlist.setPicture_small(null); //TODO cab be changed to default picture
+        }
     }
 
 }
