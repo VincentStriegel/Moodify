@@ -15,6 +15,9 @@
             <button class="p-2 bg-zinc-800 rounded-r-full text-white font-bold h-[64px] text-lg md:text-2xl" (click)="createRoom()">Create
                Room</button>
          </div>
+         <p *ngIf="personalLibrary.customPlaylists.length < 2" class="text-white font-bold text-sm px-4"> 
+          *Create a playlist to create a Party Room
+         </p>
       </div>
 
       <div *ngIf="!personalLibrary">

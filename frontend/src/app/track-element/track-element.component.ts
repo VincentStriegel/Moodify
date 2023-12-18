@@ -3,6 +3,7 @@ import { TrackTO } from '../types/trackTO';
 import { MusicPlayerService } from '../services/music-player.service';
 import { Router } from '@angular/router';
 import { BackendCommunicationService } from '../services/backend-communication.service';
+import { SnackbarService } from '../services/snackbar.service';
 
 @Component({
     selector: 'app-track-element',
@@ -27,9 +28,10 @@ export class TrackElementComponent {
     isFavorite = false;
 
     constructor(
-        private musicPlayerService: MusicPlayerService,
-        private router: Router,
-        private backendCommunicationService: BackendCommunicationService,
+        public musicPlayerService: MusicPlayerService,
+        public router: Router,
+        public backendCommunicationService: BackendCommunicationService,
+        public snackbarService: SnackbarService,
     ) {
         // this.checkIfLiked();
     }
@@ -54,6 +56,11 @@ export class TrackElementComponent {
                 () => {
                     this.backendCommunicationService.userProfile.personalLibrary.likedTracks.push(this.track);
                     this.isFavorite = true;
+                    this.snackbarService.openSuccessSnackBar(
+                        this.track.album.cover_small,
+                        this.track.title,
+                        'added to your liked tracks',
+                    );
                 },
                 (error) => {
                     console.error('Error:', error);
@@ -69,6 +76,11 @@ export class TrackElementComponent {
                         1,
                     );
                     this.isFavorite = false;
+                    this.snackbarService.openSuccessSnackBar(
+                        this.track.album.cover_small,
+                        this.track.title,
+                        'removed from your liked tracks',
+                    );
                 },
                 (error) => {
                     console.error('Error:', error);
@@ -95,6 +107,11 @@ export class TrackElementComponent {
         this.backendCommunicationService.removeFromCustomPlaylist(this.playlistId!, this.track.id).subscribe(
             () => {
                 this.removeFromPlaylistEvent.emit();
+                this.snackbarService.openSuccessSnackBar(
+                    this.track.album.cover_small,
+                    this.track.title,
+                    'removed from playlist',
+                );
             },
             (error) => {
                 console.error('Error:', error);
@@ -104,5 +121,6 @@ export class TrackElementComponent {
 
     queueTrack(): void {
         this.musicPlayerService.addTrack(this.track);
+        this.snackbarService.openSuccessSnackBar(this.track.album.cover_small, this.track.title, 'added to queue');
     }
 }
