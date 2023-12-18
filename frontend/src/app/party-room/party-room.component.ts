@@ -47,6 +47,7 @@ export class PartyRoomComponent {
     partyRoomData!: PartyRoomTO;
     firstTime = true;
     playedTracksIds: number[] = [];
+    intervalId?: any;
 
     trackRatings: Map<number, ThumbRating> = new Map<number, ThumbRating>();
 
@@ -77,7 +78,7 @@ export class PartyRoomComponent {
             this.partyRoomData = JSON.parse(event.data) as PartyRoomTO;
             this.prevPartyRoomTracks = this.partyRoomTracks;
             this.partyRoomTracks = this.partyRoomData.tracks;
-            if(this.prevPartyRoomTracks.length != this.partyRoomTracks.length && !this.firstTime){
+            if(this.prevPartyRoomTracks.length != this.partyRoomTracks.length && (!this.firstTime || this.isOwner)){
                 const newTracks = this.partyRoomTracks.filter(track => 
                     !this.prevPartyRoomTracks.some(prevTrack => prevTrack.id === track.id) &&
                     !this.playedTracksIds.includes(track.id)
@@ -148,7 +149,7 @@ export class PartyRoomComponent {
     }
 
     ngOnInit(): void {
-        setInterval(() => {
+       this.intervalId = setInterval(() => {
             if (this.isOwner) {
                 this.setCurrentPosition(this.audio.currentTime);
             }
@@ -160,6 +161,7 @@ export class PartyRoomComponent {
             this.audio.removeEventListener('timeupdate', this.updateProgress);
             this.audio.pause();
         }
+        clearInterval(this.intervalId);
         this.webSocket.close();
     }
 
