@@ -60,8 +60,7 @@ public class ObjectTransformer {
         String pictureBig = artistTO.getPicture_big();
         long artistIdDeezer = artistTO.getId();
 
-        ArtistDO artistDO = new ArtistDO(nbOfFans, name, pictureSmall, pictureBig, artistIdDeezer);
-         return  artistDO;
+        return new ArtistDO(nbOfFans, name, pictureSmall, pictureBig, artistIdDeezer);
     }
 
     public  AlbumDO generateAlbumDoFrom(AlbumTO albumTO) {
@@ -74,9 +73,7 @@ public class ObjectTransformer {
         int  numberOfSongs = albumTO.getNumber_of_songs();
         long albumIdDeezer = albumTO.getId();
 
-        AlbumDO albumDO = new AlbumDO(title, coverSmall, coverBig, releaseDate, numberOfSongs, albumIdDeezer);
-
-        return albumDO;
+        return new AlbumDO(title, coverSmall, coverBig, releaseDate, numberOfSongs, albumIdDeezer);
     }
 
     public  ArtistTO generateArtistTOFrom(ArtistDO artistDO) {
