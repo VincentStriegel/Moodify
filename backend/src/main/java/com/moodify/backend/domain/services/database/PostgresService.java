@@ -266,7 +266,12 @@ public class PostgresService implements DatabaseService {
     }
 
     private TrackDO findTrackById(PlaylistDO playlist, long trackId) throws Exception {
-        TrackDO track = playlist.getTracks().stream().filter(trackDO -> trackDO.getId_deezer() == trackId).findFirst().orElse(null);
+        TrackDO track = playlist
+                .getTracks()
+                .stream()
+                .filter(trackDO -> trackDO.getId_deezer() == trackId)
+                .findFirst()
+                .orElse(null);
         if (track == null) {
             throw new TrackNotFoundException();
         }
@@ -274,7 +279,14 @@ public class PostgresService implements DatabaseService {
     }
 
     private PlaylistDO findLikedTracksOf(UserDO user) throws Exception {
-        PlaylistDO likedTracks = user.getPersonalLibrary().getPlaylists().stream().filter(PlaylistDO::isLikedTrackPlaylist).findFirst().orElse(null);
+        PlaylistDO likedTracks = user
+                .getPersonalLibrary()
+                .getPlaylists()
+                .stream().
+                filter(PlaylistDO::isLikedTrackPlaylist)
+                .findFirst()
+                .orElse(null);
+
         if (likedTracks == null) {
             throw  new DefaultPlaylistNotFoundException();
         }
