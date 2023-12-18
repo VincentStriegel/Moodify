@@ -23,39 +23,42 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class PostgresService implements DatabaseService {
     private final PostgresRepository DATABASE_REPOSITORY;
     private final PasswordEncoder ENCODER;
+    private final ObjectTransformer OBJECT_TRANSFORMER;
 
 
     @Autowired
-    public PostgresService(PostgresRepository DATABASE_REPOSITORY, PasswordEncoder ENCODER) {
+    public PostgresService(PostgresRepository DATABASE_REPOSITORY,
+                           PasswordEncoder ENCODER,
+                           ObjectTransformer OBJECT_TRANSFORMER) {
         this.DATABASE_REPOSITORY = DATABASE_REPOSITORY;
         this.ENCODER = ENCODER;
+        this.OBJECT_TRANSFORMER = OBJECT_TRANSFORMER;
     }
-
     @Override
-    public UserDO createUser(UserDO userDO) throws Exception {
-        EmailValidator.validateEmail(userDO.getEmail());
-        UsernameValidator.validateUsername(userDO.getUsername());
-        PasswordValidator.validatePassword(userDO.getPassword());
+    public UserDO createUser(UserDO user) throws Exception {
+        EmailValidator.validateEmail(user.getEmail());
+        UsernameValidator.validateUsername(user.getUsername());
+        PasswordValidator.validatePassword(user.getPassword());
 
 
-        if (this.DATABASE_REPOSITORY.existsUserByEmail(userDO.getEmail())) {
+        if (this.DATABASE_REPOSITORY.existsUserByEmail(user.getEmail())) {
             throw new RegisteredEmailException();
         }
 
-        if (this.DATABASE_REPOSITORY.existsUserByUsername(userDO.getUsername())) {
+        if (this.DATABASE_REPOSITORY.existsUserByUsername(user.getUsername())) {
             throw new RegisteredUsernameException();
         }
 
 
-        String hashed = this.ENCODER.encode(userDO.getPassword());
-        userDO.setPassword(hashed);
+        String hashed = this.ENCODER.encode(user.getPassword());
+        user.setPassword(hashed);
 
-        return userDO;
+        return user;
     }
 
     @Override
-    public void saveUser(UserDO userDO) {
-        this.DATABASE_REPOSITORY.save(userDO);
+    public void saveUser(UserDO user) {
+        this.DATABASE_REPOSITORY.save(user);
     }
 
     @Override
@@ -65,29 +68,29 @@ public class PostgresService implements DatabaseService {
         String loginUsername = loginUser.getCredential();
         String loginPassword = loginUser.getPassword();
 
-        UserDO userDOByEmail = this.DATABASE_REPOSITORY.getUserByEmail(loginEmail);
-        if (exists(userDOByEmail)) {
+        UserDO userByEmail = this.DATABASE_REPOSITORY.getUserByEmail(loginEmail);
+        if (exists(userByEmail)) {
 
-            String hashedPassword = userDOByEmail.getPassword();
+            String hashedPassword = userByEmail.getPassword();
 
             boolean passNotEqual = !this.ENCODER.compare(loginPassword, hashedPassword);
             if (passNotEqual) {
                 throw new WrongPasswordException();
             }
-            return userDOByEmail.getId();
+            return userByEmail.getId();
         }
 
-        UserDO userDOByUsername = this.DATABASE_REPOSITORY.getUserByUsername(loginUsername);
-        if (exists(userDOByUsername)) {
+        UserDO userByUsername = this.DATABASE_REPOSITORY.getUserByUsername(loginUsername);
+        if (exists(userByUsername)) {
 
-            String hashedPassword = userDOByUsername.getPassword();
+            String hashedPassword = userByUsername.getPassword();
 
             boolean passNotEqual = !this.ENCODER.compare(loginPassword, hashedPassword);
             if (passNotEqual) {
                 throw new WrongPasswordException();
             }
 
-            return userDOByUsername.getId();
+            return userByUsername.getId();
         }
 
         throw new UserCredentialsException();
@@ -95,242 +98,198 @@ public class PostgresService implements DatabaseService {
     }
 
     @Override
-    public UserDO getUserById(long userId) throws Exception {
-        return this.findUserById(userId);
+    public UserDO findUserById(long userId) throws Exception {
+        UserDO user = this.DATABASE_REPOSITORY.findById(userId);
+        if (user == null) {
+            throw new UserNotFoundException();
+        }
+        return user;
     }
 
     @Override
     public Long createCustomPlaylist(long userId, String playlistTitle) throws Exception {
-        UserDO userDO = this.findUserById(userId);
+        UserDO user = this.findUserById(userId);
+        PlaylistDO customPlaylist = new PlaylistDO(playlistTitle);
 
+        user.getPersonalLibrary().getPlaylists().add(customPlaylist);
+        this.DATABASE_REPOSITORY.save(user);
 
-        PlaylistDO playlistDO = new PlaylistDO(playlistTitle);
-
-        userDO.getPersonalLibrary().getPlaylists().add(playlistDO);
-        this.DATABASE_REPOSITORY.save(userDO);
-
-
-        int numberOfPlaylists = userDO.getPersonalLibrary().getPlaylists().size();
-        return userDO.getPersonalLibrary().getPlaylists().get(numberOfPlaylists - 1).getId();
+        int lastIndex = user.getPersonalLibrary().getPlaylists().size() - 1;
+        return user.getPersonalLibrary().getPlaylists().get(lastIndex).getId();
     }
 
     @Override
     public PersonalLibraryDO deleteCustomPlaylist(long userId, long playlistId) throws Exception {
-        UserDO userDO = findUserById(userId);
+        UserDO user = findUserById(userId);
+        PlaylistDO customPlaylist = this.findPlaylistById(playlistId, user);
 
-        this.deleteCustomPlaylist(userDO, playlistId);
+        if (customPlaylist.isLikedTrackPlaylist()) {
+            throw new DefaultPlaylistException();
+        }
 
-        this.DATABASE_REPOSITORY.save(userDO);
+        user.getPersonalLibrary().getPlaylists().remove(customPlaylist);
 
-        return userDO.getPersonalLibrary();
+        this.DATABASE_REPOSITORY.save(user);
+
+        return user.getPersonalLibrary();
     }
 
     @Override
     public PersonalLibraryDO addToCustomPlaylist(TrackTO trackTO, long userId, long playlistId) throws Exception {
-        UserDO userDO = this.findUserById(userId);
+        UserDO user = this.findUserById(userId);
+        PlaylistDO customPlaylist = this.findPlaylistById(playlistId, user);
+        TrackDO track = this.OBJECT_TRANSFORMER.generateTrackDOFrom(trackTO);
 
+        this.addTrackTo(customPlaylist, track);
 
-        PlaylistDO customPlaylist = this.findCustomPlaylistFrom(userDO, playlistId);
-        TrackDO newTrack = ObjectTransformer.generateTrackDOFrom(trackTO); //TODO potential problems with  mocking
+        this.DATABASE_REPOSITORY.save(user);
 
-        this.addToPlaylist(customPlaylist, newTrack);
-
-        this.DATABASE_REPOSITORY.save(userDO);
-
-
-        return userDO.getPersonalLibrary();
+        return user.getPersonalLibrary();
     }
 
     @Override
     public PersonalLibraryDO deleteFromCustomPlaylist(long userId, long playlistId, long trackId) throws Exception {
-        UserDO userDO = this.findUserById(userId);
+        UserDO user = this.findUserById(userId);
+        PlaylistDO customPlaylist = this.findPlaylistById(playlistId, user);
+        TrackDO track = this.findTrackById(customPlaylist, trackId);
 
-        PlaylistDO playlistDO = this.findCustomPlaylistFrom(userDO, playlistId);
-
-        TrackDO toRemove = findTrackFromPlaylist(playlistDO, trackId);
-
-        playlistDO.getTracks().remove(toRemove);
+        customPlaylist.getTracks().remove(track);
 
 
-        this.DATABASE_REPOSITORY.save(userDO);
+        this.DATABASE_REPOSITORY.save(user);
 
-        return userDO.getPersonalLibrary();
+        return user.getPersonalLibrary();
     }
 
     @Override
     public PersonalLibraryDO addToLikedTracks(TrackTO trackTO, long userId) throws Exception {
-        UserDO userDO = this.findUserById(userId);
+        UserDO user = this.findUserById(userId);
+        PlaylistDO likedTracks = this.findLikedTracksOf(user);
+        TrackDO track = this.OBJECT_TRANSFORMER.generateTrackDOFrom(trackTO);
 
 
-        TrackDO newTrack = ObjectTransformer.generateTrackDOFrom(trackTO); //TODO potential problems with  mocking
+        this.addTrackTo(likedTracks, track);
 
-        PlaylistDO likedTracks = findLikedTracksPlaylist(userDO);
+        this.DATABASE_REPOSITORY.save(user);
 
-        this.addToPlaylist(likedTracks, newTrack);
-
-        this.DATABASE_REPOSITORY.save(userDO);
-
-        return userDO.getPersonalLibrary();
+        return user.getPersonalLibrary();
     }
 
     @Override
     public PersonalLibraryDO deleteFromLikedTracks(long userId, long trackId) throws Exception {
-        UserDO userDO = this.findUserById(userId);
-        PlaylistDO likedTracks = findLikedTracksPlaylist(userDO);
-        TrackDO toRemove = this.findTrackFromPlaylist(likedTracks, trackId);
-        likedTracks.getTracks().remove(toRemove);
+        UserDO user = this.findUserById(userId);
+        PlaylistDO likedTracks = this.findLikedTracksOf(user);
+        TrackDO track = this.findTrackById(likedTracks, trackId);
 
-        return  userDO.getPersonalLibrary();
+        likedTracks.getTracks().remove(track);
+
+        return  user.getPersonalLibrary();
     }
 
     @Override
     public PersonalLibraryDO addToLikedArtists(ArtistTO artistTO, long userId) throws Exception {
-        UserDO userDO = this.findUserById(userId);
+        UserDO user = this.findUserById(userId);
 
-        ArtistDO newArtist = ObjectTransformer.generateArtistDOFrom(artistTO); //TODO potential problems with  mocking
-        this.addToLikedArtists(userDO, newArtist);
+        ArtistDO artist = this.OBJECT_TRANSFORMER.generateArtistDOFrom(artistTO);
+        if (user.getPersonalLibrary().getLikedArtists().stream()
+                .anyMatch(ar -> ar.getArtist_id_deezer() == artist.getArtist_id_deezer())) {
+            throw new DuplicateArtistsException();
+        }
 
-        this.DATABASE_REPOSITORY.save(userDO);
+        user.getPersonalLibrary().getLikedArtists().add(artist);
+        this.DATABASE_REPOSITORY.save(user);
 
-        return userDO.getPersonalLibrary();
+        return user.getPersonalLibrary();
     }
 
     @Override
     public PersonalLibraryDO deleteFromLikedArtists(long artistId, long userId) throws Exception {
-        UserDO userDO = this.findUserById(userId);
-        ArtistDO artistDO = this.findArtistById(artistId, userDO);
+        UserDO user = this.findUserById(userId);
+        ArtistDO artist = this.findArtistById(artistId, user);
 
-        userDO.getPersonalLibrary().getLikedArtists().remove(artistDO);
+        user.getPersonalLibrary().getLikedArtists().remove(artist);
 
-        this.DATABASE_REPOSITORY.save(userDO);
+        this.DATABASE_REPOSITORY.save(user);
 
-        return userDO.getPersonalLibrary();
+        return user.getPersonalLibrary();
     }
 
     @Override
     public PersonalLibraryDO addToLikedAlbums(AlbumTO albumTO, long userId) throws Exception {
-        UserDO userDO = this.findUserById(userId);
-        AlbumDO newAlbum = ObjectTransformer.generateAlbumDoFrom(albumTO);
+        UserDO user = this.findUserById(userId);
+        AlbumDO album = this.OBJECT_TRANSFORMER.generateAlbumDoFrom(albumTO);
 
-        userDO.getPersonalLibrary().getLikedAlbums().add(newAlbum);
-        this.DATABASE_REPOSITORY.save(userDO);
+        if (user
+                .getPersonalLibrary()
+                .getLikedArtists()
+                .stream()
+                .anyMatch(ar -> ar.getArtist_id_deezer() == album.getAlbum_id_deezer())) {
+            throw new DuplicateAlbumsException();
+        }
 
-        return userDO.getPersonalLibrary();
+
+        user.getPersonalLibrary().getLikedAlbums().add(album);
+        this.DATABASE_REPOSITORY.save(user);
+
+        return user.getPersonalLibrary();
     }
 
     @Override
     public PersonalLibraryDO deleteFromLikedAlbums(long albumId, long userId) throws Exception {
-        UserDO userDO = this.findUserById(userId);
-        AlbumDO albumDO = this.findAlbumById(userDO, albumId);
+        UserDO user = this.findUserById(userId);
+        AlbumDO album = this.findAlbumById(user, albumId);
 
-        userDO.getPersonalLibrary().getLikedAlbums().remove(albumDO);
-        this.DATABASE_REPOSITORY.save(userDO);
+        user.getPersonalLibrary().getLikedAlbums().remove(album);
+        this.DATABASE_REPOSITORY.save(user);
 
-        return userDO.getPersonalLibrary();
+        return user.getPersonalLibrary();
     }
 
     @Override
     @Transactional
-    public PlaylistDO getPlaylistById(long playlistId, long userId) throws Exception {
-        UserDO userDO = this.findUserById(userId);
+    public PlaylistDO findPlaylistById(long playlistId, long userId) throws Exception {
+        UserDO user = this.findUserById(userId);
 
-        return this.findCustomPlaylistFrom(userDO, playlistId);
+        return this.findPlaylistById(playlistId, user);
     }
 
-    private AlbumDO findAlbumById(UserDO userDO, long albumId) throws Exception {
-        AlbumDO albumDO = userDO
+    private boolean exists(UserDO user) {
+        return user != null;
+    }
+
+    private AlbumDO findAlbumById(UserDO user, long albumId) throws Exception {
+        AlbumDO album = user
                 .getPersonalLibrary()
                 .getLikedAlbums()
                 .stream()
                 .filter(al -> al.getAlbum_id_deezer() == albumId)
                 .findFirst()
                 .orElse(null);
-        if (albumDO == null) {
+        if (album == null) {
             throw  new AlbumNotFoundException();
         }
 
-        return albumDO;
+        return album;
     }
 
-    private void addToLikedArtists(UserDO userDO, ArtistDO newArtist) throws Exception {
-        if (userDO.getPersonalLibrary().getLikedArtists().stream()
-                .anyMatch(ar -> ar.getArtist_id_deezer() == newArtist.getArtist_id_deezer())) {
-            throw new DuplicateArtistsException();
-        }
-        userDO.getPersonalLibrary().getLikedArtists().add(newArtist);
-    }
-
-    private void addToPlaylist(PlaylistDO playlistDO, TrackDO trackDO) throws Exception {
-
-        if (playlistDO
-                .getTracks()
-                .stream()
-                .anyMatch(tr -> tr.getPreview().equals(trackDO.getPreview()))) {
-            throw new DuplicateTracksException();
-        }
-
-        playlistDO.getTracks().add(trackDO);
-    }
-
-    private void deleteCustomPlaylist(UserDO userDO, long playlistId) throws Exception {
-
-        PlaylistDO playlistDOS = userDO.getPersonalLibrary().getPlaylists().stream().filter(ps -> ps.getId() == playlistId).findFirst().orElse(null);
-        if (playlistDOS == null) {
-            throw new PlaylistNotFoundException();
-        }
-
-        if (playlistDOS.isLikedTrackPlaylist()) {
-            throw new DefaultPlaylistException();
-        }
-
-        userDO.getPersonalLibrary().getPlaylists().remove(playlistDOS);
-
-    }
-
-    private boolean exists(UserDO userDO) {
-        return userDO != null;
-    }
-
-    private UserDO findUserById(long userId) throws Exception {
-        UserDO userDO = this.DATABASE_REPOSITORY.findById(userId);
-        if (userDO == null) {
-            throw new UserNotFoundException();
-        }
-        return userDO;
-    }
-
-    private TrackDO findTrackFromPlaylist(PlaylistDO playlistDO, long trackId) throws Exception {
-        TrackDO track = playlistDO.getTracks().stream().filter(trackDO -> trackDO.getId_deezer() == trackId).findFirst().orElse(null);
+    private TrackDO findTrackById(PlaylistDO playlist, long trackId) throws Exception {
+        TrackDO track = playlist.getTracks().stream().filter(trackDO -> trackDO.getId_deezer() == trackId).findFirst().orElse(null);
         if (track == null) {
             throw new TrackNotFoundException();
         }
         return track;
     }
 
-    private PlaylistDO findLikedTracksPlaylist(UserDO userDO) throws Exception {
-        PlaylistDO likedTracks = userDO.getPersonalLibrary().getPlaylists().stream().filter(pl -> pl.isLikedTrackPlaylist()).findFirst().orElse(null);
+    private PlaylistDO findLikedTracksOf(UserDO user) throws Exception {
+        PlaylistDO likedTracks = user.getPersonalLibrary().getPlaylists().stream().filter(PlaylistDO::isLikedTrackPlaylist).findFirst().orElse(null);
         if (likedTracks == null) {
             throw  new DefaultPlaylistNotFoundException();
         }
         return likedTracks;
     }
 
-    private PlaylistDO findCustomPlaylistFrom(UserDO userDO, long playlistId) throws  Exception {
-        PlaylistDO playlistDO = userDO
-                .getPersonalLibrary()
-                .getPlaylists()
-                .stream()
-                .filter(p -> p.getId() == playlistId && !p.isLikedTrackPlaylist())
-                .findFirst()
-                .orElse(null);
-        if (playlistDO == null) {
-            throw new PlaylistNotFoundException();
-        }
-        return playlistDO;
-    }
-
-    private ArtistDO findArtistById(long artistId, UserDO userDO) throws Exception {
-        ArtistDO artist = userDO
+    private ArtistDO findArtistById(long artistId, UserDO user) throws Exception {
+        ArtistDO artist = user
                 .getPersonalLibrary()
                 .getLikedArtists()
                 .stream()
@@ -345,8 +304,8 @@ public class PostgresService implements DatabaseService {
         return artist;
     }
 
-    private PlaylistDO findPlaylistById(long playlistId, UserDO userDO) throws Exception {
-        PlaylistDO playlistDO = userDO
+    private PlaylistDO findPlaylistById(long playlistId, UserDO user) throws Exception {
+        PlaylistDO playlist = user
                 .getPersonalLibrary()
                 .getPlaylists()
                 .stream()
@@ -354,11 +313,23 @@ public class PostgresService implements DatabaseService {
                 .findFirst()
                 .orElse(null);
 
-        if (playlistDO == null) {
+        if (playlist == null) {
             throw new PlaylistNotFoundException();
         }
 
-        return playlistDO;
+        return playlist;
+    }
+
+    private void addTrackTo(PlaylistDO playlist, TrackDO track) throws Exception {
+
+        if (playlist
+                .getTracks()
+                .stream()
+                .anyMatch(tr -> tr.getPreview().equals(track.getPreview()))) {
+            throw new DuplicateTracksException();
+        }
+
+        playlist.getTracks().add(track);
     }
 
 }

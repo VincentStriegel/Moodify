@@ -12,10 +12,12 @@ import org.springframework.web.server.ResponseStatusException;
 @RequestMapping("/users")
 public class UsersController {
     private final DatabaseService POSTGRES_SERVICE;
+    private final ObjectTransformer OBJECT_TRANSFORMER;
 
     @Autowired
-    public UsersController(PostgresService USER_SERVICE) {
+    public UsersController(PostgresService USER_SERVICE, ObjectTransformer OBJECT_TRANSFORMER) {
         this.POSTGRES_SERVICE = USER_SERVICE;
+        this.OBJECT_TRANSFORMER = OBJECT_TRANSFORMER;
     }
 
     @GetMapping({"findUserById/{userId}"})
@@ -23,7 +25,7 @@ public class UsersController {
     public UserTO findUserById(@PathVariable("userId") long userId) {
 
         try {
-            return ObjectTransformer.generateUserTOFrom(this.POSTGRES_SERVICE.getUserById(userId));
+            return this.OBJECT_TRANSFORMER.generateUserTOFrom(this.POSTGRES_SERVICE.findUserById(userId));
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }

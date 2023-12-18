@@ -9,13 +9,13 @@ import com.moodify.backend.domain.services.database.databaseobjects.UserDO;
 
 public interface DatabaseService {
 
-    UserDO createUser(UserDO userDO) throws Exception;
+    UserDO createUser(UserDO user) throws Exception;
 
-    void saveUser(UserDO userDO);
+    void saveUser(UserDO user);
 
     long loginUser(LoginUser loginUser) throws Exception;
 
-    UserDO getUserById(long userId) throws Exception;
+    UserDO findUserById(long userId) throws Exception;
 
     Long createCustomPlaylist(long userId, String playlistTitle) throws Exception;
 
@@ -37,5 +37,5 @@ public interface DatabaseService {
 
     PersonalLibraryDO deleteFromLikedAlbums(long albumId, long userId) throws Exception;
 
-    PlaylistDO getPlaylistById(long playlistId, long userId) throws Exception;
+    PlaylistDO findPlaylistById(long playlistId, long userId) throws Exception;
 }
