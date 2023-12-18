@@ -43,7 +43,6 @@ export class ArtistProfileComponent {
                     this.artist.name,
                     'added to your liked artists',
                 );
-
             },
             (error) => {
                 console.error('Error:', error);

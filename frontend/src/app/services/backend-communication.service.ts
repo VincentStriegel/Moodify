@@ -154,9 +154,13 @@ export class BackendCommunicationService {
      * @returns An Observable that will emit an HTTP response.
      */
     addToLikedArtists(artistTO: ArtistTO): Observable<HttpResponse<any>> {
-        return this.http.post<any>(`${this.apiServerURL}/users/findUserById/${this.userId}/addToLikedArtists`, artistTO, {
-            observe: 'response',
-        });
+        return this.http.post<any>(
+            `${this.apiServerURL}/users/findUserById/${this.userId}/addToLikedArtists`,
+            artistTO,
+            {
+                observe: 'response',
+            },
+        );
     }
 
     /**
@@ -213,7 +217,9 @@ export class BackendCommunicationService {
      */
     removeLikedPlaylists(playlistId: number): Observable<HttpResponse<any>> {
         return this.http
-            .delete<any>(`${this.apiServerURL}/users/findUserById/${this.userId}/removeFromLikedPlaylists/${playlistId}`)
+            .delete<any>(
+                `${this.apiServerURL}/users/findUserById/${this.userId}/removeFromLikedPlaylists/${playlistId}`,
+            )
             .pipe(shareReplay(1));
     }
 
@@ -223,7 +229,10 @@ export class BackendCommunicationService {
      * @returns An Observable that will emit an HTTP response containing the playlist ID.
      */
     createPlaylist(title: string): Observable<HttpResponse<number>> {
-        return this.http.post<any>(`${this.apiServerURL}/users/findUserById/${this.userId}/addCustomPlaylist/${title}`, {});
+        return this.http.post<any>(
+            `${this.apiServerURL}/users/findUserById/${this.userId}/addCustomPlaylist/${title}`,
+            {},
+        );
     }
 
     /**

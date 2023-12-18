@@ -4,20 +4,20 @@ import { SnackbarComponent } from './snackbar.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 describe('SnackbarComponent', () => {
-  let component: SnackbarComponent;
-  let fixture: ComponentFixture<SnackbarComponent>;
+    let component: SnackbarComponent;
+    let fixture: ComponentFixture<SnackbarComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [SnackbarComponent],
-      imports: [MatSnackBarModule],
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            declarations: [SnackbarComponent],
+            imports: [MatSnackBarModule],
+        });
+        fixture = TestBed.createComponent(SnackbarComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
     });
-    fixture = TestBed.createComponent(SnackbarComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });

@@ -15,7 +15,13 @@ describe('TrackElementComponent', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             declarations: [TrackElementComponent],
-            imports: [HttpClientTestingModule, MatSnackBarModule, MatMenuModule, MatTooltipModule, NoopAnimationsModule],
+            imports: [
+                HttpClientTestingModule,
+                MatSnackBarModule,
+                MatMenuModule,
+                MatTooltipModule,
+                NoopAnimationsModule,
+            ],
         });
         fixture = TestBed.createComponent(TrackElementComponent);
         component = fixture.componentInstance;
@@ -33,7 +39,6 @@ describe('TrackElementComponent', () => {
                 nb_fans: 1,
                 albumTOList: new Array<AlbumTO>(),
                 trackTOList: new Array<TrackTO>(),
-
             },
             album: {
                 id: 1,
@@ -42,8 +47,9 @@ describe('TrackElementComponent', () => {
                 cover_big: 'cover_big',
                 release_date: 'release_date',
                 trackTOList: new Array<TrackTO>(),
-                number_of_songs: 1
-        }};
+                number_of_songs: 1,
+            },
+        };
         fixture.detectChanges();
     });
 
@@ -56,20 +62,19 @@ describe('TrackElementComponent', () => {
         component.togglePlay();
         expect(component['musicPlayerService'].playTrack).toHaveBeenCalledWith(component.track, component.imageSrc);
     });
-    
+
     it('should navigate to artist profile', () => {
         jest.spyOn(component.router, 'navigateByUrl');
         const artistId = 123;
         component.goToArtistProfile(artistId);
         expect(component.router.navigateByUrl).toHaveBeenCalledWith(`/artist/${artistId}`);
     });
-    
+
     it('should suggest song', () => {
         jest.spyOn(component.suggestSongPartyRoom, 'emit');
         component.suggestSong();
         expect(component.suggestSongPartyRoom.emit).toHaveBeenCalled();
     });
-
 
     it('should close popup', () => {
         component.playlistPopup = true;
@@ -85,7 +90,7 @@ describe('TrackElementComponent', () => {
         expect(component.snackbarService.openSuccessSnackBar).toHaveBeenCalledWith(
             component.track.album.cover_small,
             component.track.title,
-            'added to queue'
+            'added to queue',
         );
     });
 });

@@ -29,7 +29,7 @@ export class CollectionComponent {
         private backendCommunicationService: BackendCommunicationService,
         private musicPlayerService: MusicPlayerService,
         private snackbarService: SnackbarService,
-            ) {
+    ) {
         this.type = this.route.snapshot.paramMap.get('collectionType')!;
         this.id = parseInt(this.route.snapshot.paramMap.get('id')!);
         if (this.type == 'album') {
@@ -133,11 +133,11 @@ export class CollectionComponent {
                       console.error('Error:', error);
                   },
               );
-              this.snackbarService.openSuccessSnackBar(
-                this.type == 'album' ? this.album!.cover_small : this.playlist!.picture_small,
-                this.type == 'album' ? this.album!.title : this.playlist!.title,
-                'removed from your liked ' + this.type + 's',
-            );
+        this.snackbarService.openSuccessSnackBar(
+            this.type == 'album' ? this.album!.cover_small : this.playlist!.picture_small,
+            this.type == 'album' ? this.album!.title : this.playlist!.title,
+            'removed from your liked ' + this.type + 's',
+        );
     }
 
     removeFromCustomPlaylist(trackId: number): void {

@@ -19,7 +19,10 @@ export class PlaylistPopupComponent {
     playlistName = '';
     @Input() isPartyRoomMenu?: boolean;
 
-    constructor(private backendCommunicationService: BackendCommunicationService, private snackbarService: SnackbarService) {
+    constructor(
+        private backendCommunicationService: BackendCommunicationService,
+        private snackbarService: SnackbarService,
+    ) {
         this.backendCommunicationService
             .getUserPersonalLibrary()
             .subscribe((data) => (this.personalLibrary = data.personalLibrary));
@@ -70,7 +73,11 @@ export class PlaylistPopupComponent {
                         }
                     }
                 });
-                this.snackbarService.openSuccessSnackBar(this.track.album.cover_small, this.track.title, `added to ${currentPlaylistName}`);
+                this.snackbarService.openSuccessSnackBar(
+                    this.track.album.cover_small,
+                    this.track.title,
+                    `added to ${currentPlaylistName}`,
+                );
                 this.closePopup.emit();
             },
             () => {

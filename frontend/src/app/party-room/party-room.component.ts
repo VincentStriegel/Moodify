@@ -78,14 +78,19 @@ export class PartyRoomComponent {
             this.partyRoomData = JSON.parse(event.data) as PartyRoomTO;
             this.prevPartyRoomTracks = this.partyRoomTracks;
             this.partyRoomTracks = this.partyRoomData.tracks;
-            if(this.prevPartyRoomTracks.length != this.partyRoomTracks.length && (!this.firstTime || this.isOwner)){
-                const newTracks = this.partyRoomTracks.filter(track => 
-                    !this.prevPartyRoomTracks.some(prevTrack => prevTrack.id === track.id) &&
-                    !this.playedTracksIds.includes(track.id)
+            if (this.prevPartyRoomTracks.length != this.partyRoomTracks.length && (!this.firstTime || this.isOwner)) {
+                const newTracks = this.partyRoomTracks.filter(
+                    (track) =>
+                        !this.prevPartyRoomTracks.some((prevTrack) => prevTrack.id === track.id) &&
+                        !this.playedTracksIds.includes(track.id),
                 );
-            
-                for(let track of newTracks) {
-                    this.snackbarService.openSuccessSnackBar(track.album.cover_small, track.title, "added to the queue");
+
+                for (const track of newTracks) {
+                    this.snackbarService.openSuccessSnackBar(
+                        track.album.cover_small,
+                        track.title,
+                        'added to the queue',
+                    );
                 }
             }
             this.setupAudioPlayer();
@@ -149,7 +154,7 @@ export class PartyRoomComponent {
     }
 
     ngOnInit(): void {
-       this.intervalId = setInterval(() => {
+        this.intervalId = setInterval(() => {
             if (this.isOwner) {
                 this.setCurrentPosition(this.audio.currentTime);
             }

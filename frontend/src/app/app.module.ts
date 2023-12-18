@@ -75,7 +75,7 @@ import { SnackbarComponent } from './snackbar/snackbar.component';
         MatProgressSpinnerModule,
         MatSelectModule,
         MatTooltipModule,
-        MatSnackBarModule
+        MatSnackBarModule,
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: UserInterceptor, multi: true },
