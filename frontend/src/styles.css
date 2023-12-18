@@ -55,3 +55,7 @@ mat-slider input {
 .mat-mdc-select-min-line, .mdc-list-item__primary-text, .mat-mdc-select-placeholder {
     color: white !important;
 }
+
+mat-snack-bar-container {
+    margin-top: 75px !important; 
+}

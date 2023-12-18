@@ -1,5 +1,5 @@
 <div *ngIf="track"
-    [ngClass]="{'w-40': squareLayout, 'w-full my-3 hover:opacity-90 hover:bg-zinc-700': !squareLayout}"
+    [ngClass]="{'w-40 mx-2': squareLayout, 'w-full my-3 hover:opacity-90 hover:bg-zinc-700': !squareLayout}"
     [class.max-w-64]="tinyLayout">
     <div class="flex justify-between text-white items-center w-[100%] flex-none">
         <div class="flex-initial flex items-center space-x-2 gap-3 flex-none">
@@ -46,22 +46,34 @@
             <p class="text-left truncate">{{track.title}}</p>
         </div>
 
-        <div *ngIf="playlistPopup">
-            <app-playlist-popup [track]="track" (closePopup)="closePopup()"
-                (close)="playlistPopup = false"></app-playlist-popup>
-        </div>
-
         <div *ngIf="!squareLayout" class="flex-end flex-none">
             <div class="flex flex-col items-center h-full">
-                <div class="flex flex-row">
+                <div *ngIf="!isPartyRoom" class="flex flex-row">
                     <button mat-icon-button matTooltip="{{ isFavorite ? 'Unlike Song' : 'Like Song' }}"
                         *ngIf="!isPartyRoom" (click)="likeSong()">
                         <span class="material-icons-outlined">{{ isFavorite ? 'favorite' : 'favorite_border' }}</span>
                     </button>
-                    <button mat-icon-button matTooltip="More" *ngIf="!isPartyRoom" [matMenuTriggerFor]="menu"
-                        aria-label="Icon-button with a menu">
-                        <span class="material-icons-outlined">more_horiz</span>
-                    </button>
+                    <div  class="hidden md:block">
+                        <button mat-icon-button matTooltip="Add To Playlist" (click)="playlistPopup = true">
+                            <span class="material-icons-outlined">playlist_add</span>
+                        </button>
+                        <button *ngIf="playlistId" mat-icon-button matTooltip="Remove From Playlist"
+                            (click)="removeFromPlaylist()">
+                            <span class="material-icons-outlined">playlist_remove</span>
+                        </button>
+                        <button class="hidden md:block" *ngIf="!tinyLayout" mat-icon-button matTooltip="Add To Queue"
+                            (click)="queueTrack()">
+                            <span class="material-icons-outlined">queue_music</span>
+                        </button>
+                    </div>
+                    <div class="md:hidden">
+
+                        <button mat-icon-button matTooltip="More" *ngIf="!isPartyRoom" [matMenuTriggerFor]="menu"
+                            aria-label="Icon-button with a menu">
+                            <span class="material-icons-outlined">more_horiz</span>
+                        </button>
+                    </div>
+
                 </div>
                 <p class="pr-1 text-right w-full text-s pr-3">
                     {{Math.floor(track.duration / 60) + ':' + (track.duration % 60).toString().padStart(2, '0')}}
@@ -89,4 +101,8 @@
             </div>
         </div>
     </div>
+</div>
+<div *ngIf="playlistPopup">
+    <app-playlist-popup [track]="track" (closePopup)="closePopup()"
+        (close)="playlistPopup = false"></app-playlist-popup>
 </div>
