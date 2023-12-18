@@ -1,18 +1,11 @@
 package com.moodify.backend.domain.services.database;
 
-import com.moodify.backend.api.transferobjects.AlbumTO;
-import com.moodify.backend.api.transferobjects.ArtistTO;
-import com.moodify.backend.api.transferobjects.TrackTO;
+import com.moodify.backend.api.transferobjects.*;
 import com.moodify.backend.domain.services.database.databaseobjects.*;
-import com.moodify.backend.domain.services.exceptions.login.UserCredentialsException;
-import com.moodify.backend.domain.services.exceptions.login.WrongPasswordException;
+import com.moodify.backend.domain.services.exceptions.login.*;
 import com.moodify.backend.domain.services.exceptions.profiles.*;
-import com.moodify.backend.domain.services.exceptions.registration.RegisteredEmailException;
-import com.moodify.backend.domain.services.exceptions.registration.RegisteredUsernameException;
-import com.moodify.backend.domain.services.security.EmailValidator;
-import com.moodify.backend.domain.services.security.PasswordEncoder;
-import com.moodify.backend.domain.services.security.PasswordValidator;
-import com.moodify.backend.domain.services.security.UsernameValidator;
+import com.moodify.backend.domain.services.exceptions.registration.*;
+import com.moodify.backend.domain.services.security.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
