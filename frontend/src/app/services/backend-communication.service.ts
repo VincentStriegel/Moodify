@@ -1,4 +1,4 @@
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, shareReplay, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -132,7 +132,7 @@ export class BackendCommunicationService {
      * @returns An Observable that will emit an HTTP response.
      */
     addToLikedTracks(trackTO: TrackTO): Observable<HttpResponse<any>> {
-        return this.http.post<any>(`${this.apiServerURL}/users/findUserById/${this.userId}/addToLikedTracks`, trackTO, {
+        return this.http.post<any>(`${this.apiServerURL}/users/addToLikedTracks?userId=${this.userId}`, trackTO, {
             observe: 'response',
         });
     }
@@ -144,7 +144,7 @@ export class BackendCommunicationService {
      */
     removeFromLikedTracks(trackId: number): Observable<HttpResponse<any>> {
         return this.http
-            .delete<any>(`${this.apiServerURL}/users/findUserById/${this.userId}/removeFromLikedTracks/${trackId}`)
+            .delete<any>(`${this.apiServerURL}/users/deleteFromLikedTracks?userId=${this.userId}&trackId=${trackId}`)
             .pipe(shareReplay(1));
     }
 
@@ -155,7 +155,7 @@ export class BackendCommunicationService {
      */
     addToLikedArtists(artistTO: ArtistTO): Observable<HttpResponse<any>> {
         return this.http.post<any>(
-            `${this.apiServerURL}/users/findUserById/${this.userId}/addToLikedArtists`,
+            `${this.apiServerURL}/users/addToLikedArtists?userId=${this.userId}`,
             artistTO,
             {
                 observe: 'response',
@@ -170,7 +170,7 @@ export class BackendCommunicationService {
      */
     removeLikedArtists(artistId: number): Observable<HttpResponse<any>> {
         return this.http
-            .delete<any>(`${this.apiServerURL}/users/findUserById/${this.userId}/removeFromLikedArtists/${artistId}`)
+            .delete<any>(`${this.apiServerURL}/users/deleteFromLikedArtists?userId=${this.userId}&artistId=${artistId}`)
             .pipe(shareReplay(1));
     }
 
@@ -180,7 +180,7 @@ export class BackendCommunicationService {
      * @returns An Observable that will emit an HTTP response.
      */
     addToLikedAlbums(albumTO: AlbumTO): Observable<HttpResponse<any>> {
-        return this.http.post<any>(`${this.apiServerURL}/users/findUserById/${this.userId}/addToLikedAlbums`, albumTO, {
+        return this.http.post<any>(`${this.apiServerURL}/users/addToLikedAlbums?userId=${this.userId}`, albumTO, {
             observe: 'response',
         });
     }
@@ -192,7 +192,7 @@ export class BackendCommunicationService {
      */
     removeLikedAlbums(albumId: number): Observable<HttpResponse<any>> {
         return this.http
-            .delete<any>(`${this.apiServerURL}/users/findUserById/${this.userId}/removeFromLikedAlbums/${albumId}`)
+            .delete<any>(`${this.apiServerURL}/users/removeFromLikedAlbums?userId=${this.userId}&albumId=${albumId}`)
             .pipe(shareReplay(1));
     }
 
@@ -230,8 +230,9 @@ export class BackendCommunicationService {
      */
     createPlaylist(title: string): Observable<HttpResponse<number>> {
         return this.http.post<any>(
-            `${this.apiServerURL}/users/findUserById/${this.userId}/addCustomPlaylist/${title}`,
-            {},
+            `${this.apiServerURL}/users/createCustomPlaylist?userId=${this.userId}&title=${title}`,
+            null,
+            { observe: 'response' }
         );
     }
 
@@ -242,8 +243,9 @@ export class BackendCommunicationService {
      * @returns An Observable that will emit an HTTP response.
      */
     addToCustomPlaylist(playlistId: number, trackTO: TrackTO): Observable<HttpResponse<any>> {
+        console.log(playlistId)
         return this.http.post<any>(
-            `${this.apiServerURL}/users/findUserById/${this.userId}/addToCustomPlaylist/${playlistId}`,
+            `${this.apiServerURL}/users/addToCustomPlaylist?userId=${this.userId}&playlistId=${playlistId}`,
             trackTO,
             { observe: 'response' },
         );
@@ -257,7 +259,7 @@ export class BackendCommunicationService {
      */
     removeFromCustomPlaylist(playlistId: number, trackId: number): Observable<HttpResponse<any>> {
         return this.http.delete<any>(
-            `${this.apiServerURL}/users/findUserById/${this.userId}/removeFromCustomPlaylist/${playlistId}/track/${trackId}`,
+            `${this.apiServerURL}/users/deleteFromCustomPlaylist?userId=${this.userId}&playlistId=${playlistId}&trackId=${trackId}`,
         );
     }
 
@@ -268,7 +270,7 @@ export class BackendCommunicationService {
      */
     deleteCustomPlaylist(playlistId: number): Observable<HttpResponse<any>> {
         return this.http.delete<any>(
-            `${this.apiServerURL}/users/findUserById/${this.userId}/removeCustomPlaylist/${playlistId}`,
+            `${this.apiServerURL}/users/removeCustomPlaylist?userId=${this.userId}&playlistId=${playlistId}`,
         );
     }
 
