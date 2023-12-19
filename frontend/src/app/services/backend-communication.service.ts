@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, shareReplay, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -154,13 +154,9 @@ export class BackendCommunicationService {
      * @returns An Observable that will emit an HTTP response.
      */
     addToLikedArtists(artistTO: ArtistTO): Observable<HttpResponse<any>> {
-        return this.http.post<any>(
-            `${this.apiServerURL}/users/addToLikedArtists?userId=${this.userId}`,
-            artistTO,
-            {
-                observe: 'response',
-            },
-        );
+        return this.http.post<any>(`${this.apiServerURL}/users/addToLikedArtists?userId=${this.userId}`, artistTO, {
+            observe: 'response',
+        });
     }
 
     /**
@@ -232,7 +228,7 @@ export class BackendCommunicationService {
         return this.http.post<any>(
             `${this.apiServerURL}/users/createCustomPlaylist?userId=${this.userId}&title=${title}`,
             null,
-            { observe: 'response' }
+            { observe: 'response' },
         );
     }
 
@@ -243,7 +239,7 @@ export class BackendCommunicationService {
      * @returns An Observable that will emit an HTTP response.
      */
     addToCustomPlaylist(playlistId: number, trackTO: TrackTO): Observable<HttpResponse<any>> {
-        console.log(playlistId)
+        console.log(playlistId);
         return this.http.post<any>(
             `${this.apiServerURL}/users/addToCustomPlaylist?userId=${this.userId}&playlistId=${playlistId}`,
             trackTO,
