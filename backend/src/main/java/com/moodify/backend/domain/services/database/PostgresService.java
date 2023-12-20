@@ -16,16 +16,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class PostgresService implements DatabaseService {
     private final PostgresRepository DATABASE_REPOSITORY;
     private final PasswordEncoder ENCODER;
-    private final ObjectTransformer OBJECT_TRANSFORMER;
+    private final DOAssembler DO_OBJECT_ASSEMBLER;
 
 
     @Autowired
     public PostgresService(PostgresRepository DATABASE_REPOSITORY,
                            PasswordEncoder ENCODER,
-                           ObjectTransformer OBJECT_TRANSFORMER) {
+                           DOAssembler DO_OBJECT_ASSEMBLER) {
         this.DATABASE_REPOSITORY = DATABASE_REPOSITORY;
         this.ENCODER = ENCODER;
-        this.OBJECT_TRANSFORMER = OBJECT_TRANSFORMER;
+        this.DO_OBJECT_ASSEMBLER = DO_OBJECT_ASSEMBLER;
     }
     @Override
     public UserDO createUser(UserDO user) throws Exception {
@@ -129,7 +129,7 @@ public class PostgresService implements DatabaseService {
     public void addToCustomPlaylist(TrackTO trackTO, long userId, long playlistId) throws Exception {
         UserDO user = this.findUserById(userId);
         PlaylistDO customPlaylist = this.findPlaylistById(playlistId, user);
-        TrackDO track = this.OBJECT_TRANSFORMER.generateTrackDOFrom(trackTO);
+        TrackDO track = this.DO_OBJECT_ASSEMBLER.generateTrackDOFrom(trackTO);
 
         this.addTrackTo(customPlaylist, track);
 
@@ -151,7 +151,7 @@ public class PostgresService implements DatabaseService {
     public void addToLikedTracks(TrackTO trackTO, long userId) throws Exception {
         UserDO user = this.findUserById(userId);
         PlaylistDO likedTracks = this.findLikedTracksOf(user);
-        TrackDO track = this.OBJECT_TRANSFORMER.generateTrackDOFrom(trackTO);
+        TrackDO track = this.DO_OBJECT_ASSEMBLER.generateTrackDOFrom(trackTO);
 
         this.addTrackTo(likedTracks, track);
 
@@ -171,7 +171,7 @@ public class PostgresService implements DatabaseService {
     public void addToLikedArtists(ArtistTO artistTO, long userId) throws Exception {
         UserDO user = this.findUserById(userId);
 
-        ArtistDO artist = this.OBJECT_TRANSFORMER.generateArtistDOFrom(artistTO);
+        ArtistDO artist = this.DO_OBJECT_ASSEMBLER.generateArtistDOFrom(artistTO);
         if (user.getPersonalLibrary().getLikedArtists().stream()
                 .anyMatch(ar -> ar.getArtist_id_deezer() == artist.getArtist_id_deezer())) {
             throw new DuplicateArtistsException();
@@ -195,7 +195,7 @@ public class PostgresService implements DatabaseService {
     @Override
     public void addToLikedAlbums(AlbumTO albumTO, long userId) throws Exception {
         UserDO user = this.findUserById(userId);
-        AlbumDO album = this.OBJECT_TRANSFORMER.generateAlbumDoFrom(albumTO);
+        AlbumDO album = this.DO_OBJECT_ASSEMBLER.generateAlbumDoFrom(albumTO);
 
         if (user
                 .getPersonalLibrary()
