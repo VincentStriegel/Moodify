@@ -3,6 +3,8 @@ package com.moodify.backend.domain.services.database;
 import com.moodify.backend.domain.services.database.databaseobjects.UserDO;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 public interface PostgresRepository extends JpaRepository<UserDO, Long> {
 
     Boolean existsUserByUsername(String username);
@@ -14,5 +16,7 @@ public interface PostgresRepository extends JpaRepository<UserDO, Long> {
     UserDO getUserByUsername(String username);
 
     UserDO findById(long id);
+
+    List<UserDO> findAllByUsernameLikeOrEmailLike(String username, String email);
 
 }

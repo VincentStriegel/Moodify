@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.List;
+
 @Component
 @Transactional
 public class PostgresService implements DatabaseService {
@@ -97,6 +99,12 @@ public class PostgresService implements DatabaseService {
             throw new UserNotFoundException();
         }
         return user;
+    }
+
+    @Override
+    public List<UserDO> searchUsers(String query) throws Exception {
+        String wildcard = "%" + query + "%";
+        return this.DATABASE_REPOSITORY.findAllByUsernameLikeOrEmailLike(wildcard, wildcard);
     }
 
     @Override

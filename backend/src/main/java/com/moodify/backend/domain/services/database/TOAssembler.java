@@ -9,10 +9,21 @@ import java.util.List;
 
 @Component
 public class TOAssembler {
+
+    public List<UserTO> generateUsersTOsFrom(List<UserDO> users) {
+        List<UserTO> userTOList = new ArrayList<UserTO>();
+       for (UserDO userDO : users) {
+           userTOList.add(generateUserTOFrom(userDO));
+       }
+
+       return userTOList;
+    }
+
     public UserTO generateUserTOFrom(UserDO user) {
         UserTO userTO = new UserTO();
         userTO.setId(user.getId());
         userTO.setUsername(user.getUsername());
+        userTO.setEmail(user.getEmail());
         userTO.setPersonalLibrary(generatePersonalLibraryTOFrom(user.getPersonalLibrary()));
 
         return userTO;

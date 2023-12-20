@@ -6,6 +6,8 @@ import com.moodify.backend.api.transferobjects.TrackTO;
 import com.moodify.backend.domain.services.database.databaseobjects.PlaylistDO;
 import com.moodify.backend.domain.services.database.databaseobjects.UserDO;
 
+import java.util.List;
+
 public interface DatabaseService {
 
     UserDO createUser(UserDO user) throws Exception;
@@ -15,6 +17,8 @@ public interface DatabaseService {
     long loginUser(LoginUser loginUser) throws Exception;
 
     UserDO findUserById(long userId) throws Exception;
+
+    List<UserDO> searchUsers(String query) throws Exception;
 
     Long createCustomPlaylist(long userId, String playlistTitle) throws Exception;
 
