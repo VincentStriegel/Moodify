@@ -1,7 +1,7 @@
 package com.moodify.backend.api.controllers;
 
 import com.moodify.backend.api.transferobjects.*;
-import com.moodify.backend.domain.services.api.DeezerApi;
+import com.moodify.backend.services.music.deezer.DeezerApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
