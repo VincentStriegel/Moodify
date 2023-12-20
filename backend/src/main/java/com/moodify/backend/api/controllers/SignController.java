@@ -1,7 +1,7 @@
 package com.moodify.backend.api.controllers;
 
-import com.moodify.backend.services.database.objects.UserDO;
 import com.moodify.backend.services.database.DatabaseService;
+import com.moodify.backend.services.database.objects.UserDO;
 import com.moodify.backend.services.database.postgres.PostgresService;
 import com.moodify.backend.services.database.util.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,7 @@
 package com.moodify.backend.services.database.postgres;
 
 import com.moodify.backend.api.transferobjects.*;
+import com.moodify.backend.services.database.DatabaseService;
 import com.moodify.backend.services.database.exceptions.login.UserCredentialsException;
 import com.moodify.backend.services.database.exceptions.login.WrongPasswordException;
 import com.moodify.backend.services.database.exceptions.profiles.*;
@@ -10,7 +11,6 @@ import com.moodify.backend.services.database.security.EmailValidator;
 import com.moodify.backend.services.database.security.PasswordEncoder;
 import com.moodify.backend.services.database.security.PasswordValidator;
 import com.moodify.backend.services.database.security.UsernameValidator;
-import com.moodify.backend.services.database.DatabaseService;
 import com.moodify.backend.services.database.util.DOAssembler;
 import com.moodify.backend.services.database.util.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
