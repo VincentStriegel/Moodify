@@ -3,39 +3,38 @@ package com.moodify.backend.domain.services.database;
 import com.moodify.backend.api.transferobjects.AlbumTO;
 import com.moodify.backend.api.transferobjects.ArtistTO;
 import com.moodify.backend.api.transferobjects.TrackTO;
-import com.moodify.backend.domain.services.database.databaseobjects.PersonalLibraryDO;
 import com.moodify.backend.domain.services.database.databaseobjects.PlaylistDO;
 import com.moodify.backend.domain.services.database.databaseobjects.UserDO;
 
 public interface DatabaseService {
 
-    UserDO createUser(UserDO userDO) throws Exception;
+    UserDO createUser(UserDO user) throws Exception;
 
-    void saveUser(UserDO userDO);
+    void saveUser(UserDO user);
 
     long loginUser(LoginUser loginUser) throws Exception;
 
-    UserDO getUserById(long userId) throws Exception;
+    UserDO findUserById(long userId) throws Exception;
 
-    Long addCustomPlaylist(long userId, String playlistTitle) throws Exception;
+    Long createCustomPlaylist(long userId, String playlistTitle) throws Exception;
 
-    PersonalLibraryDO removeCustomPlaylist(long userId, long playlistId) throws Exception;
+    void deleteCustomPlaylist(long userId, long playlistId) throws Exception;
 
-    PersonalLibraryDO addToCustomPlaylist(TrackTO trackTO, long userId, long playlistId) throws Exception;
+    void addToCustomPlaylist(TrackTO trackTO, long userId, long playlistId) throws Exception;
 
-    PersonalLibraryDO removeFromCustomPlaylist(long userId, long playlistId, long trackId) throws Exception;
+    void deleteFromCustomPlaylist(long userId, long playlistId, long trackId) throws Exception;
 
-    PersonalLibraryDO addToLikedTracks(TrackTO trackTO, long userId) throws Exception;
+    void addToLikedTracks(TrackTO trackTO, long userId) throws Exception;
 
-    PersonalLibraryDO removeFromLikedTracks(long userId, long trackId) throws Exception;
+    void deleteFromLikedTracks(long userId, long trackId) throws Exception;
 
-    PersonalLibraryDO addToLikedArtists(ArtistTO artistTO, long userId) throws Exception;
+    void addToLikedArtists(ArtistTO artistTO, long userId) throws Exception;
 
-    PersonalLibraryDO removeFromLikedArtists(long artistId, long userId) throws Exception;
+    void deleteFromLikedArtists(long artistId, long userId) throws Exception;
 
-    PersonalLibraryDO addToLikedAlbums(AlbumTO albumTO, long userId) throws Exception;
+    void addToLikedAlbums(AlbumTO albumTO, long userId) throws Exception;
 
-    PersonalLibraryDO removeFromLikedAlbums(long albumId, long userId) throws Exception;
+    void deleteFromLikedAlbums(long albumId, long userId) throws Exception;
 
-    PlaylistDO getPlaylistById(long playlistId, long userId) throws Exception;
+    PlaylistDO findPlaylistById(long playlistId, long userId) throws Exception;
 }

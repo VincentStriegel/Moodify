@@ -8,7 +8,7 @@ import com.moodify.backend.api.transferobjects.PartyRoomTO;
 import com.moodify.backend.api.transferobjects.PlaylistTO;
 import com.moodify.backend.api.transferobjects.TrackTO;
 import com.moodify.backend.domain.services.database.DatabaseService;
-import com.moodify.backend.domain.services.database.ObjectTransformer;
+import com.moodify.backend.domain.services.database.TOAssembler;
 import org.springframework.web.socket.*;
 
 import java.io.IOException;
@@ -77,9 +77,9 @@ public class PartyRoomWebSocketHandler implements WebSocketHandler {
                         long playlistID = rootNode.get("playlistId").asLong();
                         long userID = rootNode.get("userId").asLong();
 
-                        ObjectTransformer objectTransformer = ObjectTransformer.class.newInstance();
+                        TOAssembler toAssembler = new TOAssembler();
 
-                        PlaylistTO playlist = objectTransformer.generatePlaylistTOFrom(POSTGRES_SERVICE.getPlaylistById(playlistID, userID));
+                        PlaylistTO playlist = toAssembler.generatePlaylistTOFrom(POSTGRES_SERVICE.findPlaylistById(playlistID, userID));
 
                         JavaType listType = mapper.getTypeFactory().constructCollectionType(List.class, TrackTO.class);
                         // Deserialize the JsonNode into a List<TrackTO>

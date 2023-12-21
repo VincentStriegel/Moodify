@@ -22,11 +22,11 @@ public class SignController {
 
     @PostMapping({"/up"})
     @ResponseStatus(HttpStatus.CREATED)
-    public void registerUser(@RequestBody UserDO userDO) {
+    public void registerUser(@RequestBody UserDO user) {
 
         try {
-            UserDO user = this.POSTGRES_SERVICE.createUser(userDO);
-            this.POSTGRES_SERVICE.saveUser(user);
+            UserDO newUser = this.POSTGRES_SERVICE.createUser(user);
+            this.POSTGRES_SERVICE.saveUser(newUser);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
