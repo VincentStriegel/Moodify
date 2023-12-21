@@ -30,6 +30,8 @@ public interface DatabaseService {
 
     List<UserDO> searchUsers(String query);
 
+    List<PlaylistDO> searchPlaylists(String query);
+
     Long createCustomPlaylist(long userId, String playlistTitle) throws UserNotFoundException;
 
     void deleteCustomPlaylist(long userId, long playlistId) throws

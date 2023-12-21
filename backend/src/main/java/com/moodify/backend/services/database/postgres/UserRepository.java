@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface PostgresRepository extends JpaRepository<UserDO, Long> {
+public interface UserRepository extends JpaRepository<UserDO, Long> {
 
     Boolean existsUserByUsername(String username);
 

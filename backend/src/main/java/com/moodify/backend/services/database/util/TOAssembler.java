@@ -66,7 +66,7 @@ public class TOAssembler {
         return trackTOList;
     }
 
-    private  List<PlaylistTO> generatePlaylistTOListFrom(List<PlaylistDO> playlistDOList) {
+    public   List<PlaylistTO> generatePlaylistTOListFrom(List<PlaylistDO> playlistDOList) {
         List<PlaylistTO> playlistTOList = new ArrayList<>();
         for (PlaylistDO playlistDO : playlistDOList) {
             playlistTOList.add(generatePlaylistTOFrom(playlistDO));
