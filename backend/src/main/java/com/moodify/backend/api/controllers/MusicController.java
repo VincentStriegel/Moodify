@@ -53,7 +53,7 @@ public class MusicController {
     @ResponseStatus(HttpStatus.OK)
     public PlaylistTO getPlaylist(@PathVariable("playlistId") long playlistId) {
         try {
-            //TODO differentiate between deezer playlists and user playlist
+            //TODO differentiate between deezer playlists and user playlists
             return API_SERVICE.getPlaylist(playlistId);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
@@ -109,9 +109,8 @@ public class MusicController {
 
             List<PlaylistTO> usersPlaylistsTOs = this.TO_OBJECT_ASSEMBLER.generatePlaylistTOListFrom(usersPlaylistsDOs);
             List<PlaylistTO> deezerPlaylistsTOs = this.API_SERVICE.getPlaylists(query);
-            List<PlaylistTO> combined = Stream.concat(usersPlaylistsTOs.stream(), deezerPlaylistsTOs.stream()).toList();
 
-            return  combined;
+            return Stream.concat(usersPlaylistsTOs.stream(), deezerPlaylistsTOs.stream()).toList();
 
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
