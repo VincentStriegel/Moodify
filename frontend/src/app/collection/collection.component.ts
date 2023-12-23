@@ -145,6 +145,11 @@ export class CollectionComponent {
             this.playlist!.trackTOList.findIndex((track) => track.id === trackId),
             1,
         );
+        this.playlist!.number_of_songs = this.playlist!.trackTOList.length;
+        if (this.playlist!.trackTOList.length === 0) {
+            this.playlist!.picture_small = '';
+            this.playlist!.picture_big = '';
+        }
     }
 
     deleteCustomPlaylist(): void {

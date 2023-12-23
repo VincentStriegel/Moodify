@@ -13,4 +13,10 @@ describe('DataService', () => {
     it('should be created', () => {
         expect(service).toBeTruthy();
     });
+
+    it('should set the playlist ID', () => {
+        const playlistID = 1;
+        service.setPlaylistID(playlistID);
+        expect(service.getPlaylistID()).toEqual(playlistID);
+    });
 });

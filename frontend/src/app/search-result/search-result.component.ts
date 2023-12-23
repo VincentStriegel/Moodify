@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TrackTO } from '../types/trackTO';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { BackendCommunicationService } from '../services/backend-communication.service';
 import { ArtistTO } from '../types/artistTO';
 import { AlbumTO } from '../types/albumTO';
@@ -25,7 +25,6 @@ export class SearchResultComponent {
     constructor(
         private route: ActivatedRoute,
         private backendCommunicationService: BackendCommunicationService,
-        private router: Router,
     ) {
         this.query = this.route.snapshot.paramMap.get('query') || '';
     }

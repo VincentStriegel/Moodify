@@ -1,6 +1,5 @@
 import { Component, ElementRef } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { TrackTO } from '../types/trackTO';
 import { BackendCommunicationService } from '../services/backend-communication.service';
 import { filter } from 'rxjs';
 
@@ -10,15 +9,15 @@ import { filter } from 'rxjs';
     styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent {
-    songList!: TrackTO[];
     query!: string;
     isOpen = false;
     windowWidth: number;
     isLoggedIn = false;
     isPartyRoom = false;
+
     constructor(
-        private router: Router,
-        private elementRef: ElementRef,
+        public router: Router,
+        public elementRef: ElementRef,
         private backendCommunicationService: BackendCommunicationService,
     ) {
         this.windowWidth = window.innerWidth;
@@ -39,16 +38,28 @@ export class HeaderComponent {
                 }
             });
     }
+
+    /**
+     * Performs a search.
+     */
     search() {
         this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
             this.router.navigate(['/search', this.query]);
         });
     }
 
+    /**
+     * Handles the window resize event.
+     * @param event - The resize event.
+     */
     onResize(event: Event): void {
         this.windowWidth = (event.target as Window).innerWidth;
     }
 
+    /**
+     * Handles the click outside event.
+     * @param event - The click event.
+     */
     onClickOutside(event: Event): void {
         if (!this.elementRef.nativeElement.contains(event.target)) {
             this.isOpen = false;
