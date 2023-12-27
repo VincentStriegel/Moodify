@@ -47,7 +47,7 @@
         </div>
 
         <div *ngIf="playlistPopup">
-            <app-playlist-popup (closePopup)="playlistPopup = false"
+            <app-playlist-popup [creationOnly]="true" (closePopup)="playlistPopup = false"
                 (close)="playlistPopup = false"></app-playlist-popup>
         </div>
 

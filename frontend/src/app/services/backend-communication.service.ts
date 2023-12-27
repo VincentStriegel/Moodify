@@ -239,7 +239,6 @@ export class BackendCommunicationService {
      * @returns An Observable that will emit an HTTP response.
      */
     addToCustomPlaylist(playlistId: number, trackTO: TrackTO): Observable<HttpResponse<any>> {
-        console.log(playlistId);
         return this.http.post<any>(
             `${this.apiServerURL}/users/addToCustomPlaylist?userId=${this.userId}&playlistId=${playlistId}`,
             trackTO,
@@ -266,7 +265,7 @@ export class BackendCommunicationService {
      */
     deleteCustomPlaylist(playlistId: number): Observable<HttpResponse<any>> {
         return this.http.delete<any>(
-            `${this.apiServerURL}/users/removeCustomPlaylist?userId=${this.userId}&playlistId=${playlistId}`,
+            `${this.apiServerURL}/users/deleteCustomPlaylist?userId=${this.userId}&playlistId=${playlistId}`,
         );
     }
 
