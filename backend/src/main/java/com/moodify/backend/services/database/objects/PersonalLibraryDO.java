@@ -40,11 +40,11 @@ public class PersonalLibraryDO {
         this.playlists.add(new PlaylistDO("LikedTracks", true));
     }
 
-    public List<PlaylistDO> getCustomPlaylists(){
+    public List<PlaylistDO> getCustomPlaylists() {
         return this.playlists.stream().skip(1).toList();
     }
 
-    public PlaylistDO getLikedTracksPlaylist(){
+    public PlaylistDO getLikedTracksPlaylist() {
         return this.playlists.get(0);
     }
 
