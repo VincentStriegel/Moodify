@@ -67,5 +67,7 @@ public interface DatabaseService {
 
     void deleteFromLikedAlbums(long albumId, long userId) throws UserNotFoundException, AlbumNotFoundException;
 
-    PlaylistDO findPlaylistById(long playlistId, long userId) throws UserNotFoundException, PlaylistNotFoundException;
+    PlaylistDO findPlaylistByIdFromUser(long playlistId, long userId) throws UserNotFoundException, PlaylistNotFoundException;
+
+    PlaylistDO findPlaylistById(long playlistId) throws PlaylistNotFoundException;
 }

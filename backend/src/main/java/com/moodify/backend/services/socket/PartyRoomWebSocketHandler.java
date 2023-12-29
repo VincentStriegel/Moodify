@@ -79,7 +79,7 @@ public class PartyRoomWebSocketHandler implements WebSocketHandler {
 
                         TOAssembler toAssembler = new TOAssembler();
 
-                        PlaylistTO playlist = toAssembler.generatePlaylistTOFrom(POSTGRES_SERVICE.findPlaylistById(playlistID, userID));
+                        PlaylistTO playlist = toAssembler.generatePlaylistTOFrom(POSTGRES_SERVICE.findPlaylistByIdFromUser(playlistID, userID));
 
                         JavaType listType = mapper.getTypeFactory().constructCollectionType(List.class, TrackTO.class);
                         // Deserialize the JsonNode into a List<TrackTO>

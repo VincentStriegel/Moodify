@@ -1,6 +1,8 @@
 package com.moodify.backend.api.controllers;
 
 import com.moodify.backend.api.transferobjects.*;
+import com.moodify.backend.api.util.Source;
+import com.moodify.backend.services.database.exceptions.other.SourceNotFoundException;
 import com.moodify.backend.services.database.objects.PlaylistDO;
 import com.moodify.backend.services.database.postgres.PostgresService;
 import com.moodify.backend.services.database.util.TOAssembler;
@@ -51,10 +53,15 @@ public class MusicController {
 
     @GetMapping({"playlist/{playlistId}"})
     @ResponseStatus(HttpStatus.OK)
-    public PlaylistTO getPlaylist(@PathVariable("playlistId") long playlistId) {
+    public PlaylistTO getPlaylist(@PathVariable("playlistId") long playlistId, @RequestParam("source")  Source source) {
         try {
-            //TODO differentiate between deezer playlists and user playlists
-            return API_SERVICE.getPlaylist(playlistId);
+            if (source == Source.DEEZER) {
+                return API_SERVICE.getPlaylist(playlistId);
+            } else if (source == Source.MOODIFY) {
+                return TO_OBJECT_ASSEMBLER.generatePlaylistTOFrom(DATABASE_SERVICE.findPlaylistById(playlistId));
+            } else {
+                throw new SourceNotFoundException();
+            }
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
@@ -106,9 +113,12 @@ public class MusicController {
     public List<PlaylistTO> searchPlaylist(@PathVariable ("searchQuery") String query) {
         try {
             List<PlaylistDO>  usersPlaylistsDOs = this.DATABASE_SERVICE.searchPlaylists(query);
-
             List<PlaylistTO> usersPlaylistsTOs = this.TO_OBJECT_ASSEMBLER.generatePlaylistTOListFrom(usersPlaylistsDOs);
+            usersPlaylistsTOs.forEach(pl -> pl.setSource(Source.MOODIFY));
+
+
             List<PlaylistTO> deezerPlaylistsTOs = this.API_SERVICE.getPlaylists(query);
+            deezerPlaylistsTOs.forEach(pl -> pl.setSource(Source.DEEZER));
 
             return Stream.concat(usersPlaylistsTOs.stream(), deezerPlaylistsTOs.stream()).toList();
 

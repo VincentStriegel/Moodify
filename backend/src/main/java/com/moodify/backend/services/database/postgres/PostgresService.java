@@ -268,10 +268,19 @@ public class PostgresService implements DatabaseService {
 
     @Override
     @Transactional
-    public PlaylistDO findPlaylistById(long playlistId, long userId) throws UserNotFoundException, PlaylistNotFoundException {
+    public PlaylistDO findPlaylistByIdFromUser(long playlistId, long userId) throws UserNotFoundException, PlaylistNotFoundException {
         UserDO user = this.findUserById(userId);
 
         return this.findPlaylistById(playlistId, user);
+    }
+
+    @Override
+    public PlaylistDO findPlaylistById(long playlistId) throws PlaylistNotFoundException {
+        PlaylistDO playlist = this.PLAYLIST_REPOSITORY.findPlaylistDOById(playlistId);
+        if (playlist == null) {
+            throw new PlaylistNotFoundException();
+        }
+        return playlist;
     }
 
     private boolean exists(UserDO user) {
