@@ -15,7 +15,7 @@ const routes: Routes = [
     { path: 'artist/:artistId', pathMatch: 'full', component: ArtistProfileComponent },
     { path: 'party-room-menu', pathMatch: 'full', component: PartyRoomMenuComponent },
     { path: 'party-room/:roomId', pathMatch: 'full', component: PartyRoomComponent },
-    { path: 'collection/:collectionType/:id', pathMatch: 'full', component: CollectionComponent },
+    { path: 'collection/:collectionType/:id/:source', pathMatch: 'full', component: CollectionComponent },
     { path: 'login', pathMatch: 'full', component: LoginRegisterComponent },
     { path: 'library', pathMatch: 'full', component: UserLibraryComponent },
 ];

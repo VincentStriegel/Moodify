@@ -1,5 +1,6 @@
 package com.moodify.backend.api.transferobjects;
 
+import com.moodify.backend.api.util.Source;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,8 +24,11 @@ public class PlaylistTO {
 
     private List<TrackTO> trackTOList;
 
+    private Source source;
+
     public PlaylistTO() {
         this.trackTOList = new ArrayList<TrackTO>();
     }
+
 
 }

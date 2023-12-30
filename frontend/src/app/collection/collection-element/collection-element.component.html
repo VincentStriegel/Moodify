@@ -3,7 +3,7 @@
     <div class="w-30 text-white font-bold self-center overflow-hidden h-[25%]">{{artist.name}}</div>
     <div class="w-30 text-xs text-white self-end pt-1">{{formatFansCount(artist.nb_fans)}} fans</div>
 </button>
-<button *ngIf="album || playlist" class="w-40 h-[250px] p-4 m-4 bg-zinc-900 flex flex-col justify-between flex-shrink-0 hover:scale-110" (click)="album ? navigateTo('album', album.id) : navigateTo('playlist', playlist!.id)">
+<button *ngIf="album || playlist" class="w-40 h-[250px] p-4 m-4 bg-zinc-900 flex flex-col justify-between flex-shrink-0 hover:scale-110" (click)="album ? navigateTo('album', album.id, 'MOODIFY') : navigateTo('playlist', playlist!.id, playlist!.source)">
     <div class="w-30 h-30 mb-2 relative">
         <img [src]="album ? album.cover_big : playlist?.picture_big || 'assets/music-placeholder.png'" 
              [alt]="album ? 'Album' : 'Playlist'">

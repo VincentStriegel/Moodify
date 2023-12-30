@@ -23,18 +23,22 @@ import java.util.List;
 @Component
 @Transactional
 public class PostgresService implements DatabaseService {
-    private final PostgresRepository DATABASE_REPOSITORY;
+    private final UserRepository USER_REPOSITORY;
+
+    private final PlaylistRepository PLAYLIST_REPOSITORY;
     private final PasswordEncoder ENCODER;
     private final DOAssembler DO_OBJECT_ASSEMBLER;
 
 
     @Autowired
-    public PostgresService(PostgresRepository DATABASE_REPOSITORY,
+    public PostgresService(UserRepository USER_REPOSITORY,
                            PasswordEncoder ENCODER,
-                           DOAssembler DO_OBJECT_ASSEMBLER) {
-        this.DATABASE_REPOSITORY = DATABASE_REPOSITORY;
+                           DOAssembler DO_OBJECT_ASSEMBLER,
+                           PlaylistRepository PLAYLIST_REPOSITORY) {
+        this.USER_REPOSITORY = USER_REPOSITORY;
         this.ENCODER = ENCODER;
         this.DO_OBJECT_ASSEMBLER = DO_OBJECT_ASSEMBLER;
+        this.PLAYLIST_REPOSITORY = PLAYLIST_REPOSITORY;
     }
     @Override
     public UserDO createUser(UserDO user) throws
@@ -49,11 +53,11 @@ public class PostgresService implements DatabaseService {
         PasswordValidator.validatePassword(user.getPassword());
 
 
-        if (this.DATABASE_REPOSITORY.existsUserByEmail(user.getEmail())) {
+        if (this.USER_REPOSITORY.existsUserByEmail(user.getEmail())) {
             throw new RegisteredEmailException();
         }
 
-        if (this.DATABASE_REPOSITORY.existsUserByUsername(user.getUsername())) {
+        if (this.USER_REPOSITORY.existsUserByUsername(user.getUsername())) {
             throw new RegisteredUsernameException();
         }
 
@@ -66,7 +70,7 @@ public class PostgresService implements DatabaseService {
 
     @Override
     public void saveUser(UserDO user) {
-        this.DATABASE_REPOSITORY.save(user);
+        this.USER_REPOSITORY.save(user);
     }
 
     @Override
@@ -76,7 +80,7 @@ public class PostgresService implements DatabaseService {
         String loginUsername = loginUser.getCredential();
         String loginPassword = loginUser.getPassword();
 
-        UserDO userByEmail = this.DATABASE_REPOSITORY.getUserByEmail(loginEmail);
+        UserDO userByEmail = this.USER_REPOSITORY.getUserByEmail(loginEmail);
         if (exists(userByEmail)) {
 
             String hashedPassword = userByEmail.getPassword();
@@ -88,7 +92,7 @@ public class PostgresService implements DatabaseService {
             return userByEmail.getId();
         }
 
-        UserDO userByUsername = this.DATABASE_REPOSITORY.getUserByUsername(loginUsername);
+        UserDO userByUsername = this.USER_REPOSITORY.getUserByUsername(loginUsername);
         if (exists(userByUsername)) {
 
             String hashedPassword = userByUsername.getPassword();
@@ -107,7 +111,7 @@ public class PostgresService implements DatabaseService {
 
     @Override
     public UserDO findUserById(long userId) throws UserNotFoundException {
-        UserDO user = this.DATABASE_REPOSITORY.findById(userId);
+        UserDO user = this.USER_REPOSITORY.findById(userId);
         if (user == null) {
             throw new UserNotFoundException();
         }
@@ -117,16 +121,25 @@ public class PostgresService implements DatabaseService {
     @Override
     public List<UserDO> searchUsers(String query) {
         String wildcard = "%" + query + "%";
-        return this.DATABASE_REPOSITORY.findAllByUsernameLikeOrEmailLike(wildcard, wildcard);
+        return this.USER_REPOSITORY.findAllByUsernameLikeOrEmailLike(wildcard, wildcard);
     }
 
     @Override
-    public Long createCustomPlaylist(long userId, String playlistTitle) throws UserNotFoundException {
-        UserDO user = this.findUserById(userId);
-        PlaylistDO customPlaylist = new PlaylistDO(playlistTitle);
+    public List<PlaylistDO> searchPlaylists(String query) {
+        String wildcard = "%" + query + "%";
+        return this.PLAYLIST_REPOSITORY.findAllByTitleLike(wildcard);
+    }
 
+    @Override
+    public Long createCustomPlaylist(long userId, String playlistTitle) throws UserNotFoundException, DuplicatePlaylistsException {
+        UserDO user = this.findUserById(userId);
+        if (user.getPersonalLibrary().getCustomPlaylists().stream().anyMatch(pl -> pl.getTitle().equals(playlistTitle))) {
+            throw new DuplicatePlaylistsException();
+        }
+
+        PlaylistDO customPlaylist = new PlaylistDO(playlistTitle);
         user.getPersonalLibrary().getPlaylists().add(customPlaylist);
-        this.DATABASE_REPOSITORY.save(user);
+        this.USER_REPOSITORY.save(user);
 
         int lastIndex = user.getPersonalLibrary().getPlaylists().size() - 1;
         return user.getPersonalLibrary().getPlaylists().get(lastIndex).getId();
@@ -146,7 +159,7 @@ public class PostgresService implements DatabaseService {
 
         user.getPersonalLibrary().getPlaylists().remove(customPlaylist);
 
-        this.DATABASE_REPOSITORY.save(user);
+        this.USER_REPOSITORY.save(user);
     }
 
     @Override
@@ -160,7 +173,7 @@ public class PostgresService implements DatabaseService {
 
         this.addTrackTo(customPlaylist, track);
 
-        this.DATABASE_REPOSITORY.save(user);
+        this.USER_REPOSITORY.save(user);
     }
 
     @Override
@@ -174,7 +187,7 @@ public class PostgresService implements DatabaseService {
 
         this.deleteTrackFrom(customPlaylist, track);
 
-        this.DATABASE_REPOSITORY.save(user);
+        this.USER_REPOSITORY.save(user);
     }
 
     @Override
@@ -188,7 +201,7 @@ public class PostgresService implements DatabaseService {
 
         this.addTrackTo(likedTracks, track);
 
-        this.DATABASE_REPOSITORY.save(user);
+        this.USER_REPOSITORY.save(user);
     }
 
     @Override
@@ -215,7 +228,7 @@ public class PostgresService implements DatabaseService {
 
         user.getPersonalLibrary().getLikedArtists().add(artist);
 
-        this.DATABASE_REPOSITORY.save(user);
+        this.USER_REPOSITORY.save(user);
     }
 
     @Override
@@ -225,7 +238,7 @@ public class PostgresService implements DatabaseService {
 
         user.getPersonalLibrary().getLikedArtists().remove(artist);
 
-        this.DATABASE_REPOSITORY.save(user);
+        this.USER_REPOSITORY.save(user);
     }
 
     @Override
@@ -243,7 +256,7 @@ public class PostgresService implements DatabaseService {
 
         user.getPersonalLibrary().getLikedAlbums().add(album);
 
-        this.DATABASE_REPOSITORY.save(user);
+        this.USER_REPOSITORY.save(user);
     }
 
     @Override
@@ -253,15 +266,24 @@ public class PostgresService implements DatabaseService {
 
         user.getPersonalLibrary().getLikedAlbums().remove(album);
 
-        this.DATABASE_REPOSITORY.save(user);
+        this.USER_REPOSITORY.save(user);
     }
 
     @Override
     @Transactional
-    public PlaylistDO findPlaylistById(long playlistId, long userId) throws UserNotFoundException, PlaylistNotFoundException {
+    public PlaylistDO findPlaylistByIdFromUser(long playlistId, long userId) throws UserNotFoundException, PlaylistNotFoundException {
         UserDO user = this.findUserById(userId);
 
         return this.findPlaylistById(playlistId, user);
+    }
+
+    @Override
+    public PlaylistDO findPlaylistById(long playlistId) throws PlaylistNotFoundException {
+        PlaylistDO playlist = this.PLAYLIST_REPOSITORY.findPlaylistDOById(playlistId);
+        if (playlist == null) {
+            throw new PlaylistNotFoundException();
+        }
+        return playlist;
     }
 
     private boolean exists(UserDO user) {

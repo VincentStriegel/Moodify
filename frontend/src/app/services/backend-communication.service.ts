@@ -1,4 +1,4 @@
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, shareReplay, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -64,14 +64,19 @@ export class BackendCommunicationService {
     }
 
     /**
-     * Fetches a playlist by its ID.
-     * @param playlistId The ID of the playlist to fetch.
-     * @returns An Observable that will emit the fetched playlist.
+     * Retrieves a playlist from the backend server by ID.
+     * @param playlistId - The ID of the playlist to retrieve.
+     * @param source - The source of the playlist.
+     * @returns An Observable that emits the retrieved PlaylistTO object.
      */
-    getPlaylist(playlistId: number): Observable<PlaylistTO> {
-        return this.http.get<PlaylistTO>(`${this.apiServerURL}/music/playlist/${playlistId}`).pipe(shareReplay(1));
+    getPlaylist(playlistId: number, source: string): Observable<PlaylistTO> {
+        const options = {
+            params: new HttpParams().set('source', source),
+        };
+        return this.http
+            .get<PlaylistTO>(`${this.apiServerURL}/music/playlist/${playlistId}`, options)
+            .pipe(shareReplay(1));
     }
-
     /**
      * Fetches search results for tracks based on a query.
      * @param searchQuery The search query for tracks.

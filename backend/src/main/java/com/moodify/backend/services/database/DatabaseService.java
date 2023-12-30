@@ -30,7 +30,9 @@ public interface DatabaseService {
 
     List<UserDO> searchUsers(String query);
 
-    Long createCustomPlaylist(long userId, String playlistTitle) throws UserNotFoundException;
+    List<PlaylistDO> searchPlaylists(String query);
+
+    Long createCustomPlaylist(long userId, String playlistTitle) throws UserNotFoundException, DuplicatePlaylistsException;
 
     void deleteCustomPlaylist(long userId, long playlistId) throws
             UserNotFoundException,
@@ -65,5 +67,7 @@ public interface DatabaseService {
 
     void deleteFromLikedAlbums(long albumId, long userId) throws UserNotFoundException, AlbumNotFoundException;
 
-    PlaylistDO findPlaylistById(long playlistId, long userId) throws UserNotFoundException, PlaylistNotFoundException;
+    PlaylistDO findPlaylistByIdFromUser(long playlistId, long userId) throws UserNotFoundException, PlaylistNotFoundException;
+
+    PlaylistDO findPlaylistById(long playlistId) throws PlaylistNotFoundException;
 }

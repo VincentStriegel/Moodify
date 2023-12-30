@@ -27,14 +27,15 @@ export class CollectionElementComponent {
         this.router.navigateByUrl(`/artist/${artistId}`);
     }
 
-    navigateTo(type: string, id: number) {
+    navigateTo(type: string, id: number, source: string) {
         this.isCustomPlaylist
-            ? this.router.navigateByUrl(`/collection/custom-playlist/${id}`)
-            : this.router.navigateByUrl(`/collection/${type}/${id}`);
+            ? this.router.navigateByUrl(`/collection/custom-playlist/${id}/MOODIFY`)
+            : this.router.navigateByUrl(`/collection/${type}/${id}/${source}`);
     }
 
     onPlay() {
         const id = this.album?.id || this.playlist?.id || 0;
+        const source = this.playlist?.source || '';
 
         if (this.album) {
             this.backendCommunicationService
@@ -44,7 +45,7 @@ export class CollectionElementComponent {
             this.musicPlayerService.playTracks(this.playlist!.trackTOList);
         } else {
             this.backendCommunicationService
-                .getPlaylist(id)
+                .getPlaylist(id, source)
                 .subscribe((data) => this.musicPlayerService.playTracks(data.trackTOList));
         }
     }
