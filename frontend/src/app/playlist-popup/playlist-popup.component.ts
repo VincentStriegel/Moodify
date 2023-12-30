@@ -55,6 +55,7 @@ export class PlaylistPopupComponent {
                     picture_big: '',
                     number_of_songs: 0,
                     trackTOList: [],
+                    source: '',
                 });
                 if (this.creationOnly) {
                     this.closePopup.emit();

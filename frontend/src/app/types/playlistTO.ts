@@ -8,4 +8,5 @@ export type PlaylistTO = {
     picture_big: string;
     number_of_songs: number;
     trackTOList: TrackTO[];
+    source: string;
 };

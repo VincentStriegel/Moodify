@@ -20,6 +20,7 @@ export class CollectionComponent {
     playlist?: PlaylistTO;
     isLiked = false;
     customPlaylistId?: number;
+    source!: string;
     @Input() isCustomPlaylist = false;
 
     tracks?: TrackTO[];
@@ -32,6 +33,7 @@ export class CollectionComponent {
     ) {
         this.type = this.route.snapshot.paramMap.get('collectionType')!;
         this.id = parseInt(this.route.snapshot.paramMap.get('id')!);
+        this.source = this.route.snapshot.paramMap.get('source')!;
         if (this.type == 'album') {
             this.backendCommunicationService
                 .getAlbum(this.id)
@@ -44,7 +46,9 @@ export class CollectionComponent {
                 }
             });
         } else {
-            this.backendCommunicationService.getPlaylist(this.id).subscribe((data) => (this.playlist = data));
+            this.backendCommunicationService
+                .getPlaylist(this.id, this.source)
+                .subscribe((data) => (this.playlist = data));
         }
 
         if (backendCommunicationService.userProfile) {
