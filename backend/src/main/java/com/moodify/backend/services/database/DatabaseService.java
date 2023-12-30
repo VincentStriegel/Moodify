@@ -32,7 +32,7 @@ public interface DatabaseService {
 
     List<PlaylistDO> searchPlaylists(String query);
 
-    Long createCustomPlaylist(long userId, String playlistTitle) throws UserNotFoundException;
+    Long createCustomPlaylist(long userId, String playlistTitle) throws UserNotFoundException, DuplicatePlaylistsException;
 
     void deleteCustomPlaylist(long userId, long playlistId) throws
             UserNotFoundException,

@@ -131,10 +131,13 @@ public class PostgresService implements DatabaseService {
     }
 
     @Override
-    public Long createCustomPlaylist(long userId, String playlistTitle) throws UserNotFoundException {
+    public Long createCustomPlaylist(long userId, String playlistTitle) throws UserNotFoundException, DuplicatePlaylistsException {
         UserDO user = this.findUserById(userId);
-        PlaylistDO customPlaylist = new PlaylistDO(playlistTitle);
+        if (user.getPersonalLibrary().getCustomPlaylists().stream().anyMatch(pl -> pl.getTitle().equals(playlistTitle))) {
+            throw new DuplicatePlaylistsException();
+        }
 
+        PlaylistDO customPlaylist = new PlaylistDO(playlistTitle);
         user.getPersonalLibrary().getPlaylists().add(customPlaylist);
         this.USER_REPOSITORY.save(user);
 
