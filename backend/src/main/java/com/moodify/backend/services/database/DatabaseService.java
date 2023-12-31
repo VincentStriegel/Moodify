@@ -70,4 +70,6 @@ public interface DatabaseService {
     PlaylistDO findPlaylistByIdFromUser(long playlistId, long userId) throws UserNotFoundException, PlaylistNotFoundException;
 
     PlaylistDO findPlaylistById(long playlistId) throws PlaylistNotFoundException;
+
+    String  findMostPopularArtist(long userId) throws UserNotFoundException;
 }

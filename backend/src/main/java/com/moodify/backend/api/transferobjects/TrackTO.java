@@ -24,6 +24,7 @@ public class TrackTO implements Cloneable {
 
     private AlbumTO album;
 
+
     public TrackTO() {
         this.artist = new ArtistTO();
         this.album = new AlbumTO();
