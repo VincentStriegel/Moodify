@@ -7,7 +7,7 @@
             <mat-form-field class="col-span-2">
                <mat-label>Playlist</mat-label>
                <mat-select [(ngModel)]="playlistID">
-                  <mat-option *ngFor="let playlist of personalLibrary.customPlaylists | slice:1" [value]="playlist.id">
+                  <mat-option *ngFor="let playlist of personalLibrary.customPlaylists" [value]="playlist.id">
                      {{playlist.title}}
                  </mat-option>
                </mat-select>

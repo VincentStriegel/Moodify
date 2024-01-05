@@ -12,6 +12,9 @@ import { map } from 'rxjs/operators';
 @Injectable({
     providedIn: 'root',
 })
+/**
+ * Service responsible for communicating with the backend server.
+ */
 export class BackendCommunicationService {
     userId?: number;
     userProfile!: userTO;
@@ -306,5 +309,13 @@ export class BackendCommunicationService {
     setUserId(userId: number) {
         this.isLoggedIn.next(true);
         this.userId = userId;
+    }
+
+    /**
+     * Retrieves recommendations for the user.
+     * @returns An Observable that emits an array of TrackTO objects.
+     */
+    getRecommendations(): Observable<TrackTO[]> {
+        return this.http.get<TrackTO[]>(`${this.apiServerURL}/music/recommendations/${this.userId}`);
     }
 }

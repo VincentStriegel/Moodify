@@ -9,6 +9,15 @@
             </div>
         </div>
 
+        <div *ngIf="recommendationsArr" class="flex flex-col w-[100%] mt-5 h-64">
+            <h2 class="text-white font-bold h-16 text-left text-2xl">Recommended Songs</h2>
+            <div class="flex flex-nowrap overflow-x-auto py-3">
+                <div *ngFor="let track of recommendationsArr">
+                    <app-track-element [track]="track" [squareLayout]="true"></app-track-element>
+                </div>
+            </div>
+        </div>
+
         <div *ngIf="userProfile.personalLibrary.likedArtists.length" class="flex flex-col w-[100%] mt-5">
             <h2 class="text-white font-bold h-16 text-2xl text-left">Liked Artists</h2>
             <div class="flex flex-nowrap overflow-x-auto overflow-y-hidden gap-2">

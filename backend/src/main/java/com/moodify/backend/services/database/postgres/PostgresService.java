@@ -286,6 +286,14 @@ public class PostgresService implements DatabaseService {
         return playlist;
     }
 
+    @Override
+    public String findMostPopularArtist(long userId) throws UserNotFoundException {
+        this.findUserById(userId);
+        String result  = this.USER_REPOSITORY.findMostFrequentArtistByUserId(userId);
+        return  result;
+
+    }
+
     private boolean exists(UserDO user) {
         return user != null;
     }

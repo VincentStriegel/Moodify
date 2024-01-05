@@ -48,7 +48,7 @@ public class TOAssembler {
         return albumTOList;
     }
 
-    private  List<ArtistTO> generateArtistTOListFrom(List<ArtistDO> artistDOList) {
+    public   List<ArtistTO> generateArtistTOListFrom(List<ArtistDO> artistDOList) {
         List<ArtistTO> artistTOList = new ArrayList<>();
         for (ArtistDO artistDO : artistDOList) {
             artistTOList.add(generateArtistTOFrom(artistDO));

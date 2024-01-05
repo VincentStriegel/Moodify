@@ -9,7 +9,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class PlaylistTO {
+public class PlaylistTO implements Sourceable {
 
     private long id;
     private String title;
