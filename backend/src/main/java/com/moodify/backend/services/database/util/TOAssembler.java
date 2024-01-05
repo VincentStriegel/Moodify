@@ -33,6 +33,8 @@ public class TOAssembler {
         PersonalLibraryTO personalLibraryTO = new PersonalLibraryTO();
         personalLibraryTO.setLikedAlbums(generateAlbumTOListFrom(personalLibraryDO.getLikedAlbums()));
         personalLibraryTO.setLikedArtists(generateArtistTOListFrom(personalLibraryDO.getLikedArtists()));
+
+
         personalLibraryTO.setLikedTracks(generateTrackTOListFrom(personalLibraryDO.getLikedTracksPlaylist().getTracks()));
         personalLibraryTO.setCustomPlaylists(generatePlaylistTOListFrom(personalLibraryDO.getCustomPlaylists()));
 
