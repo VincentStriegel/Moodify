@@ -138,7 +138,7 @@ public class MusicController {
             String mostPopularArtist = this.DATABASE_SERVICE.findMostPopularArtist(userId);
             List<TrackTO> recommendedTracks = new ArrayList<TrackTO>();
             if (mostPopularArtist != null) {
-                recommendedTracks = this.DEEZER_API.getTrackSearch(mostPopularArtist, 5);
+                recommendedTracks = this.DEEZER_API.getTrackSearch(mostPopularArtist, 15);
             }
 
             return recommendedTracks;
