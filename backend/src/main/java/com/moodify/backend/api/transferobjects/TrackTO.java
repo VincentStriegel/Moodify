@@ -1,6 +1,7 @@
 package com.moodify.backend.api.transferobjects;
 
 
+import com.moodify.backend.api.util.Source;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,6 +24,8 @@ public class TrackTO implements Cloneable {
     private ArtistTO artist;
 
     private AlbumTO album;
+
+    private Source source;
 
     public TrackTO() {
         this.artist = new ArtistTO();
