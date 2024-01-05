@@ -40,17 +40,14 @@
         <div class="flex flex-col w-[100%] mt-5 h-[350px]">
             <h2 class="text-white font-bold h-16 text-2xl text-left">My Playlists</h2>
             <div class="flex flex-nowrap overflow-x-auto overflow-y-hidden h-[350px]">
+                <div class="flex items-center justify-center h-[250px] w-24">
+                    <button mat-fab matTooltip="Create Playlist" color="primary"
+                        aria-label="Example icon button with a heart icon" (click)="playlistPopup = true">
+                        <mat-icon>add_circle</mat-icon>
+                    </button>
+                </div>
                 <div *ngFor="let playlist of userProfile.personalLibrary.customPlaylists; let i = index">
-                    <ng-container *ngIf="i === 0; else otherPlaylists">
-                        <div class="flex items-center justify-center h-[250px] w-24">
-                            <button mat-fab matTooltip="Create Playlist" color="primary" aria-label="Example icon button with a heart icon" (click)="playlistPopup = true">  
-                                <mat-icon>add_circle</mat-icon>
-                              </button>
-                        </div>
-                    </ng-container>
-                    <ng-template #otherPlaylists>
-                        <app-collection-element [playlist]="playlist" [isCustomPlaylist]="true"></app-collection-element>
-                    </ng-template>
+                    <app-collection-element [playlist]="playlist" [isCustomPlaylist]="true"></app-collection-element>
                 </div>
             </div>
         </div>

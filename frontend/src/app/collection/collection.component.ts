@@ -57,9 +57,12 @@ export class CollectionComponent {
                     ? backendCommunicationService.userProfile.personalLibrary.likedAlbums.some(
                           (album) => album.id === this.id,
                       )
-                    : backendCommunicationService.userProfile.personalLibrary.likedPlaylists.some(
+                    : false;
+            /*
+                    backendCommunicationService.userProfile.personalLibrary.likedPlaylists.some(
                           (playlist) => playlist.id === this.id,
                       );
+            */
         }
     }
     ngOnInit(): void {
