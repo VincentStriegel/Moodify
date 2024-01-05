@@ -10,4 +10,5 @@ public interface PlaylistRepository extends JpaRepository<PlaylistDO, Long> {
     List<PlaylistDO> findAllByTitleLike(String title);
 
     PlaylistDO findPlaylistDOById(long id);
+
 }

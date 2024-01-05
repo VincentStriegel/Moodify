@@ -41,11 +41,15 @@ public class PersonalLibraryDO {
     }
 
     public List<PlaylistDO> getCustomPlaylists() {
-        return this.playlists.stream().skip(1).toList();
+        return this.playlists.stream().filter(pl -> !pl.isLikedTrackPlaylist()).toList();
     }
 
     public PlaylistDO getLikedTracksPlaylist() {
-        return this.playlists.get(0);
+        return this.playlists
+                .stream()
+                .filter(pl -> pl.isLikedTrackPlaylist())
+                .findAny()
+                .orElse(null);
     }
 
 }

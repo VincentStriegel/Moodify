@@ -26,7 +26,8 @@ public class TOAssembler {
         PersonalLibraryTO personalLibraryTO = new PersonalLibraryTO();
         personalLibraryTO.setLikedAlbums(generateAlbumTOListFrom(personalLibraryDO.getLikedAlbums()));
         personalLibraryTO.setLikedArtists(generateArtistTOListFrom(personalLibraryDO.getLikedArtists()));
-        personalLibraryTO.setLikedTracks(this.generateTrackTOListFromTrackDOList(personalLibraryDO.getLikedTracksPlaylist().getTracks()));
+
+        personalLibraryTO.setLikedTracks(generateTrackTOListFromTrackDOList(personalLibraryDO.getLikedTracksPlaylist().getTracks()));
         personalLibraryTO.setCustomPlaylists(generatePlaylistTOListFrom(personalLibraryDO.getCustomPlaylists()));
 
         return personalLibraryTO;
@@ -41,7 +42,7 @@ public class TOAssembler {
         return albumTOList;
     }
 
-    private  List<ArtistTO> generateArtistTOListFrom(List<ArtistDO> artistDOList) {
+    public   List<ArtistTO> generateArtistTOListFrom(List<ArtistDO> artistDOList) {
         List<ArtistTO> artistTOList = new ArrayList<>();
         for (ArtistDO artistDO : artistDOList) {
             artistTOList.add(generateArtistTOFrom(artistDO));

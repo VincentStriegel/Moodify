@@ -82,4 +82,6 @@ public interface DatabaseService {
     List<UserDO> searchArtists(String query);
 
     UserDO getArtist(long artistId) throws ArtistNotFoundException;
+
+    String  findMostPopularArtist(long userId) throws UserNotFoundException;
 }

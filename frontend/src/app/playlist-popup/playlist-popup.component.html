@@ -19,7 +19,7 @@
         </div>
 
         <div *ngIf="!creationOnly" class="overflow-y-auto max-h-[50vh]">
-            <div class="p-1" *ngFor="let playlist of personalLibrary.customPlaylists  | slice:1">
+            <div class="p-1" *ngFor="let playlist of personalLibrary.customPlaylists">
                 <button class="flex flex-nowrap p-2 hover:bg-zinc-800 w-[100%]"
                     (click)="playlistAction(playlist.id, playlist.title)">
                     <img class="h-12" src="{{playlist.picture_small || 'assets/placeholder.jpg' }}" alt="">

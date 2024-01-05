@@ -21,7 +21,7 @@ public class DeezerApi implements ApiService {
 
     private final String DELIMETER = "&";
 
-    private final  String LIMIT = "limit=100";
+    private final  String LIMIT = "limit=";
 
     private final Source SOURCE = Source.DEEZER;
 
@@ -101,8 +101,8 @@ public class DeezerApi implements ApiService {
         return trackTO;
     }
 
-    public List<TrackTO> getTrackSearch(String query) {
-        String url = DEEZER_API_URL + "search?q=" + query + DELIMETER + LIMIT;
+    public List<TrackTO> getTrackSearch(String query, long limit) {
+        String url = DEEZER_API_URL + "search?q=" + query + DELIMETER + LIMIT + limit;
 
         ResponseEntity<String> responseTracks = this.DEEZER_API_REQUESTER.makeApiRequest(url);
         Map<String, Object> jsonMap = getMapFrom(responseTracks);
@@ -118,8 +118,8 @@ public class DeezerApi implements ApiService {
         return trackTOs;
     }
 
-    public List<ArtistTO> getArtists(String query) {
-        String url = DEEZER_API_URL + "search/artist?q=" + query + DELIMETER + LIMIT;
+    public List<ArtistTO> getArtists(String query, long limit) {
+        String url = DEEZER_API_URL + "search/artist?q=" + query + DELIMETER + LIMIT + limit;
 
         ResponseEntity<String> responseArtists = this.DEEZER_API_REQUESTER.makeApiRequest(url);
         Map<String, Object> jsonMap = getMapFrom(responseArtists);
@@ -136,8 +136,8 @@ public class DeezerApi implements ApiService {
         return artistTOs;
     }
 
-    public List<PlaylistTO> getPlaylists(String query) {
-        String url = DEEZER_API_URL + "search/playlist?q=" + query + DELIMETER + LIMIT;
+    public List<PlaylistTO> getPlaylists(String query, long limit) {
+        String url = DEEZER_API_URL + "search/playlist?q=" + query + DELIMETER + LIMIT + limit;
 
         ResponseEntity<String> responsePlaylist = this.DEEZER_API_REQUESTER.makeApiRequest(url);
         Map<String, Object> playlistMap = getMapFrom(responsePlaylist);
@@ -154,8 +154,8 @@ public class DeezerApi implements ApiService {
         return playlistTOs;
     }
 
-    public List<AlbumTO> getAlbums(String query) {
-        String url = DEEZER_API_URL + "search/album?q=" + query + DELIMETER + LIMIT;
+    public List<AlbumTO> getAlbums(String query, long limit) {
+        String url = DEEZER_API_URL + "search/album?q=" + query + DELIMETER + LIMIT + limit;
 
         ResponseEntity<String> responseAlbums = this.DEEZER_API_REQUESTER.makeApiRequest(url);
         Map<String, Object> jsonMap = getMapFrom(responseAlbums);

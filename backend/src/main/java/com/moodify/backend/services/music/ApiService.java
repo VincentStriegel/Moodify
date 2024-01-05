@@ -13,12 +13,12 @@ public interface ApiService {
 
     ArtistTO getArtist(long id);
 
-    List<TrackTO> getTrackSearch(String query);
+    List<TrackTO> getTrackSearch(String query, long limit);
 
-    List<ArtistTO> getArtists(String query);
+    List<ArtistTO> getArtists(String query, long limit);
 
-    List<AlbumTO> getAlbums(String query);
+    List<AlbumTO> getAlbums(String query, long limit);
 
-    List<PlaylistTO> getPlaylists(String query);
+    List<PlaylistTO> getPlaylists(String query, long limit);
 
 }

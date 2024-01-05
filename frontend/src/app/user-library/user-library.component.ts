@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { BackendCommunicationService } from '../services/backend-communication.service';
 import { userTO } from '../types/userTO';
+import { TrackTO } from '../types/trackTO';
 
 @Component({
     selector: 'app-user-library',
@@ -12,8 +13,13 @@ export class UserLibraryComponent {
     playlistName = '';
     newPlaylistId?: number;
     playlistPopup = false;
+    recommendationsArr?: TrackTO[];
     constructor(private backendCommunicationService: BackendCommunicationService) {
         this.backendCommunicationService.getUserPersonalLibrary().subscribe((data) => (this.userProfile = data));
+    }
+
+    ngOnInit(): void {
+        this.getRecommendations();
     }
 
     createPlaylist(): void {
@@ -25,6 +31,15 @@ export class UserLibraryComponent {
             () => {
                 //TODO: handle error
             },
+        );
+    }
+
+    getRecommendations(): void {
+        this.backendCommunicationService.getRecommendations().subscribe(
+            (data) => {
+                this.recommendationsArr = data;
+            },
+            () => {},
         );
     }
 }
