@@ -23,13 +23,13 @@ public interface UserRepository extends JpaRepository<UserDO, Long> {
     UserDO findByIdAndDiscographyIsNotNull(long id);
 
     //TODO if columns names change, change accordingly
-    @Query("SELECT t.artist_name_deezer FROM UserDO u "
+    @Query("SELECT t.artist_name FROM UserDO u "
             + "JOIN u.personalLibrary pl "
             + "JOIN pl.playlists p "
             + "JOIN p.tracks t "
             + "WHERE u.id = :userId "
-            + "GROUP BY t.artist_name_deezer "
-            + "ORDER BY COUNT(t.artist_name_deezer) DESC, t.artist_name_deezer ASC "
+            + "GROUP BY t.artist_name "
+            + "ORDER BY COUNT(t.artist_name) DESC, t.artist_name ASC "
             + "LIMIT 1")
     String findMostFrequentArtistByUserId(Long userId);
 

@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -153,6 +154,24 @@ public class MusicController {
             List<PlaylistTO> deezerPlaylistsTOs = this.DEEZER_API.getPlaylists(query, DEFAULT_LIMIT);
 
             return Stream.concat(usersPlaylistsTOs.stream(), deezerPlaylistsTOs.stream()).toList();
+
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+        }
+    }
+
+    @GetMapping({"recommendations/{userId}"})
+    @ResponseStatus(HttpStatus.OK)
+    public List<TrackTO> getRecommendationsFor(@PathVariable ("userId") long userId) {
+        try {
+
+            String mostPopularArtist = this.DATABASE_SERVICE.findMostPopularArtist(userId);
+            List<TrackTO> recommendedTracks = new ArrayList<TrackTO>();
+            if (mostPopularArtist != null) {
+                recommendedTracks = this.DEEZER_API.getTrackSearch(mostPopularArtist, 15);
+            }
+
+            return recommendedTracks;
 
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
