@@ -3,6 +3,7 @@ package com.moodify.backend.services.music.deezer;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.moodify.backend.api.transferobjects.*;
+import com.moodify.backend.api.util.Source;
 import com.moodify.backend.services.music.ApiService;
 import com.moodify.backend.services.music.util.TransferObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,8 @@ public class DeezerApi implements ApiService {
 
     private final  String LIMIT = "limit=100";
 
+    private final Source SOURCE = Source.DEEZER;
+
     @Autowired
     public DeezerApi(DeezerApiRequester DEEZER_API_REQUESTER) {
         this.DEEZER_API_REQUESTER = DEEZER_API_REQUESTER;
@@ -38,8 +41,8 @@ public class DeezerApi implements ApiService {
         Map<String, Object> trackListMap = getMapFrom(responseTrackList);
         List<Map<String, Object>> tracksList = (List<Map<String, Object>>) trackListMap.get("data");
 
-
         PlaylistTO playlistTO = TransferObjectMapper.toPlaylistTO(playlistMap, tracksList);
+        playlistTO.setSource(SOURCE);
 
         return playlistTO;
     }
@@ -59,7 +62,7 @@ public class DeezerApi implements ApiService {
 
 
         AlbumTO albumTO = TransferObjectMapper.toAlbumTO(albumMap, tracksList);
-
+        albumTO.setSource(SOURCE);
         return albumTO;
     }
 
@@ -81,7 +84,7 @@ public class DeezerApi implements ApiService {
 
 
         ArtistTO artistTO = TransferObjectMapper.toArtistTO(artistMap, tracksList, albumList);
-
+        artistTO.setSource(SOURCE);
 
         return artistTO;
 
@@ -94,7 +97,7 @@ public class DeezerApi implements ApiService {
         ResponseEntity<String> responseArtist = this.DEEZER_API_REQUESTER.makeApiRequest(url);
         Map<String, Object> trackMap = getMapFrom(responseArtist);
         TrackTO trackTO = TransferObjectMapper.toTrackTO(trackMap);
-
+        trackTO.setSource(SOURCE);
         return trackTO;
     }
 
@@ -111,7 +114,7 @@ public class DeezerApi implements ApiService {
             TrackTO trackTO = TransferObjectMapper.toTrackTO(trackMap);
             trackTOs.add(trackTO);
         }
-
+        trackTOs.forEach(track -> track.setSource(SOURCE));
         return trackTOs;
     }
 
@@ -128,6 +131,7 @@ public class DeezerApi implements ApiService {
             ArtistTO artistTO = TransferObjectMapper.toArtistTO(artistMap);
             artistTOs.add(artistTO);
         }
+        artistTOs.forEach(artistTO -> artistTO.setSource(SOURCE));
 
         return artistTOs;
     }
@@ -145,6 +149,7 @@ public class DeezerApi implements ApiService {
             PlaylistTO playlistTO = TransferObjectMapper.toPlaylistTO(playlist);
             playlistTOs.add(playlistTO);
         }
+        playlistTOs.forEach(playlistTO -> playlistTO.setSource(SOURCE));
 
         return playlistTOs;
     }
@@ -161,6 +166,7 @@ public class DeezerApi implements ApiService {
             AlbumTO albumTO = TransferObjectMapper.toAlbumTO(albumMap);
             albumTOs.add(albumTO);
         }
+        albumTOs.forEach(albumTO -> albumTO.setSource(SOURCE));
 
         return albumTOs;
     }

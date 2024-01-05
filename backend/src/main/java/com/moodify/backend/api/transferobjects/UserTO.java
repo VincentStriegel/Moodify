@@ -11,7 +11,6 @@ public class UserTO {
     private String email;
     private String username;
     private PersonalLibraryTO personalLibrary;
-    //TODO you know
     private DiscographyTO discography;
 
     public UserTO() {

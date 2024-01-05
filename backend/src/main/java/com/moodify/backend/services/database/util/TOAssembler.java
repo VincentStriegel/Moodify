@@ -178,7 +178,7 @@ public class TOAssembler {
         artist.setId(moodifyArtist.getId());
         artist.setName(moodifyArtist.getUsername());
         artist.setTrackTOList(this.generateTrackTOListFromMoodifySingleDOList(moodifyArtist.getDiscography().getSingles()));
-        //TODO Picture
+
         return artist;
     }
 }
