@@ -19,15 +19,15 @@ import java.util.stream.Stream;
 @RestController
 @RequestMapping("/music")
 public class MusicController {
-
-    private final DeezerApi API_SERVICE;
+    private final DeezerApi DEEZER_API;
+    private final long DEFAULT_LIMIT = 100;
     private final PostgresService DATABASE_SERVICE;
     private final TOAssembler TO_OBJECT_ASSEMBLER;
     @Autowired
-    public MusicController(DeezerApi API_SERVICE,
+    public MusicController(DeezerApi DEEZER_API,
                            PostgresService DATABASE_SERVICE,
                            TOAssembler TO_OBJECT_ASSEMBLER) {
-        this.API_SERVICE = API_SERVICE;
+        this.DEEZER_API = DEEZER_API;
         this.DATABASE_SERVICE = DATABASE_SERVICE;
         this.TO_OBJECT_ASSEMBLER = TO_OBJECT_ASSEMBLER;
     }
@@ -37,7 +37,7 @@ public class MusicController {
     public TrackTO getTrack(@PathVariable("trackId") long trackId) {
         try {
 
-            return API_SERVICE.getTrack(trackId);
+            return DEEZER_API.getTrack(trackId);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
@@ -49,7 +49,7 @@ public class MusicController {
         try {
 
             if (source == Source.DEEZER) {
-               return API_SERVICE.getArtist(artistId);
+               return DEEZER_API.getArtist(artistId);
             } else if (source == Source.MOODIFY) {
 
                 UserDO moodifyArtist = DATABASE_SERVICE.getArtist(artistId);
@@ -73,7 +73,7 @@ public class MusicController {
             PlaylistTO playlist = null;
 
             if (source == Source.DEEZER) {
-                return API_SERVICE.getPlaylist(playlistId);
+                return DEEZER_API.getPlaylist(playlistId);
             } else if (source == Source.MOODIFY) {
 
                 playlist = TO_OBJECT_ASSEMBLER.generatePlaylistTOFrom(DATABASE_SERVICE.findPlaylistById(playlistId));
@@ -92,7 +92,7 @@ public class MusicController {
     @ResponseStatus(HttpStatus.OK)
     public AlbumTO getAlbum(@PathVariable("albumId") long albumId) {
         try {
-            return API_SERVICE.getAlbum(albumId);
+            return DEEZER_API.getAlbum(albumId);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
@@ -103,7 +103,7 @@ public class MusicController {
     @ResponseStatus(HttpStatus.OK)
     public List<TrackTO> search(@PathVariable ("searchQuery") String query) {
         try {
-            List<TrackTO> deezerTracks = API_SERVICE.getTrackSearch(query);
+            List<TrackTO> deezerTracks = DEEZER_API.getTrackSearch(query, DEFAULT_LIMIT);
 
             List<TrackTO> moodifySingles = this.TO_OBJECT_ASSEMBLER.generateTrackTOListFromMoodifySingleDOList(DATABASE_SERVICE.searchSingles(query));
             moodifySingles.forEach(track -> track.setSource(Source.MOODIFY));
@@ -118,7 +118,7 @@ public class MusicController {
     @ResponseStatus(HttpStatus.OK)
     public List<AlbumTO> searchAlbum(@PathVariable ("searchQuery") String query) {
         try {
-            return API_SERVICE.getAlbums(query);
+            return DEEZER_API.getAlbums(query, DEFAULT_LIMIT);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
@@ -128,7 +128,7 @@ public class MusicController {
     @ResponseStatus(HttpStatus.OK)
     public List<ArtistTO> searchArtist(@PathVariable ("searchQuery") String query) {
         try {
-            List<ArtistTO> deezerArtists = API_SERVICE.getArtists(query);
+            List<ArtistTO> deezerArtists = DEEZER_API.getArtists(query, DEFAULT_LIMIT);
 
             List<UserDO> artists = this.DATABASE_SERVICE.searchArtists(query);
             List<ArtistTO> moodifyArtists = TO_OBJECT_ASSEMBLER.generateArtistTOFromUserDO(artists);
@@ -150,7 +150,7 @@ public class MusicController {
             usersPlaylistsTOs.forEach(pl -> pl.setSource(Source.MOODIFY));
 
 
-            List<PlaylistTO> deezerPlaylistsTOs = this.API_SERVICE.getPlaylists(query);
+            List<PlaylistTO> deezerPlaylistsTOs = this.DEEZER_API.getPlaylists(query, DEFAULT_LIMIT);
 
             return Stream.concat(usersPlaylistsTOs.stream(), deezerPlaylistsTOs.stream()).toList();
 
