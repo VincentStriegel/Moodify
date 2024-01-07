@@ -31,6 +31,10 @@ public class UserDO {
     @JoinColumn(name = "personal_library_id", referencedColumnName = "id")
     private PersonalLibraryDO personalLibrary;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "discography_id", referencedColumnName = "id")
+    private DiscographyDO discography;
+
     public UserDO() {
         this.personalLibrary = new PersonalLibraryDO();
     }

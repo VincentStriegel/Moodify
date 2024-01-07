@@ -34,18 +34,18 @@ public class AlbumDO {
 
     @Column(nullable = false)
     @Setter(AccessLevel.NONE)
-    private long album_id_deezer;
+    private long album_id_source;
 
     public AlbumDO() {
 
     }
 
-    public AlbumDO(String title, String cover_small, String cover_big, String release_date, int number_of_songs, long album_id_deezer) {
+    public AlbumDO(String title, String cover_small, String cover_big, String release_date, int number_of_songs, long album_id_source) {
         this.title = title;
         this.cover_small = cover_small;
         this.cover_big = cover_big;
         this.release_date = release_date;
         this.number_of_songs = number_of_songs;
-        this.album_id_deezer = album_id_deezer;
+        this.album_id_source = album_id_source;
     }
 }

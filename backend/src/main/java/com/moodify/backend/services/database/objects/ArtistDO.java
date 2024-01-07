@@ -19,6 +19,7 @@ public class ArtistDO {
 
     @Column(nullable = false)
     private int nb_fans;
+
     @Column(nullable = false, length = 64)
     private String name;
 
@@ -30,15 +31,15 @@ public class ArtistDO {
 
     @Column(nullable = false)
     @Setter(AccessLevel.NONE)
-    private long artist_id_deezer;
+    private long artist_id_source;
 
-    public ArtistDO(int nb_fans, String name, String picture_small, String picture_big, long artist_id_deezer) {
+    public ArtistDO(int nb_fans, String name, String picture_small, String picture_big, long artist_id_source) {
 
         this.nb_fans = nb_fans;
         this.name = name;
         this.picture_small = picture_small;
         this.picture_big = picture_big;
-        this.artist_id_deezer = artist_id_deezer;
+        this.artist_id_source = artist_id_source;
     }
 
     public ArtistDO() {

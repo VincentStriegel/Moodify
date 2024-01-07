@@ -25,15 +25,15 @@ public class DOAssembler {
 
         TrackDO trackDO = new TrackDO();
 
-        trackDO.setId_deezer(deezerId);
+        trackDO.setId_source(deezerId);
         trackDO.setTitle(title);
         trackDO.setDuration(duration);
         trackDO.setPreview(preview);
         trackDO.setRelease_date(releaseDate);
-        trackDO.setArtist_id_deezer(artistIdDeezer);
-        trackDO.setArtist_name_deezer(artistNameDeezer);
-        trackDO.setAlbum_cover_big_deezer(albumBigCover);
-        trackDO.setAlbum_cover_small_deezer(albumSmallCover);
+        trackDO.setArtist_id_source(artistIdDeezer);
+        trackDO.setArtist_name(artistNameDeezer);
+        trackDO.setCover_big(albumBigCover);
+        trackDO.setCover_small(albumSmallCover);
 
         return trackDO;
     }

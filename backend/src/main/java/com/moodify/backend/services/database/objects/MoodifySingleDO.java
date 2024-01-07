@@ -6,18 +6,15 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "tracks")
+@Table(name = "moodify_tracks")
 @Getter
 @Setter
-public class TrackDO {
+public class MoodifySingleDO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     @Setter(AccessLevel.NONE)
     private long id;
-
-    @Column(nullable = false)
-    private long id_source;
 
     @Column(nullable = false)
     private String title;
@@ -32,7 +29,7 @@ public class TrackDO {
     private String release_date;
 
     @Column(nullable = false)
-    private long artist_id_source;
+    private long artist_id;
 
     @Column(nullable = false)
     private String artist_name;
@@ -43,9 +40,9 @@ public class TrackDO {
     @Column(nullable = false)
     private String cover_small;
 
-
-    public TrackDO() {
+    public MoodifySingleDO() {
 
     }
+
 
 }
