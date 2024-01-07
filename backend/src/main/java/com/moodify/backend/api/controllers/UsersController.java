@@ -36,6 +36,7 @@ public class UsersController {
     public Long createCustomPlaylist(@RequestParam long userId, @RequestParam String title) {
         try {
             return this.POSTGRES_SERVICE.createCustomPlaylist(userId, title);
+
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }

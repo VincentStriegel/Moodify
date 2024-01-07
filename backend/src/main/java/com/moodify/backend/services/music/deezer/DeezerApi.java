@@ -88,7 +88,6 @@ public class DeezerApi implements ApiService {
 
         return artistTO;
 
-
     }
 
     public TrackTO getTrack(long id) {
