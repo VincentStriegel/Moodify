@@ -332,8 +332,8 @@ public class PostgresService implements DatabaseService {
         single.setDuration(track.getDuration());
         single.setPreview(track.getPreview());
         single.setRelease_date(track.getRelease_date());
-        single.setCover_small(track.getAlbum().getCover_small());
-        single.setCover_big(track.getAlbum().getCover_big());
+        single.setCover_small(track.getCover_small());
+        single.setCover_big(track.getCover_big());
         single.setArtist_id(artist.getId());
         single.setArtist_name(artist.getUsername());
 
