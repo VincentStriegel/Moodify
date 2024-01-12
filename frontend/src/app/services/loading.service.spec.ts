@@ -1,7 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { LoadingService } from './loading.service';
-import { BehaviorSubject, timer } from 'rxjs';
-import { debounce } from 'rxjs/operators';
 
 describe('LoadingService', () => {
     let service: LoadingService;
@@ -36,6 +34,4 @@ describe('LoadingService', () => {
             expect(bool).toBeFalsy();
         });
     });
-
-    
 });
