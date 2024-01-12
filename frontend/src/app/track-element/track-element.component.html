@@ -5,7 +5,7 @@
         <div class="flex-initial flex items-center space-x-2 gap-3 flex-none">
             <div class="relative">
                 <img *ngIf="!isAlbum" [class.w-40]="squareLayout" [class.w-8]="tinyLayout" class="w-20"
-                    [src]="tinyLayout ? track.album.cover_small : (track.album.cover_big ? track.album.cover_big : 'assets/placeholder.jpg')"
+                    [src]="tinyLayout ? track.album.cover_small : (track.album.cover_big ? ( track.album.cover_big ?  track.album.cover_big: track.cover_big ) : 'assets/placeholder.jpg')"
                     alt="Track cover">
                 <div *ngIf="!isPartyRoom && !isAlbum" (click)="togglePlay()"
                     class="absolute inset-0 flex justify-center items-center bg-black bg-opacity-50 opacity-0 hover:opacity-100 transition-opacity duration-300 cursor-pointer">
@@ -19,7 +19,7 @@
                 <div *ngIf="squareLayout"
                     class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-70 text-white p-1 backdrop-blur-sm">
                     <button class="w-fit font-bold text-left hover:underline truncate whitespace-nowrap"
-                        (click)="goToArtistProfile(track.artist.id)">{{track.artist.name}}</button>
+                        (click)="goToArtistProfile(track.artist.id, track.source)">{{track.artist.name}}</button>
                     <div class="flex flex-nowrap justify-between">
                         <p class="text-left truncate text-xs whitespace-nowrap mr-1">{{track.title}}</p>
                         <button class="text-xs" matTooltip="Unlike Song" *ngIf="!isPartyRoom" (click)="likeSong()">
@@ -42,7 +42,7 @@
 
         <div *ngIf="!squareLayout" class="flex-col flex-auto px-4 overflow-hidden">
             <button class="font-bold text-left hover:underline truncate w-full"
-                (click)="goToArtistProfile(track.artist.id)">{{track.artist.name}}</button>
+                (click)="goToArtistProfile(track.artist.id, track.source)">{{track.artist.name}}</button>
             <p class="text-left truncate">{{track.title}}</p>
         </div>
 

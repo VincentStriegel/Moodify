@@ -23,8 +23,8 @@ export class CollectionElementComponent {
         private musicPlayerService: MusicPlayerService,
     ) {}
 
-    goToArtistProfile(artistId: number) {
-        this.router.navigateByUrl(`/artist/${artistId}`);
+    goToArtistProfile(artistId: number, artistSource: string) {
+        this.router.navigateByUrl(`/artist/${artistId}/${artistSource}`);
     }
 
     navigateTo(type: string, id: number, source: string) {

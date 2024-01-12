@@ -5,8 +5,12 @@
         <h1 class="text-2xl font-bold"><a routerLink="">Moodify</a></h1>
       </div>
       <div class="relative align-middle" *ngIf="!isPartyRoom">
-        <input type="text" placeholder="Search for your favorite songs" class="w-[50vw] max-w-[800px] rounded-full px-4 py-1 text-gray-700 focus:outline-none border" [(ngModel)]="query">
-        <button class="absolute inset-y-0 right-0 flex items-center bg-[#663dff] rounded-r-full text-white px-4 hover:bg-indigo-400 focus:bg-indigo-600 focus:outline-none" (click)="search()">
+        <input type="text" placeholder="Search for your favorite songs"
+          class="w-[50vw] max-w-[800px] rounded-full px-4 py-1 text-gray-700 focus:outline-none border"
+          [(ngModel)]="query">
+        <button
+          class="absolute inset-y-0 right-0 flex items-center bg-[#663dff] rounded-r-full text-white px-4 hover:bg-indigo-400 focus:bg-indigo-600 focus:outline-none"
+          (click)="search()">
           <span class="material-icons-outlined">
             search
           </span>
@@ -14,32 +18,38 @@
       </div>
       <div *ngIf="windowWidth >= 1000">
         <ul class="flex space-x-4">
-          <li><a [routerLink]="['/library']"  class="hover:text-indigo-700">Library</a></li>
+          <li><a [routerLink]="['/library']" class="hover:text-indigo-700">Library</a></li>
+          <li><a [routerLink]="['/artist-menu']" class="hover:text-indigo-700">Artist Menu</a></li>
           <li><a [routerLink]="['/party-room-menu']" class="hover:text-indigo-700">Party Rooms</a></li>
           <li *ngIf="!isLoggedIn"><a [routerLink]="['/login']" class="hover:text-indigo-700">Login</a></li>
-          <li><a [routerLink]="['/profile']" class="hover:text-indigo-700"><span class="material-icons-outlined">
+          <!--
+            <li><a [routerLink]="['/profile']" class="hover:text-indigo-700"><span class="material-icons-outlined">
             account_circle
             </span></a></li>
-        </ul>  
+          -->
+        </ul>
       </div>
       <div *ngIf="windowWidth < 1000">
-          <span class="material-icons-outlined text-4xl" (click)="isOpen = !isOpen">
-            {{isOpen ? 'menu_open' : 'menu'}}
-          </span>
+        <span class="material-icons-outlined text-4xl" (click)="isOpen = !isOpen">
+          {{isOpen ? 'menu_open' : 'menu'}}
+        </span>
       </div>
     </div>
-    <div class="absolute w-full left-0 text-white sticky bg-black/90  top-0 z-10 backdrop-blur-sm" [ngClass]="{'hidden': !isOpen}">
+    <div class="absolute w-full left-0 text-white sticky bg-black/90  top-0 z-10 backdrop-blur-sm"
+      [ngClass]="{'hidden': !isOpen}">
       <ul class="flex flex-col space-y-4 pt-4">
         <li><a [routerLink]="['/library']" class="hover:text-indigo-700">Library</a></li>
+        <hr>
+        <li><a [routerLink]="['/artist-menu']" class="hover:text-indigo-700">Artist Menu</a></li>
         <hr>
         <li><a [routerLink]="['/party-room-menu']" class="hover:text-indigo-700">Party Rooms</a></li>
         <hr *ngIf="!isLoggedIn">
         <li *ngIf="!isLoggedIn"><a [routerLink]="['/login']" class="hover:text-indigo-700">Login</a></li>
         <hr>
         <li><a [routerLink]="['/profile']" class="hover:text-indigo-700"><span class="material-icons-outlined">
-          account_circle
-          </span></a></li>
-      </ul>  
-    </div> 
-  </div>        
+              account_circle
+            </span></a></li>
+      </ul>
+    </div>
+  </div>
 </div>

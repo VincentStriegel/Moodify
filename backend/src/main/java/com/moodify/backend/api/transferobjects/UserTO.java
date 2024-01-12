@@ -11,6 +11,7 @@ public class UserTO {
     private String email;
     private String username;
     private PersonalLibraryTO personalLibrary;
+    private DiscographyTO discography;
 
     public UserTO() {
         this.personalLibrary = new PersonalLibraryTO();

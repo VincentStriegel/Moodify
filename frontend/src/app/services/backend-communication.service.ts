@@ -19,10 +19,12 @@ export class BackendCommunicationService {
     userId?: number;
     userProfile!: userTO;
     isLoggedIn = new BehaviorSubject<boolean>(false);
+    isArtist = new BehaviorSubject<boolean>(false);
+
     private apiServerURL = environment.apiServerURL;
     constructor(private http: HttpClient) {
         if (!environment.production) {
-            this.userId = 1;
+            this.userId = 3;
             //this.isLoggedIn.next(true);
         }
     }
@@ -37,12 +39,16 @@ export class BackendCommunicationService {
     }
 
     /**
-     * Fetches an artist by its ID.
-     * @param artistId The ID of the artist to fetch.
-     * @returns An Observable that will emit the fetched artist.
+     * Retrieves an artist by their ID from the backend.
+     * @param artistId - The ID of the artist to retrieve.
+     * @param source - The source of the artist.
+     * @returns An Observable that emits the ArtistTO object.
      */
-    getArtist(artistId: number): Observable<ArtistTO> {
-        return this.http.get<ArtistTO>(`${this.apiServerURL}/music/artist/${artistId}`).pipe(shareReplay(1));
+    getArtist(artistId: number, source: string): Observable<ArtistTO> {
+        const options = {
+            params: new HttpParams().set('source', source),
+        };
+        return this.http.get<ArtistTO>(`${this.apiServerURL}/music/artist/${artistId}`, options).pipe(shareReplay(1));
     }
 
     /**
@@ -317,5 +323,20 @@ export class BackendCommunicationService {
      */
     getRecommendations(): Observable<TrackTO[]> {
         return this.http.get<TrackTO[]>(`${this.apiServerURL}/music/recommendations/${this.userId}`);
+    }
+
+    promoteToArtist(picture: string): Observable<HttpResponse<any>> {
+        return this.http.post<any>(
+            `${this.apiServerURL}/users/promoteToArtist/${this.userId}?picture_big=${picture}&picture_small=${picture}`,
+            {
+                observe: 'response',
+            },
+        );
+    }
+
+    uploadSingle(track: TrackTO): Observable<HttpResponse<any>> {
+        return this.http.post<any>(`${this.apiServerURL}/artists/addSingleToDiscography/${this.userId}`, track, {
+            observe: 'response',
+        });
     }
 }

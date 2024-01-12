@@ -93,10 +93,11 @@ export class TrackElementComponent {
 
     /**
      * Navigates to the artist profile page.
-     * @param artistId The ID of the artist.
+     * @param artistId - The ID of the artist.
+     * @param artistSource - The source of the artist.
      */
-    goToArtistProfile(artistId: number) {
-        this.router.navigateByUrl(`/artist/${artistId}`);
+    goToArtistProfile(artistId: number, artistSource: string) {
+        this.router.navigateByUrl(`/artist/${artistId}/${artistSource}`);
     }
 
     /**

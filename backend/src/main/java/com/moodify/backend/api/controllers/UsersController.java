@@ -8,9 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
-
 @RestController
 @RequestMapping("/users")
 public class UsersController {
@@ -34,22 +31,12 @@ public class UsersController {
         }
     }
 
-    @GetMapping({"search/{searchQuery}"})
-    @ResponseStatus(HttpStatus.OK)
-    public List<UserTO> searchUsers(@PathVariable("searchQuery") String searchQuery) {
-
-        try {
-            return this.TO_OBJECT_ASSEMBLER.generateUsersTOsFrom(this.POSTGRES_SERVICE.searchUsers(searchQuery));
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
-        }
-    }
-
     @PostMapping({"createCustomPlaylist"})
     @ResponseStatus(HttpStatus.CREATED)
     public Long createCustomPlaylist(@RequestParam long userId, @RequestParam String title) {
         try {
             return this.POSTGRES_SERVICE.createCustomPlaylist(userId, title);
+
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
@@ -164,6 +151,18 @@ public class UsersController {
         try {
             this.POSTGRES_SERVICE.deleteFromLikedAlbums(albumId, userId);
 
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+        }
+
+    }
+
+    @PostMapping({"promoteToArtist/{userId}"})
+    @ResponseStatus(HttpStatus.OK)
+    public void promoteToArtist(@PathVariable("userId") long userId, @RequestParam String picture_big, @RequestParam String picture_small) {
+
+        try {
+            this.POSTGRES_SERVICE.promoteUserToArtist(userId, picture_big, picture_small);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }

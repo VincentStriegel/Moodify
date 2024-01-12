@@ -16,6 +16,9 @@ describe('MusicPlayerService', () => {
         duration: 0,
         preview: '',
         release_date: '',
+        source: '',
+        cover_big: '',
+        cover_small: '',
         artist: {
             id: 0,
             nb_fans: 0,
@@ -24,6 +27,7 @@ describe('MusicPlayerService', () => {
             picture_big: '',
             albumTOList: [],
             trackTOList: [],
+            source: '',
         },
         album: {
             id: 0,
@@ -33,6 +37,7 @@ describe('MusicPlayerService', () => {
             release_date: '',
             trackTOList: [],
             number_of_songs: 0,
+            source: '',
         },
     };
 
@@ -42,6 +47,9 @@ describe('MusicPlayerService', () => {
         duration: 0,
         preview: '',
         release_date: '',
+        source: '',
+        cover_big: '',
+        cover_small: '',
         artist: {
             id: 0,
             nb_fans: 0,
@@ -50,6 +58,7 @@ describe('MusicPlayerService', () => {
             picture_big: '',
             albumTOList: [],
             trackTOList: [],
+            source: '',
         },
         album: {
             id: 0,
@@ -59,6 +68,7 @@ describe('MusicPlayerService', () => {
             release_date: '',
             trackTOList: [],
             number_of_songs: 0,
+            source: '',
         },
     };
 
@@ -68,6 +78,9 @@ describe('MusicPlayerService', () => {
         duration: 0,
         preview: '',
         release_date: '',
+        source: '',
+        cover_big: '',
+        cover_small: '',
         artist: {
             id: 0,
             nb_fans: 0,
@@ -76,6 +89,7 @@ describe('MusicPlayerService', () => {
             picture_big: '',
             albumTOList: [],
             trackTOList: [],
+            source: '',
         },
         album: {
             id: 0,
@@ -85,6 +99,7 @@ describe('MusicPlayerService', () => {
             release_date: '',
             trackTOList: [],
             number_of_songs: 0,
+            source: '',
         },
     };
 
@@ -94,6 +109,9 @@ describe('MusicPlayerService', () => {
         duration: 0,
         preview: '',
         release_date: '',
+        source: '',
+        cover_big: '',
+        cover_small: '',
         artist: {
             id: 0,
             nb_fans: 0,
@@ -102,6 +120,7 @@ describe('MusicPlayerService', () => {
             picture_big: '',
             albumTOList: [],
             trackTOList: [],
+            source: '',
         },
         album: {
             id: 0,
@@ -111,6 +130,7 @@ describe('MusicPlayerService', () => {
             release_date: '',
             trackTOList: [],
             number_of_songs: 0,
+            source: '',
         },
     };
 

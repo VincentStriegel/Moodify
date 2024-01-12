@@ -31,6 +31,9 @@ describe('TrackElementComponent', () => {
             duration: 1,
             preview: 'preview',
             release_date: 'release_date',
+            cover_big: 'cover_big',
+            cover_small: 'cover_small',
+            source: 'source',
             artist: {
                 id: 1,
                 name: 'name',
@@ -39,6 +42,7 @@ describe('TrackElementComponent', () => {
                 nb_fans: 1,
                 albumTOList: new Array<AlbumTO>(),
                 trackTOList: new Array<TrackTO>(),
+                source: 'source',
             },
             album: {
                 id: 1,
@@ -48,6 +52,7 @@ describe('TrackElementComponent', () => {
                 release_date: 'release_date',
                 trackTOList: new Array<TrackTO>(),
                 number_of_songs: 1,
+                source: 'source',
             },
         };
         fixture.detectChanges();
@@ -66,8 +71,8 @@ describe('TrackElementComponent', () => {
     it('should navigate to artist profile', () => {
         jest.spyOn(component.router, 'navigateByUrl');
         const artistId = 123;
-        component.goToArtistProfile(artistId);
-        expect(component.router.navigateByUrl).toHaveBeenCalledWith(`/artist/${artistId}`);
+        component.goToArtistProfile(artistId, 'MOODIFY');
+        expect(component.router.navigateByUrl).toHaveBeenCalledWith(`/artist/${artistId}/MOODIFY`);
     });
 
     it('should suggest song', () => {

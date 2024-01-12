@@ -1,3 +1,4 @@
+import { DiscographyTO } from './discographyTO';
 import { PersonalLibraryTO } from './personalLibraryTO';
 
 export type userTO = {
@@ -5,4 +6,5 @@ export type userTO = {
     email: string;
     username: string;
     personalLibrary: PersonalLibraryTO;
+    discography: DiscographyTO;
 };

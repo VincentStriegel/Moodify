@@ -7,17 +7,9 @@ export type TrackTO = {
     duration: number;
     preview: string;
     release_date: string;
-
-    // TODO
-    // private String cover;
-
-    // TODO
-    // private String lyrics;
-
-    // TODO
-    // private String genre;
-
+    cover_small: string;
+    cover_big: string;
+    source: string;
     artist: ArtistTO;
-
     album: AlbumTO;
 };

@@ -24,7 +24,6 @@ public class BackendApplication {
 		allowDomains[3] = "http://localhost:4200";
 		allowDomains[4] = "https://moodify-srse.onrender.com";
 
-
 		System.out.println("CORS configuration....");
 		return new WebMvcConfigurer() {
 			@Override

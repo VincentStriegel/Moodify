@@ -1,0 +1,47 @@
+<div class="fixed inset-0 bg-black z-50 bg-opacity-50 backdrop-blur-md" (keydown.escape)="closePopup.emit()">
+
+    <div (keydown.escape)="closePopup.emit()"
+        class="min-w-[500px] absolute bg-zinc-900 p-4 rounded-lg left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white">
+        <div class="grid">
+            <div class="flex justify-between">
+                <h2 class="text-white text-xl font-bold p-1">Song</h2>
+                <button (click)="closePopup.emit()">
+                    <span class="material-icons-outlined">close</span>
+                </button>
+            </div>
+            <form (ngSubmit)="uploadSong()">
+                <div class="grid gap-2">
+                    <mat-form-field>
+                        <mat-label>Song Title</mat-label>
+                        <input [minlength]="1" [maxlength]="20" matInput [formControl]="songTitle" required>
+
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Cover Image Link</mat-label>
+                        <input matInput [formControl]="songCoverSrc" required>
+
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Audio Link</mat-label>
+                        <input matInput [formControl]="songAudioSrc" required>
+
+                    </mat-form-field>
+                    <button class="text-white bg-[#663dff] p-3 rounded-full m-2" type="submit">Upload</button>
+
+                </div>
+            </form>
+            <hr>
+            <div>
+                <h2>Preview</h2>
+                <h2 class="text-xl">Title: {{songTitle.value}}</h2>
+               <div class="flex">
+                <img class="w-40 h-40" src="{{songCoverSrc.value || 'assets/music-placeholder.png'}}">
+                <button class="text-white text-4xl" (click)="playSong()">
+                    <span class="material-icons-outlined text-white text-6xl hover:scale-110">{{ isPlaying ?
+                        'play_pause' : 'play_circle' }}</span>
+                </button>
+               </div>
+            </div>
+        </div>
+    </div>
+</div>

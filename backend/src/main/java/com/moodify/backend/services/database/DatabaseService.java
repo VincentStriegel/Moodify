@@ -7,6 +7,7 @@ import com.moodify.backend.services.database.exceptions.login.UserCredentialsExc
 import com.moodify.backend.services.database.exceptions.login.WrongPasswordException;
 import com.moodify.backend.services.database.exceptions.profiles.*;
 import com.moodify.backend.services.database.exceptions.registration.*;
+import com.moodify.backend.services.database.objects.MoodifySingleDO;
 import com.moodify.backend.services.database.objects.PlaylistDO;
 import com.moodify.backend.services.database.objects.UserDO;
 import com.moodify.backend.services.database.util.LoginUser;
@@ -27,8 +28,6 @@ public interface DatabaseService {
     long loginUser(LoginUser loginUser) throws UserCredentialsException, WrongPasswordException;
 
     UserDO findUserById(long userId) throws UserNotFoundException;
-
-    List<UserDO> searchUsers(String query);
 
     List<PlaylistDO> searchPlaylists(String query);
 
@@ -70,6 +69,19 @@ public interface DatabaseService {
     PlaylistDO findPlaylistByIdFromUser(long playlistId, long userId) throws UserNotFoundException, PlaylistNotFoundException;
 
     PlaylistDO findPlaylistById(long playlistId) throws PlaylistNotFoundException;
+
+    void promoteUserToArtist(long userId, String picture_big, String picture_small) throws UserNotFoundException, UserAlreadyPromotedException;
+
+    void addSingleToDiscography(long userId, TrackTO single) throws
+            UserNotFoundException,
+            UserNotArtistException,
+            DuplicateTracksException;
+
+    List<MoodifySingleDO> searchSingles(String query);
+
+    List<UserDO> searchArtists(String query);
+
+    UserDO getArtist(long artistId) throws ArtistNotFoundException;
 
     String  findMostPopularArtist(long userId) throws UserNotFoundException;
 }

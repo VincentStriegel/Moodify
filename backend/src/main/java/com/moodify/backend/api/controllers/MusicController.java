@@ -4,6 +4,7 @@ import com.moodify.backend.api.transferobjects.*;
 import com.moodify.backend.api.util.Source;
 import com.moodify.backend.services.database.exceptions.other.SourceNotFoundException;
 import com.moodify.backend.services.database.objects.PlaylistDO;
+import com.moodify.backend.services.database.objects.UserDO;
 import com.moodify.backend.services.database.postgres.PostgresService;
 import com.moodify.backend.services.database.util.TOAssembler;
 import com.moodify.backend.services.music.deezer.DeezerApi;
@@ -19,9 +20,7 @@ import java.util.stream.Stream;
 @RestController
 @RequestMapping("/music")
 public class MusicController {
-
     private final DeezerApi DEEZER_API;
-
     private final long DEFAULT_LIMIT = 100;
     private final PostgresService DATABASE_SERVICE;
     private final TOAssembler TO_OBJECT_ASSEMBLER;
@@ -38,6 +37,7 @@ public class MusicController {
     @ResponseStatus(HttpStatus.OK)
     public TrackTO getTrack(@PathVariable("trackId") long trackId) {
         try {
+
             return DEEZER_API.getTrack(trackId);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
@@ -46,9 +46,22 @@ public class MusicController {
 
     @GetMapping({"artist/{artistId}"})
     @ResponseStatus(HttpStatus.OK)
-    public ArtistTO getArtist(@PathVariable("artistId") long artistId) {
+    public ArtistTO getArtist(@PathVariable("artistId") long artistId, @RequestParam("source")  Source source) {
         try {
-            return DEEZER_API.getArtist(artistId);
+
+            if (source == Source.DEEZER) {
+               return DEEZER_API.getArtist(artistId);
+            } else if (source == Source.MOODIFY) {
+
+                UserDO moodifyArtist = DATABASE_SERVICE.getArtist(artistId);
+                ArtistTO artist = this.TO_OBJECT_ASSEMBLER.generateArtistTOFromMoodifyArtist(moodifyArtist);
+                artist.setSource(Source.MOODIFY);
+
+                return artist;
+            } else {
+                throw new SourceNotFoundException();
+            }
+
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
@@ -58,10 +71,16 @@ public class MusicController {
     @ResponseStatus(HttpStatus.OK)
     public PlaylistTO getPlaylist(@PathVariable("playlistId") long playlistId, @RequestParam("source")  Source source) {
         try {
+            PlaylistTO playlist = null;
+
             if (source == Source.DEEZER) {
                 return DEEZER_API.getPlaylist(playlistId);
             } else if (source == Source.MOODIFY) {
-                return TO_OBJECT_ASSEMBLER.generatePlaylistTOFrom(DATABASE_SERVICE.findPlaylistById(playlistId));
+
+                playlist = TO_OBJECT_ASSEMBLER.generatePlaylistTOFrom(DATABASE_SERVICE.findPlaylistById(playlistId));
+                playlist.setSource(Source.MOODIFY);
+
+                return playlist;
             } else {
                 throw new SourceNotFoundException();
             }
@@ -85,7 +104,12 @@ public class MusicController {
     @ResponseStatus(HttpStatus.OK)
     public List<TrackTO> search(@PathVariable ("searchQuery") String query) {
         try {
-            return DEEZER_API.getTrackSearch(query, DEFAULT_LIMIT);
+            List<TrackTO> deezerTracks = DEEZER_API.getTrackSearch(query, DEFAULT_LIMIT);
+
+            List<TrackTO> moodifySingles = this.TO_OBJECT_ASSEMBLER.generateTrackTOListFromMoodifySingleDOList(DATABASE_SERVICE.searchSingles(query));
+            moodifySingles.forEach(track -> track.setSource(Source.MOODIFY));
+
+            return Stream.concat(moodifySingles.stream(), deezerTracks.stream()).toList();
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
@@ -105,7 +129,14 @@ public class MusicController {
     @ResponseStatus(HttpStatus.OK)
     public List<ArtistTO> searchArtist(@PathVariable ("searchQuery") String query) {
         try {
-            return DEEZER_API.getArtists(query, DEFAULT_LIMIT);
+            List<ArtistTO> deezerArtists = DEEZER_API.getArtists(query, DEFAULT_LIMIT);
+
+            List<UserDO> artists = this.DATABASE_SERVICE.searchArtists(query);
+            List<ArtistTO> moodifyArtists = TO_OBJECT_ASSEMBLER.generateArtistTOFromUserDO(artists);
+            moodifyArtists.forEach(artist -> artist.setSource(Source.MOODIFY));
+
+
+            return Stream.concat(moodifyArtists.stream(), deezerArtists.stream()).toList();
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
@@ -121,7 +152,6 @@ public class MusicController {
 
 
             List<PlaylistTO> deezerPlaylistsTOs = this.DEEZER_API.getPlaylists(query, DEFAULT_LIMIT);
-            deezerPlaylistsTOs.forEach(pl -> pl.setSource(Source.DEEZER));
 
             return Stream.concat(usersPlaylistsTOs.stream(), deezerPlaylistsTOs.stream()).toList();
 
@@ -142,7 +172,6 @@ public class MusicController {
             }
 
             return recommendedTracks;
-
 
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);

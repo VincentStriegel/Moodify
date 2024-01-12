@@ -24,8 +24,9 @@ import java.util.List;
 @Transactional
 public class PostgresService implements DatabaseService {
     private final UserRepository USER_REPOSITORY;
-
     private final PlaylistRepository PLAYLIST_REPOSITORY;
+
+    private final MoodifySingleRepository SINGLE_REPOSITORY;
     private final PasswordEncoder ENCODER;
     private final DOAssembler DO_OBJECT_ASSEMBLER;
 
@@ -34,11 +35,13 @@ public class PostgresService implements DatabaseService {
     public PostgresService(UserRepository USER_REPOSITORY,
                            PasswordEncoder ENCODER,
                            DOAssembler DO_OBJECT_ASSEMBLER,
-                           PlaylistRepository PLAYLIST_REPOSITORY) {
+                           PlaylistRepository PLAYLIST_REPOSITORY,
+                           MoodifySingleRepository SINGLE_REPOSITORY) {
         this.USER_REPOSITORY = USER_REPOSITORY;
         this.ENCODER = ENCODER;
         this.DO_OBJECT_ASSEMBLER = DO_OBJECT_ASSEMBLER;
         this.PLAYLIST_REPOSITORY = PLAYLIST_REPOSITORY;
+        this.SINGLE_REPOSITORY = SINGLE_REPOSITORY;
     }
     @Override
     public UserDO createUser(UserDO user) throws
@@ -119,9 +122,19 @@ public class PostgresService implements DatabaseService {
     }
 
     @Override
-    public List<UserDO> searchUsers(String query) {
+    public List<UserDO> searchArtists(String query) {
         String wildcard = "%" + query + "%";
-        return this.USER_REPOSITORY.findAllByUsernameLikeOrEmailLike(wildcard, wildcard);
+        return this.USER_REPOSITORY.findAllByUsernameLikeAndDiscographyIsNotNull(wildcard);
+    }
+
+    @Override
+    public UserDO getArtist(long artistId) throws ArtistNotFoundException {
+        UserDO artist = this.USER_REPOSITORY.findByIdAndDiscographyIsNotNull(artistId);
+        if (artist == null) {
+            throw new ArtistNotFoundException();
+        }
+
+        return artist;
     }
 
     @Override
@@ -222,7 +235,7 @@ public class PostgresService implements DatabaseService {
 
         ArtistDO artist = this.DO_OBJECT_ASSEMBLER.generateArtistDOFrom(artistTO);
         if (user.getPersonalLibrary().getLikedArtists().stream()
-                .anyMatch(ar -> ar.getArtist_id_deezer() == artist.getArtist_id_deezer())) {
+                .anyMatch(ar -> ar.getArtist_id_source() == artist.getArtist_id_source())) {
             throw new DuplicateArtistsException();
         }
 
@@ -250,7 +263,7 @@ public class PostgresService implements DatabaseService {
                 .getPersonalLibrary()
                 .getLikedArtists()
                 .stream()
-                .anyMatch(ar -> ar.getArtist_id_deezer() == album.getAlbum_id_deezer())) {
+                .anyMatch(ar -> ar.getArtist_id_source() == album.getAlbum_id_source())) {
             throw new DuplicateAlbumsException();
         }
 
@@ -287,11 +300,60 @@ public class PostgresService implements DatabaseService {
     }
 
     @Override
+    public void promoteUserToArtist(long userId, String picture_big, String picture_small) throws UserNotFoundException, UserAlreadyPromotedException {
+        UserDO newArtist = this.findUserById(userId);
+        if (newArtist.getDiscography() != null) {
+            throw new UserAlreadyPromotedException();
+        }
+
+        newArtist.setDiscography(new DiscographyDO());
+        newArtist.getDiscography().setPicture_big(picture_big);
+        newArtist.getDiscography().setPicture_small(picture_small);
+        this.saveUser(newArtist);
+    }
+
+    @Override
+    public void addSingleToDiscography(long userId, TrackTO track) throws
+            UserNotFoundException,
+            UserNotArtistException,
+            DuplicateTracksException {
+        UserDO artist = this.findUserById(userId);
+        if (artist.getDiscography() == null) {
+            throw new UserNotArtistException();
+        }
+        if (artist
+                .getDiscography()
+                .getSingles()
+                .stream()
+                .anyMatch(s -> s.getPreview().equals(track.getPreview()))) {
+            throw new DuplicateTracksException();
+        }
+
+        MoodifySingleDO single = new MoodifySingleDO();
+        single.setTitle(track.getTitle());
+        single.setDuration(track.getDuration());
+        single.setPreview(track.getPreview());
+        single.setRelease_date(track.getRelease_date());
+        single.setCover_small(track.getCover_small());
+        single.setCover_big(track.getCover_big());
+        single.setArtist_id(artist.getId());
+        single.setArtist_name(artist.getUsername());
+
+
+        artist.getDiscography().getSingles().add(single);
+        this.saveUser(artist);
+    }
+
+    @Override
+    public List<MoodifySingleDO> searchSingles(String query) {
+        String wildcard = "%" + query + "%";
+        return this.SINGLE_REPOSITORY.findAllByTitleLike(wildcard);
+    }
+
+    @Override
     public String findMostPopularArtist(long userId) throws UserNotFoundException {
         this.findUserById(userId);
-        String result  = this.USER_REPOSITORY.findMostFrequentArtistByUserId(userId);
-        return  result;
-
+        return this.USER_REPOSITORY.findMostFrequentArtistByUserId(userId);
     }
 
     private boolean exists(UserDO user) {
@@ -303,7 +365,7 @@ public class PostgresService implements DatabaseService {
                 .getPersonalLibrary()
                 .getLikedAlbums()
                 .stream()
-                .filter(al -> al.getAlbum_id_deezer() == albumId)
+                .filter(al -> al.getAlbum_id_source() == albumId)
                 .findFirst()
                 .orElse(null);
         if (album == null) {
@@ -317,7 +379,7 @@ public class PostgresService implements DatabaseService {
         TrackDO track = playlist
                 .getTracks()
                 .stream()
-                .filter(trackDO -> trackDO.getId_deezer() == trackId)
+                .filter(trackDO -> trackDO.getId_source() == trackId)
                 .findFirst()
                 .orElse(null);
         if (track == null) {
@@ -346,7 +408,7 @@ public class PostgresService implements DatabaseService {
                 .getPersonalLibrary()
                 .getLikedArtists()
                 .stream()
-                .filter(ar -> ar.getArtist_id_deezer() == artistId)
+                .filter(ar -> ar.getArtist_id_source() == artistId)
                 .findFirst()
                 .orElse(null);
 
@@ -386,8 +448,8 @@ public class PostgresService implements DatabaseService {
         playlist.incrementNumberOfSongs();
 
         if (playlist.getNumber_of_songs() == 1) {
-            playlist.setPicture_big(track.getAlbum_cover_big_deezer());
-            playlist.setPicture_small(track.getAlbum_cover_small_deezer());
+            playlist.setPicture_big(track.getCover_big());
+            playlist.setPicture_small(track.getCover_small());
         }
 
     }

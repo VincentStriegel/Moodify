@@ -9,7 +9,7 @@
             </div>
         </div>
 
-        <div *ngIf="recommendationsArr" class="flex flex-col w-[100%] mt-5 h-64">
+        <div *ngIf="recommendationsArr && recommendationsArr.length > 0" class="flex flex-col w-[100%] mt-5 h-64">
             <h2 class="text-white font-bold h-16 text-left text-2xl">Recommended Songs</h2>
             <div class="flex flex-nowrap overflow-x-auto py-3">
                 <div *ngFor="let track of recommendationsArr">
