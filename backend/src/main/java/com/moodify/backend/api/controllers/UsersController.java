@@ -159,10 +159,10 @@ public class UsersController {
 
     @PostMapping({"promoteToArtist/{userId}"})
     @ResponseStatus(HttpStatus.OK)
-    public void promoteToArtist(@PathVariable("userId") long userId) {
+    public void promoteToArtist(@PathVariable("userId") long userId, @RequestParam String picture_big, @RequestParam String picture_small){
 
         try {
-            this.POSTGRES_SERVICE.promoteUserToArtist(userId);
+            this.POSTGRES_SERVICE.promoteUserToArtist(userId, picture_big, picture_small);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }

@@ -11,6 +11,7 @@ import { SnackbarService } from '../services/snackbar.service';
 })
 export class ArtistProfileComponent {
     query!: string;
+    querySource!: string;
     artist!: ArtistTO;
     isLiked = false;
     constructor(
@@ -19,8 +20,9 @@ export class ArtistProfileComponent {
         private snackbarService: SnackbarService,
     ) {
         this.query = this.route.snapshot.paramMap.get('artistId')!;
+        this.querySource = this.route.snapshot.paramMap.get('source')!;
         this.backendCommunicationService
-            .getArtist(parseInt(this.query))
+            .getArtist(parseInt(this.query), this.querySource)
             .subscribe((data) => ((this.artist = data), this.checkIfLiked()));
     }
     ngOnInit(): void {}

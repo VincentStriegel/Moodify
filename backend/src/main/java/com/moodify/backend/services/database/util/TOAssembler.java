@@ -1,6 +1,7 @@
 package com.moodify.backend.services.database.util;
 
 import com.moodify.backend.api.transferobjects.*;
+import com.moodify.backend.api.util.Source;
 import com.moodify.backend.services.database.objects.*;
 import org.springframework.stereotype.Component;
 
@@ -122,6 +123,9 @@ public class TOAssembler {
 
     public  DiscographyTO generateDiscographyTO(DiscographyDO discographyDO) {
         DiscographyTO discography = new DiscographyTO();
+        discography.setPicture_big(discographyDO.getPicture_big());
+        discography.setPicture_small(discographyDO.getPicture_small());
+
         for (MoodifySingleDO single : discographyDO.getSingles()) {
             discography.getSingles().add(this.generateTrackTOFrom(single));
         }
@@ -134,12 +138,17 @@ public class TOAssembler {
         ArtistTO artist = new ArtistTO();
         artist.setId(single.getArtist_id());
         artist.setName(single.getArtist_name());
+        artist.setSource(Source.MOODIFY);
 
         TrackTO trackSingle = new TrackTO();
         trackSingle.setId(single.getId());
         trackSingle.setTitle(single.getTitle());
         trackSingle.setPreview(single.getPreview());
         trackSingle.setRelease_date(single.getRelease_date());
+        trackSingle.setDuration(single.getDuration());
+        trackSingle.getAlbum().setCover_big(single.getCover_big());
+        trackSingle.getAlbum().setCover_small(single.getCover_small());
+        trackSingle.setSource(Source.MOODIFY);
 
 
         trackSingle.setArtist(artist);
@@ -166,7 +175,8 @@ public class TOAssembler {
             artist.setId(moodifyArtist.getId());
 
             artist.setTrackTOList(this.generateTrackTOListFromMoodifySingleDOList(moodifyArtist.getDiscography().getSingles()));
-            //TODO Artists pictures
+            artist.setPicture_small(moodifyArtist.getDiscography().getPicture_small());
+            artist.setPicture_big(moodifyArtist.getDiscography().getPicture_big());
 
             artists.add(artist);
         }
@@ -178,6 +188,8 @@ public class TOAssembler {
         ArtistTO artist = new ArtistTO();
         artist.setId(moodifyArtist.getId());
         artist.setName(moodifyArtist.getUsername());
+        artist.setPicture_small(moodifyArtist.getDiscography().getPicture_small());
+        artist.setPicture_big(moodifyArtist.getDiscography().getPicture_big());
         artist.setTrackTOList(this.generateTrackTOListFromMoodifySingleDOList(moodifyArtist.getDiscography().getSingles()));
 
         return artist;

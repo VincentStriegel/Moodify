@@ -70,7 +70,7 @@ public interface DatabaseService {
 
     PlaylistDO findPlaylistById(long playlistId) throws PlaylistNotFoundException;
 
-    void promoteUserToArtist(long userId) throws UserNotFoundException, UserAlreadyPromotedException;
+    void promoteUserToArtist(long userId, String picture_big, String picture_small) throws UserNotFoundException, UserAlreadyPromotedException;
 
     void addSingleToDiscography(long userId, TrackTO single) throws
             UserNotFoundException,

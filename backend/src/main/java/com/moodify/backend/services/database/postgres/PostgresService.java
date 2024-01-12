@@ -300,13 +300,15 @@ public class PostgresService implements DatabaseService {
     }
 
     @Override
-    public void promoteUserToArtist(long userId) throws UserNotFoundException, UserAlreadyPromotedException {
+    public void promoteUserToArtist(long userId, String picture_big, String picture_small) throws UserNotFoundException, UserAlreadyPromotedException {
         UserDO newArtist = this.findUserById(userId);
         if (newArtist.getDiscography() != null) {
             throw new UserAlreadyPromotedException();
         }
 
         newArtist.setDiscography(new DiscographyDO());
+        newArtist.getDiscography().setPicture_big(picture_big);
+        newArtist.getDiscography().setPicture_small(picture_small);
         this.saveUser(newArtist);
     }
 

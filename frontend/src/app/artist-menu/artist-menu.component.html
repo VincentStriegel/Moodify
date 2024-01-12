@@ -1,0 +1,34 @@
+<div class="h-[100vh] justify-center items-center flex text-2xl">
+    <div class="flex-col bg-zinc-900 p-6 rounded-lg min-w-[20vw] m-2">
+        <div *ngIf="!discography" class="justify-center grid gap-4">
+            <div class="flex">
+                <img class="w-20 h-20 rounded-full bg-indigo-600 mr-1"
+                    src="{{picture ? picture : 'assets/artist-profile.jpg'}}">
+                <input type="text" placeholder="Picture Url"
+                    class="bg-zinc-700 rounded-full p-3 text-white focus:outline-none" [(ngModel)]="picture">
+            </div>
+            <button class="bg-[#663dff] rounded-lg p-4 shadow-lg" (click)="promoteToArtist()">
+                <h2 class="text-white text-center font-bold text-4xl px-4 w-max">Become an Artist</h2>
+            </button>
+        </div>
+        <div *ngIf="discography" class="text-white">
+            <button class="bg-indigo-600 p-4 rounded-lg w-full text-center" (click)="songUploadPopup = !songUploadPopup">
+                Upload A New Song
+            </button>
+            <div class="w-[100%] mt-5 col-span-3">
+                <h2 class="text-white font-bold h-16 text-left text-2xl">My Songs</h2>
+                <div class='overflow-y-auto h-[50vh]'>
+                    <div *ngFor="let track of discography.singles">
+                        <app-track-element [track]="track"></app-track-element>
+                    </div>
+                </div>
+        </div>
+    </div>
+
+
+    <div *ngIf="songUploadPopup">
+        <app-song-upload-popup (closePopup)="songUploadPopup = false"
+            (close)="songUploadPopup = false"></app-song-upload-popup>
+    </div>
+
+</div>

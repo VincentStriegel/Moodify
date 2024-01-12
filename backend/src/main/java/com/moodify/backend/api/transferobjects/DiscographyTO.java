@@ -10,6 +10,9 @@ import java.util.List;
 @Setter
 public class DiscographyTO {
 
+    private String picture_small;
+    private String picture_big;
+
     private List<TrackTO>  singles;
 
     public DiscographyTO() {

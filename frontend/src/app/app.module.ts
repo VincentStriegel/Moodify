@@ -36,6 +36,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { SnackbarComponent } from './snackbar/snackbar.component';
+import { ArtistMenuComponent } from './artist-menu/artist-menu.component';
+import { SongUploadPopupComponent } from './artist-menu/song-upload-popup/song-upload-popup.component';
 
 @NgModule({
     declarations: [
@@ -55,6 +57,8 @@ import { SnackbarComponent } from './snackbar/snackbar.component';
         PlaylistPopupComponent,
         LoadingScreenComponent,
         SnackbarComponent,
+        ArtistMenuComponent,
+        SongUploadPopupComponent,
     ],
     imports: [
         BrowserModule,

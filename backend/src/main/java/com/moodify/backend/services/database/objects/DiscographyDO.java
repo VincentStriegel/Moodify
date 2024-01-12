@@ -24,6 +24,12 @@ public class DiscographyDO {
     @JoinColumn(name = "discography_id")
     private List<MoodifySingleDO> singles;
 
+    @Column(nullable = false)
+    private String picture_small;
+
+    @Column(nullable = false)
+    private String picture_big;
+
     public DiscographyDO() {
         this.singles = new ArrayList<MoodifySingleDO>();
     }

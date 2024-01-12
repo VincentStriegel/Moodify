@@ -8,4 +8,5 @@ export type AlbumTO = {
     release_date: string;
     trackTOList: TrackTO[];
     number_of_songs: number;
+    source: string;
 };
