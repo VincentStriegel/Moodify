@@ -14,7 +14,7 @@ export class UserInterceptor implements HttpInterceptor {
     ) {}
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         this.loadingService.show();
-        const urlsRequiringUserId = ['/users/getUser'];
+        const urlsRequiringUserId = ['/users/findUserById'];
 
         if (urlsRequiringUserId.some((url) => req.url.includes(url))) {
             if (this.backendCommunicationService.userId === undefined) {
