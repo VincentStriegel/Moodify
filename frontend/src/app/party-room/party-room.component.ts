@@ -245,7 +245,7 @@ export class PartyRoomComponent {
 
     /**
      * Sets the current track position in the party room.
-     * 
+     *
      * @param int - The current position to set.
      */
     setCurrentPosition(int: number) {
