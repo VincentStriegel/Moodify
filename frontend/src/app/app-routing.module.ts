@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { SearchResultComponent } from './search-result/search-result.component';
-import { ArtistProfileComponent } from './artist-profile/artist-profile.component';
+import { ArtistProfileComponent } from './collection/artist-profile/artist-profile.component';
 import { PartyRoomComponent } from './party-room/party-room.component';
 import { CollectionComponent } from './collection/collection.component';
 import { PartyRoomMenuComponent } from './party-room-menu/party-room-menu.component';

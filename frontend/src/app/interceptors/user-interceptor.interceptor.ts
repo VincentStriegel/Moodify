@@ -5,6 +5,9 @@ import { Router } from '@angular/router';
 import { BackendCommunicationService } from '../services/backend-communication.service';
 import { LoadingService } from '../services/loading.service';
 
+/**
+ * Interceptor for handling user-related HTTP requests, sends user to login page if login is required on the page the user was trying to access.
+ */
 @Injectable()
 export class UserInterceptor implements HttpInterceptor {
     constructor(
@@ -12,6 +15,7 @@ export class UserInterceptor implements HttpInterceptor {
         private backendCommunicationService: BackendCommunicationService,
         private loadingService: LoadingService,
     ) {}
+
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         this.loadingService.show();
         const urlsRequiringUserId = ['/users/findUserById'];

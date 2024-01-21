@@ -15,6 +15,9 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.*;
 
+/**
+ * WebSocket handler for managing party rooms.
+ */
 public class PartyRoomWebSocketHandler implements WebSocketHandler {
 
     private Map<String, PartyRoom> rooms = new HashMap<>();

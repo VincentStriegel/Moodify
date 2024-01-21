@@ -13,7 +13,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TrackElementComponent } from './track-element/track-element.component';
 import { SearchResultComponent } from './search-result/search-result.component';
 import { MatChipsModule } from '@angular/material/chips';
-import { ArtistProfileComponent } from './artist-profile/artist-profile.component';
+import { ArtistProfileComponent } from './collection/artist-profile/artist-profile.component';
 import { PartyRoomComponent } from './party-room/party-room.component';
 import { CollectionElementComponent } from './collection/collection-element/collection-element.component';
 import { CollectionComponent } from './collection/collection.component';

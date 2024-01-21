@@ -45,10 +45,6 @@
         <li><a [routerLink]="['/party-room-menu']" class="hover:text-indigo-700">Party Rooms</a></li>
         <hr *ngIf="!isLoggedIn">
         <li *ngIf="!isLoggedIn"><a [routerLink]="['/login']" class="hover:text-indigo-700">Login</a></li>
-        <hr>
-        <li><a [routerLink]="['/profile']" class="hover:text-indigo-700"><span class="material-icons-outlined">
-              account_circle
-            </span></a></li>
       </ul>
     </div>
   </div>

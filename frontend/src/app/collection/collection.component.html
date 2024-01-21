@@ -20,7 +20,7 @@
         <button (click)="onPlay()" matTooltip="Play">
             <span class="material-icons-outlined text-white text-6xl hover:scale-110">play_circle</span>
         </button>
-        <button *ngIf=" type != 'custom-playlist'" matTooltip="{{isLiked? 'Unlike' : 'Like'}}" (click)="isLiked ? unlike() : like()">
+        <button *ngIf="type != 'custom-playlist' && type != 'playlist'" matTooltip="{{isLiked? 'Unlike' : 'Like'}}" (click)="isLiked ? unlike() : like()">
             <span class="material-icons-outlined text-white text-6xl hover:scale-110">{{ isLiked ? 'favorite' : 'favorite_border' }}</span>
         </button>
         <button *ngIf="type == 'custom-playlist'" matTooltip="Delete Playlist" (click)="deleteCustomPlaylist()">
