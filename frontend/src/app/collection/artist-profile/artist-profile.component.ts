@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { BackendCommunicationService } from '../services/backend-communication.service';
-import { ArtistTO } from '../types/artistTO';
-import { SnackbarService } from '../services/snackbar.service';
+import { BackendCommunicationService } from '../../services/backend-communication.service';
+import { ArtistTO } from '../../types/artistTO';
+import { SnackbarService } from '../../services/snackbar.service';
 
 @Component({
     selector: 'app-artist-profile',

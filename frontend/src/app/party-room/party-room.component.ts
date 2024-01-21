@@ -97,12 +97,19 @@ export class PartyRoomComponent {
         };
     }
 
+    /**
+     * Searches for tracks based on the provided search query.
+     */
     searchTracks() {
         this.backendCommunicationService
             .getSearchResultsTracks(this.searchQuery)
             .subscribe((data) => (this.searchedTracks = data));
     }
 
+    /**
+     * Sends a suggested song to the WebSocket.
+     * @param track - The trackTO to suggest.
+     */
     suggestSong(track: TrackTO) {
         const message = {
             messageType: PartyRoomMessageType.SUGGEST_TRACK,
@@ -111,6 +118,10 @@ export class PartyRoomComponent {
         this.webSocket.send(JSON.stringify(message));
     }
 
+    /**
+     * Sets the playlist ID and sends a message to the WebSocket.
+     * @param playlistId The ID of the playlist to set.
+     */
     setPlayList(playlistId: number) {
         const message = {
             messageType: PartyRoomMessageType.SET_PLAYLIST_ID,
@@ -121,6 +132,10 @@ export class PartyRoomComponent {
         this.webSocket.send(JSON.stringify(message));
     }
 
+    /**
+     * Removes a track from the party room, removes both locally and on the WebSocket.
+     * @param track - The track to be removed.
+     */
     removeTrack(track: TrackTO) {
         const message = {
             messageType: PartyRoomMessageType.REMOVE_TRACK,
@@ -170,6 +185,10 @@ export class PartyRoomComponent {
         this.webSocket.close();
     }
 
+    /**
+     * Likes a track and sends a rating.
+     * @param track - The trackTO to be liked.
+     */
     likeTrack(track: TrackTO) {
         let rating: number;
         if (this.trackRatings.get(track.id) == ThumbRating.THUMBS_UP) {
@@ -186,6 +205,10 @@ export class PartyRoomComponent {
         this.webSocket.send(JSON.stringify(message));
     }
 
+    /**
+     * Dislikes a track and sends a rating.
+     * @param track - The trackTO to dislike.
+     */
     dislikeTrack(track: TrackTO) {
         let rating: number;
         if (this.trackRatings.get(track.id) == ThumbRating.THUMBS_UP) {
@@ -204,6 +227,11 @@ export class PartyRoomComponent {
         }
     }
 
+    /**
+     * Retrieves the rating of a track.
+     * @param trackId The ID of the track.
+     * @returns The rating of the track, or undefined if it doesn't exist.
+     */
     checkTrackRating(trackId: number): ThumbRating | undefined {
         return this.trackRatings.get(trackId);
     }
@@ -215,8 +243,12 @@ export class PartyRoomComponent {
         );
     }
 
+    /**
+     * Sets the current track position in the party room.
+     * 
+     * @param int - The current position to set.
+     */
     setCurrentPosition(int: number) {
-        //this.audio.currentTime = int;
         const message = {
             messageType: PartyRoomMessageType.SET_CURRENT_POSITION,
             currentPosition: int,
@@ -224,6 +256,11 @@ export class PartyRoomComponent {
         this.webSocket.send(JSON.stringify(message));
     }
 
+    /**
+     * Checks if a track with the given trackId has been played.
+     * @param trackId - The ID of the track to check.
+     * @returns True if the track has been played, false otherwise.
+     */
     checkIfPlayed(trackId: number): boolean {
         return this.playedTracksIds.includes(trackId);
     }
