@@ -14,6 +14,12 @@ import com.moodify.backend.services.database.util.LoginUser;
 
 import java.util.List;
 
+/**
+ * This interface defines the contract for the DatabaseService.
+ * It contains methods for creating, saving, and finding users, as well as methods for managing playlists, tracks, artists, and albums.
+ * It also contains methods for promoting a user to an artist and adding a single to the discography.
+ * Each method may throw specific exceptions based on the business rules.
+ */
 public interface DatabaseService {
 
     UserDO createUser(UserDO user) throws

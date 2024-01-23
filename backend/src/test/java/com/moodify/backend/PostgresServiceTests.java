@@ -24,6 +24,16 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * This class contains unit tests for the PostgresService class in the Moodify application.
+ * It uses the Mockito framework to mock dependencies and isolate the class under test.
+ * The class tests various scenarios including successful user creation, user creation with existing email or username,
+ * user creation with invalid email, username or password, successful user login, user login with wrong password or non-existing email or username,
+ * finding a user by id, searching for artists, getting an artist, searching for playlists, creating a custom playlist, and deleting a custom playlist.
+ * Each test method in this class represents a test case for a specific scenario.
+ * The class uses the JUnit 5 framework for structuring and running the tests.
+ * The class uses assertions to verify the expected results.
+ */
 public class PostgresServiceTests {
 
     @Mock

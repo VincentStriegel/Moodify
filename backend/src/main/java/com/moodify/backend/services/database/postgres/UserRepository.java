@@ -6,6 +6,11 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
+/**
+ * This interface defines the contract for a repository that interacts with the User table in the database.
+ * It extends JpaRepository, which provides methods for performing common database operations.
+ * The UserDO class is used to map the User table in the database, and the Long type is used for the ID of the User.
+ */
 public interface UserRepository extends JpaRepository<UserDO, Long> {
 
     Boolean existsUserByUsername(String username);

@@ -8,7 +8,12 @@ import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 
-//Websocket Configuration
+/**
+ * This class configures the WebSocket settings for the application.
+ * It implements the WebSocketConfigurer interface, which provides a method for registering WebSocket handlers.
+ * The class has a reference to a DatabaseService, which is used to interact with the database.
+ * It provides a method for registering a WebSocket handler for party rooms, and a method for creating a new instance of the PartyRoomWebSocketHandler.
+ */
 @Configuration
 @EnableWebSocket
 public class WebSocketConfig implements WebSocketConfigurer {
