@@ -8,6 +8,14 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
 
+/**
+ * This class is responsible for making API requests to the Deezer API.
+ * It is annotated with @Component, indicating that it is a Spring Bean and can be autowired into other components.
+ * The class contains a method for making API requests to a specified URL and returning the response.
+ * The API requests are made using the RestTemplate class from Spring's web client module.
+ * The headers of the requests are set to accept JSON and include the RapidAPI key and host.
+ * The RapidAPI key is injected into the class through the constructor using Spring's @Value annotation.
+ */
 @Component
 public class DeezerApiRequester {
 
@@ -21,6 +29,15 @@ public class DeezerApiRequester {
         this.RAPID_DEEZER_API_KEY = RAPID_DEEZER_API_KEY;
     }
 
+    /**
+     * Makes an API request to the specified URL and returns the response.
+     * The request is made using the RestTemplate class from Spring's web client module.
+     * The headers of the request are set to accept JSON and include the RapidAPI key and host.
+     * The method uses the HTTP GET method to make the request.
+     *
+     * @param url The URL to which the API request is to be made.
+     * @return The response from the API request as a ResponseEntity<String>.
+     */
     public ResponseEntity<String> makeApiRequest(String url) {
         RestTemplate restTemplate = new RestTemplate();
 

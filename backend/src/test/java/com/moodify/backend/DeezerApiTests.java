@@ -25,6 +25,16 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * This class contains unit tests for the DeezerApi class in the Moodify application.
+ * It uses the JUnit 5 framework for structuring and running the tests.
+ * The class tests various scenarios including getting a track by its ID, getting an artist by their ID,
+ * getting a playlist by its ID, and getting an album by its ID.
+ * Each test method in this class represents a test case for a specific scenario.
+ * The class uses assertions to verify the expected results.
+ * The class is annotated with @Component and @Transactional to indicate that it is a Spring Bean and that
+ * its methods should be executed within a transaction context.
+ */
 @Component
 @Transactional
 public class DeezerApiTests {

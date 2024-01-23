@@ -8,9 +8,22 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class is used to convert database objects (DO) to transfer objects (TO).
+ * It contains methods for converting various types of DOs to TOs.
+ * The class is annotated with @Component to indicate that it is an autodetect bean for Spring.
+ */
 @Component
 public class TOAssembler {
 
+    /**
+     * This method is used to generate a UserTO object from a UserDO object.
+     * It sets the id, username, email, and personal library of the UserTO object.
+     * If the UserDO object has a discography, it also sets the discography of the UserTO object.
+     *
+     * @param user The UserDO object to be converted.
+     * @return UserTO The generated UserTO object.
+     */
     public UserTO generateUserTOFrom(UserDO user) {
         UserTO userTO = new UserTO();
         userTO.setId(user.getId());
@@ -23,6 +36,13 @@ public class TOAssembler {
         return userTO;
     }
 
+    /**
+     * This method is used to generate a PersonalLibraryTO object from a PersonalLibraryDO object.
+     * It sets the liked albums, liked artists, liked tracks, and custom playlists of the PersonalLibraryTO object.
+     *
+     * @param personalLibraryDO The PersonalLibraryDO object to be converted.
+     * @return PersonalLibraryTO The generated PersonalLibraryTO object.
+     */
     public PersonalLibraryTO generatePersonalLibraryTOFrom(PersonalLibraryDO personalLibraryDO) {
         PersonalLibraryTO personalLibraryTO = new PersonalLibraryTO();
         personalLibraryTO.setLikedAlbums(generateAlbumTOListFrom(personalLibraryDO.getLikedAlbums()));
@@ -34,6 +54,12 @@ public class TOAssembler {
         return personalLibraryTO;
     }
 
+    /**
+     * This method is used to generate a list of AlbumTO objects from a list of AlbumDO objects.
+     *
+     * @param albumDOList The list of AlbumDO objects to be converted.
+     * @return List<AlbumTO> The generated list of AlbumTO objects.
+     */
     private List<AlbumTO> generateAlbumTOListFrom(List<AlbumDO> albumDOList) {
         List<AlbumTO> albumTOList = new ArrayList<>();
         for (AlbumDO albumDO : albumDOList) {
@@ -43,6 +69,12 @@ public class TOAssembler {
         return albumTOList;
     }
 
+    /**
+     * This method is used to generate a list of ArtistTO objects from a list of ArtistDO objects.
+     *
+     * @param artistDOList The list of ArtistDO objects to be converted.
+     * @return List<ArtistTO> The generated list of ArtistTO objects.
+     */
     public   List<ArtistTO> generateArtistTOListFrom(List<ArtistDO> artistDOList) {
         List<ArtistTO> artistTOList = new ArrayList<>();
         for (ArtistDO artistDO : artistDOList) {
@@ -52,6 +84,12 @@ public class TOAssembler {
         return artistTOList;
     }
 
+    /**
+     * This method is used to generate a list of TrackTO objects from a list of TrackDO objects.
+     *
+     * @param trackDOList The list of TrackDO objects to be converted.
+     * @return List<TrackTO> The generated list of TrackTO objects.
+     */
     public  List<TrackTO> generateTrackTOListFromTrackDOList(List<TrackDO> trackDOList) {
         List<TrackTO> trackTOList = new ArrayList<>();
         for (TrackDO trackDO : trackDOList) {
@@ -61,6 +99,12 @@ public class TOAssembler {
         return trackTOList;
     }
 
+    /**
+     * This method is used to generate a list of PlaylistTO objects from a list of PlaylistDO objects.
+     *
+     * @param playlistDOList The list of PlaylistDO objects to be converted.
+     * @return List<PlaylistTO> The generated list of PlaylistTO objects.
+     */
     public   List<PlaylistTO> generatePlaylistTOListFrom(List<PlaylistDO> playlistDOList) {
         List<PlaylistTO> playlistTOList = new ArrayList<>();
         for (PlaylistDO playlistDO : playlistDOList) {
@@ -70,6 +114,13 @@ public class TOAssembler {
         return playlistTOList;
     }
 
+    /**
+     * This method is used to generate an AlbumTO object from an AlbumDO object.
+     * It sets the id, title, small cover, big cover, release date, and number of songs of the AlbumTO object.
+     *
+     * @param albumDO The AlbumDO object to be converted.
+     * @return AlbumTO The generated AlbumTO object.
+     */
     public  AlbumTO generateAlbumTOFrom(AlbumDO albumDO) {
         AlbumTO albumTO = new AlbumTO();
         albumTO.setId(albumDO.getAlbum_id_source());
@@ -82,6 +133,13 @@ public class TOAssembler {
         return albumTO;
     }
 
+    /**
+     * This method is used to generate an ArtistTO object from an ArtistDO object.
+     * It sets the id, number of fans, name, small picture, and big picture of the ArtistTO object.
+     *
+     * @param artistDO The ArtistDO object to be converted.
+     * @return ArtistTO The generated ArtistTO object.
+     */
     public  ArtistTO generateArtistTOFrom(ArtistDO artistDO) {
         ArtistTO artistTO = new ArtistTO();
         artistTO.setId(artistDO.getArtist_id_source());
@@ -94,6 +152,13 @@ public class TOAssembler {
         return artistTO;
     }
 
+    /**
+     * This method is used to generate a PlaylistTO object from a PlaylistDO object.
+     * It sets the id, title, small picture, big picture, number of songs, and track list of the PlaylistTO object.
+     *
+     * @param playlistDO The PlaylistDO object to be converted.
+     * @return PlaylistTO The generated PlaylistTO object.
+     */
     public  PlaylistTO generatePlaylistTOFrom(PlaylistDO playlistDO) {
         PlaylistTO playlistTO = new PlaylistTO();
         playlistTO.setId(playlistDO.getId());
@@ -106,6 +171,13 @@ public class TOAssembler {
         return playlistTO;
     }
 
+    /**
+     * This method is used to generate a TrackTO object from a TrackDO object.
+     * It sets the id, title, duration, preview, release date, artist id, artist name, big album cover, and small album cover of the TrackTO object.
+     *
+     * @param trackDO The TrackDO object to be converted.
+     * @return TrackTO The generated TrackTO object.
+     */
     public  TrackTO generateTrackTOFrom(TrackDO trackDO) {
         TrackTO trackTO =  new TrackTO();
         trackTO.setId(trackDO.getId_source());
@@ -121,6 +193,13 @@ public class TOAssembler {
         return trackTO;
     }
 
+    /**
+     * This method is used to generate a DiscographyTO object from a DiscographyDO object.
+     * It sets the big picture, small picture, and singles of the DiscographyTO object.
+     *
+     * @param discographyDO The DiscographyDO object to be converted.
+     * @return DiscographyTO The generated DiscographyTO object.
+     */
     public  DiscographyTO generateDiscographyTO(DiscographyDO discographyDO) {
         DiscographyTO discography = new DiscographyTO();
         discography.setPicture_big(discographyDO.getPicture_big());
@@ -133,6 +212,13 @@ public class TOAssembler {
         return discography;
     }
 
+    /**
+     * This method is used to generate a TrackTO object from a MoodifySingleDO object.
+     * It sets the id, title, preview, release date, duration, big album cover, small album cover, source, and artist of the TrackTO object.
+     *
+     * @param single The MoodifySingleDO object to be converted.
+     * @return TrackTO The generated TrackTO object.
+     */
     public TrackTO generateTrackTOFrom(MoodifySingleDO single) {
 
         ArtistTO artist = new ArtistTO();
@@ -158,6 +244,13 @@ public class TOAssembler {
         return trackSingle;
     }
 
+    /**
+     * This method is used to generate a list of TrackTO objects from a list of MoodifySingleDO objects.
+     * It iterates over the list of MoodifySingleDO objects and for each object, it generates a TrackTO object using the generateTrackTOFrom method.
+     *
+     * @param singles The list of MoodifySingleDO objects to be converted.
+     * @return List<TrackTO> The generated list of TrackTO objects.
+     */
     public  List<TrackTO> generateTrackTOListFromMoodifySingleDOList(List<MoodifySingleDO> singles) {
         List<TrackTO> trackTOList = new ArrayList<>();
         for (MoodifySingleDO single : singles) {
@@ -167,6 +260,13 @@ public class TOAssembler {
         return trackTOList;
     }
 
+    /**
+     * This method is used to generate a list of ArtistTO objects from a list of UserDO objects.
+     * It iterates over the list of UserDO objects and for each object, it generates an ArtistTO object and sets its properties.
+     *
+     * @param userDOS The list of UserDO objects to be converted.
+     * @return List<ArtistTO> The generated list of ArtistTO objects.
+     */
     public List<ArtistTO> generateArtistTOFromUserDO(List<UserDO> userDOS) {
         List<ArtistTO> artists = new ArrayList<ArtistTO>();
         for (UserDO moodifyArtist : userDOS) {
@@ -184,6 +284,13 @@ public class TOAssembler {
         return artists;
     }
 
+    /**
+     * This method is used to generate an ArtistTO object from a UserDO object.
+     * It creates an ArtistTO object and sets its properties.
+     *
+     * @param moodifyArtist The UserDO object to be converted.
+     * @return ArtistTO The generated ArtistTO object.
+     */
     public ArtistTO generateArtistTOFromMoodifyArtist(UserDO moodifyArtist) {
         ArtistTO artist = new ArtistTO();
         artist.setId(moodifyArtist.getId());

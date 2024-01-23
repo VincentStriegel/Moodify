@@ -5,6 +5,13 @@ import org.springframework.web.socket.WebSocketSession;
 
 import java.util.*;
 
+/**
+ * This class represents a party room in the application.
+ * It contains the current position of the track being played, a list of WebSocket sessions associated with the room,
+ * a map of track ratings where the key is the track and the value is the rating, and a set of tracks that have been played.
+ * The class provides getter and setter methods for these properties.
+ * It also provides a method for adding a new WebSocket session to the room.
+ */
 public class PartyRoom {
 
     private float currentPosition = 0;

@@ -14,6 +14,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+/**
+ * This class implements the ApiService interface and provides the functionality to interact with the Deezer API.
+ * It contains methods for fetching playlists, albums, artists, and tracks from the Deezer API by their IDs.
+ * It also contains methods for searching for tracks, artists, playlists, and albums on the Deezer API based on a search query.
+ * Each method returns a transfer object containing the fetched or searched data.
+ * The class is annotated with @Component to indicate that it is an autodetectable bean for Spring.
+ */
 @Component
 public class DeezerApi implements ApiService {
     private final DeezerApiRequester DEEZER_API_REQUESTER;
@@ -30,6 +38,11 @@ public class DeezerApi implements ApiService {
         this.DEEZER_API_REQUESTER = DEEZER_API_REQUESTER;
     }
 
+    /**
+     * Fetches a playlist from the Deezer API.
+     * @param id The ID of the playlist to fetch.
+     * @return A PlaylistTO object containing the playlist data.
+     */
     public PlaylistTO getPlaylist(long id) {
         String url = DEEZER_API_URL + "playlist/" + id;
 
@@ -47,6 +60,11 @@ public class DeezerApi implements ApiService {
         return playlistTO;
     }
 
+    /**
+     * Fetches an album from the Deezer API.
+     * @param id The ID of the album to fetch.
+     * @return An AlbumTO object containing the album data.
+     */
     public AlbumTO getAlbum(long id) {
         String url = DEEZER_API_URL + "album/" + id;
 
@@ -66,6 +84,11 @@ public class DeezerApi implements ApiService {
         return albumTO;
     }
 
+    /**
+     * Fetches an artist from the Deezer API.
+     * @param id The ID of the artist to fetch.
+     * @return An ArtistTO object containing the artist data.
+     */
     public ArtistTO getArtist(long id) {
         String url = DEEZER_API_URL + "artist/" + id;
 
@@ -90,6 +113,11 @@ public class DeezerApi implements ApiService {
 
     }
 
+    /**
+     * Fetches a track from the Deezer API.
+     * @param id The ID of the track to fetch.
+     * @return A TrackTO object containing the track data.
+     */
     public TrackTO getTrack(long id) {
         String url = DEEZER_API_URL + "track/" + id;
 
@@ -100,6 +128,12 @@ public class DeezerApi implements ApiService {
         return trackTO;
     }
 
+    /**
+     * Searches for tracks on the Deezer API.
+     * @param query The search query.
+     * @param limit The maximum number of results to return.
+     * @return A list of TrackTO objects matching the search query.
+     */
     public List<TrackTO> getTrackSearch(String query, long limit) {
         String url = DEEZER_API_URL + "search?q=" + query + DELIMETER + LIMIT + limit;
 
@@ -117,6 +151,12 @@ public class DeezerApi implements ApiService {
         return trackTOs;
     }
 
+    /**
+     * Searches for artists on the Deezer API.
+     * @param query The search query.
+     * @param limit The maximum number of results to return.
+     * @return A list of ArtistTO objects matching the search query.
+     */
     public List<ArtistTO> getArtists(String query, long limit) {
         String url = DEEZER_API_URL + "search/artist?q=" + query + DELIMETER + LIMIT + limit;
 
@@ -135,6 +175,12 @@ public class DeezerApi implements ApiService {
         return artistTOs;
     }
 
+    /**
+     * Searches for playlists on the Deezer API.
+     * @param query The search query.
+     * @param limit The maximum number of results to return.
+     * @return A list of PlaylistTO objects matching the search query.
+     */
     public List<PlaylistTO> getPlaylists(String query, long limit) {
         String url = DEEZER_API_URL + "search/playlist?q=" + query + DELIMETER + LIMIT + limit;
 
@@ -153,6 +199,12 @@ public class DeezerApi implements ApiService {
         return playlistTOs;
     }
 
+    /**
+     * Searches for albums on the Deezer API.
+     * @param query The search query.
+     * @param limit The maximum number of results to return.
+     * @return A list of AlbumTO objects matching the search query.
+     */
     public List<AlbumTO> getAlbums(String query, long limit) {
         String url = DEEZER_API_URL + "search/album?q=" + query + DELIMETER + LIMIT + limit;
 
@@ -170,6 +222,11 @@ public class DeezerApi implements ApiService {
         return albumTOs;
     }
 
+    /**
+     * Converts a ResponseEntity to a Map.
+     * @param responseEntity The ResponseEntity to convert.
+     * @return A Map containing the data from the ResponseEntity.
+     */
     private Map<String, Object> getMapFrom(ResponseEntity<String> responseEntity) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
