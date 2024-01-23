@@ -1,26 +1,37 @@
 package com.moodify.backend;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 
 import com.moodify.backend.api.transferobjects.AlbumTO;
 import com.moodify.backend.api.transferobjects.ArtistTO;
 import com.moodify.backend.api.transferobjects.PlaylistTO;
 import com.moodify.backend.services.music.deezer.DeezerApiRequester;
+import com.moodify.backend.services.music.util.TransferObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.moodify.backend.api.transferobjects.TrackTO;
 import com.moodify.backend.api.util.Source;
 import com.moodify.backend.services.music.deezer.DeezerApi;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Component
 @Transactional
 public class DeezerApiTests {
 
     private static final DeezerApi DEEZER_API_TESTS = new DeezerApi(new DeezerApiRequester("${deezerApiKey}"));
+
+    private static final DeezerApiRequester DEEZER_API_REQUESTER = new DeezerApiRequester("${deezerApiKey}");
 
     @Test
     void testGetTrackById() {
@@ -109,5 +120,4 @@ public class DeezerApiTests {
         assertEquals(expectedSource, actualAlbumTO.getSource());
     }
 
-    //TODO test other functions
 }
