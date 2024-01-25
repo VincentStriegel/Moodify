@@ -29,6 +29,7 @@ export class MusicPlayerComponent {
     showQueue = false;
     trackQueue: TrackTO[] = [];
     currentTrackIndex = 0;
+    playlistPopup: boolean = false;
 
     constructor(
         private musicPlayerService: MusicPlayerService,
@@ -166,5 +167,12 @@ export class MusicPlayerComponent {
             }
             return false;
         });
+    }
+
+    /**
+     * Closes the playlist popup.
+     */
+    closePopup(): void {
+        this.playlistPopup = false;
     }
 }

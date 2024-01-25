@@ -54,7 +54,7 @@
                         <span class="material-icons-outlined">{{ isFavorite ? 'favorite' : 'favorite_border' }}</span>
                     </button>
                     <div  class="hidden md:block">
-                        <button mat-icon-button matTooltip="Add To Playlist" (click)="playlistPopup = true">
+                        <button *ngIf="!isCustomPlaylist()" mat-icon-button matTooltip="Add To Playlist" (click)="playlistPopup = true">
                             <span class="material-icons-outlined">playlist_add</span>
                         </button>
                         <button *ngIf="playlistId" mat-icon-button matTooltip="Remove From Playlist"
@@ -85,7 +85,7 @@
                         <span class="text-white">Like</span>
                     </button>
                     -->
-                    <button mat-menu-item class="bg-zinc-900" (click)="playlistPopup = true">
+                    <button *ngIf="!isCustomPlaylist()" mat-menu-item class="bg-zinc-900" (click)="playlistPopup = true">
                         <span class="material-icons-outlined text-white text-2xl pr-2">playlist_add</span>
                         <span class="text-white">Add to playlist</span>
                     </button>

@@ -200,4 +200,12 @@ export class TrackElementComponent {
         this.musicPlayerService.addTrack(this.track);
         this.snackbarService.openSuccessSnackBar(this.track.album.cover_small, this.track.title, 'added to queue');
     }
+
+    /**
+     * Checks if it is a custom playlist.
+     * @returns {boolean} True if the current route includes 'custom-playlist', false otherwise.
+     */
+    isCustomPlaylist(): boolean {
+        return this.router.url.includes('custom-playlist');
+    }
 }
