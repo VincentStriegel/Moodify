@@ -46,7 +46,7 @@
                     <button class="text-white justify-self-end" (click)="likeSong()">
                         <span class="material-icons-outlined">{{ isFavorite ? 'favorite' : 'favorite_border' }}</span>
                     </button>
-                    <button class="text-white justify-center">
+                    <button class="text-white justify-center" (click)="playlistPopup = true">
                         <span class="material-icons-outlined">playlist_add</span>
                     </button>
 
@@ -94,4 +94,8 @@
             </div>
         </div>
     </div>
+</div>
+<div *ngIf="playlistPopup">
+    <app-playlist-popup [track]="currentTrack" (closePopup)="closePopup()"
+        (close)="playlistPopup = false"></app-playlist-popup>
 </div>

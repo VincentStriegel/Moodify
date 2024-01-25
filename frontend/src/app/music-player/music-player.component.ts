@@ -100,6 +100,7 @@ export class MusicPlayerComponent {
      * The index of the current track in the track queue.
      */
     currentTrackIndex = 0;
+    playlistPopup: boolean = false;
 
     constructor(
         private musicPlayerService: MusicPlayerService,
@@ -280,5 +281,12 @@ export class MusicPlayerComponent {
             }
             return false;
         });
+    }
+
+    /**
+     * Closes the playlist popup.
+     */
+    closePopup(): void {
+        this.playlistPopup = false;
     }
 }
